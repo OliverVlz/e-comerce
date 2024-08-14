@@ -1,5 +1,36 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-     <h3>Store</h3>
+     <div class="row">
+          <div class="col-lg-4">
+               <img src="{% static 'images/placeholder.png' %}" alt="Product 1" class="img-fluid">
+               <div class="box-element product">
+                    <h5><strong>Product 1</strong></h5>
+                    <hr>
+                    <button class="btn btn-outline-secondary add-btn" type="button">Add to Cart</button>
+                    <a class="btn btn-outline-success" href="#">View</a>
+                    <h4 style="display: inline-block; float: right"><strong>$9.99</strong></h4>
+               </div>
+          </div>
+          <div class="col-lg-4">
+               <img src="{% static 'images/placeholder.png' %}" alt="Product 1" class="img-fluid">
+               <div class="box-element product">
+                    <h5><strong>Product 2</strong></h5>
+                    <hr>
+                    <button class="btn btn-outline-secondary add-btn" type="button">Add to Cart</button>
+                    <a class="btn btn-outline-success" href="#">View</a>
+                    <h4 style="display: inline-block; float: right"><strong>$9.99</strong></h4>
+               </div>
+          </div>
+          <div class="col-lg-4">
+               <img src="{% static 'images/placeholder.png' %}" alt="Product 1" class="img-fluid">
+               <div class="box-element product">
+                    <h5><strong>Product 3</strong></h5>
+                    <hr>
+                    <button class="btn btn-outline-secondary add-btn" type="button">Add to Cart</button>
+                    <a class="btn btn-outline-success" href="#">View</a>
+                    <h4 style="display: inline-block; float: right"><strong>$9.99</strong></h4>
+               </div>
+          </div>
+     </div>
 {% endblock content %}
