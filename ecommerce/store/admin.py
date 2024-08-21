@@ -1,19 +1,21 @@
 from django.contrib import admin
+from django import forms
 from .models import CustomUser, Distributor, Product, Category
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomUserChangeForm
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
 
-    # Campos que se muestran en la lista de usuarios en el administrador
     list_display = ('username', 'email', 'user_type', 'is_active', 'is_staff')
     list_filter = ('is_active', 'is_staff', 'user_type')
+    search_fields = ('username', 'email')
 
-    # Campos que se muestran cuando se edita un usuario
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'phone_number')}),
@@ -23,38 +25,45 @@ class CustomUserAdmin(UserAdmin):
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
-    # Campos que se muestran cuando se agrega un usuario
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2'),
-        }),
-        ('Personal Info', {'fields': ('first_name', 'last_name', 'phone_number')}),
-        ('Permissions', {
-            'fields': ('is_active', 'is_staff', 'user_type', 'groups', 'user_permissions'),
+            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'phone_number', 'is_active', 'is_staff', 'user_type'),
         }),
     )
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
+class DistributorAdminForm(forms.ModelForm):
+    user = forms.ModelChoiceField(queryset=User.objects.filter(user_type='distributor'), required=True)
 
-# Configurar el administrador para Distribuidores
+    class Meta:
+        model = Distributor
+        fields = '__all__'
+
 class DistributorAdmin(admin.ModelAdmin):
-    list_display = ('company_name', 'email', 'phone_number', 'status')
-    search_fields = ('company_name', 'email')
+    form = DistributorAdminForm
+    list_display = ('company_name', 'phone_number', 'status')
+    search_fields = ('company_name',)
     list_filter = ('status',)
+    fieldsets = (
+        (None, {'fields': ('user', 'company_name', 'phone_number', 'address', 'status')}),
+    )
 
 admin.site.register(Distributor, DistributorAdmin)
 
-# Configurar el administrador para Productos
 class ProductAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        if request.user.is_authenticated:
+            return request.user.user_type != 'customer'
+        return False
+
     list_display = ('name', 'price', 'sku', 'stock', 'distributor')
     search_fields = ('name', 'sku')
     list_filter = ('category', 'distributor')
 
 admin.site.register(Product, ProductAdmin)
 
-# Configurar el administrador para Categorías
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
