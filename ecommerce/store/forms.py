@@ -25,8 +25,8 @@ class CustomUserChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].disabled = True  # Desactivar el campo username
-        self.fields['user_type'].disabled = True  # Desactivar el campo user_type si es necesario
+        self.fields['username'].disabled = True  
+        self.fields['user_type'].disabled = True  
 
         if self.instance and hasattr(self.instance, 'distributor_profile'):
             distributor = self.instance.distributor_profile

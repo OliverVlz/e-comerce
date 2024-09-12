@@ -4,8 +4,23 @@ from .models import CustomUser, Distributor, Product, Category
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify  # Importación para generar slugs automáticamente
 
 User = get_user_model()
+
+# Helper para obtener el queryset filtrado por usuario
+def _get_user_queryset(request, qs):
+    # Superusuarios pueden ver todo
+    if request.user.is_superuser:
+        return qs
+    # Distribuidores solo ven sus propios datos
+    if request.user.user_type == 2:  
+        return qs.filter(distributor_profile=request.user.distributor_profile)
+    # Clientes pueden ver todos los productos
+    if request.user.user_type == 1:  
+        return qs
+    return qs.none()  # Otros usuarios no ven nada
+
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -20,12 +35,8 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'phone_number')}),
-        ('Distributor Info', {
-            'fields': ('company_name', 'address'),
-        }),
-        ('Permissions', {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'user_type'),
-        }),
+        ('Distributor Info', {'fields': ('company_name', 'address')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_type')}),
         ('Groups & Permissions', {'fields': ('groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
@@ -39,45 +50,32 @@ class CustomUserAdmin(UserAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        if request.user.user_type == 2:  # Distribuidor
-            # El distribuidor solo debe ver su propio perfil
-            return qs.filter(id=request.user.id)
-        if request.user.user_type == 1:  # Cliente
-            # El cliente solo debe ver su propio perfil
-            return qs.filter(id=request.user.id)
-        return qs
+        return _get_user_queryset(request, qs)
 
+    # Solo pueden ver su propio perfil, excepto superusuarios
     def has_view_permission(self, request, obj=None):
-        if request.user.user_type == 2:  # Distribuidor
-            # El distribuidor solo puede ver su propio perfil
-            return obj is None or obj == request.user
-        if request.user.user_type == 1:  # Cliente
-            # El cliente solo puede ver su propio perfil
+        if request.user.user_type in [1, 2]:  # Cliente o Distribuidor
             return obj is None or obj == request.user
         return super().has_view_permission(request, obj)
 
+    # Solo pueden modificar su propio perfil, excepto superusuarios
     def has_change_permission(self, request, obj=None):
-        if request.user.user_type == 2:  # Distribuidor
-            # El distribuidor solo puede cambiar su propio perfil
-            return obj is None or obj == request.user
-        if request.user.user_type == 1:  # Cliente
-            # El cliente solo puede cambiar su propio perfil
+        if request.user.user_type in [1, 2]:  # Cliente o Distribuidor
             return obj is None or obj == request.user
         return super().has_change_permission(request, obj)
 
+    # Solo superusuarios pueden agregar usuarios
     def has_add_permission(self, request):
-        # Solo los superusuarios pueden agregar usuarios
         return request.user.is_superuser
 
+    # Clientes y distribuidores no pueden eliminar perfiles
     def has_delete_permission(self, request, obj=None):
         if request.user.user_type in [1, 2]:  # Cliente o Distribuidor
-            # Los clientes y distribuidores no deberían poder eliminar sus propios perfiles en el admin
             return False
         return super().has_delete_permission(request, obj)
 
 admin.site.register(CustomUser, CustomUserAdmin)
+
 
 class DistributorAdminForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=User.objects.filter(user_type=2), required=True)
@@ -86,11 +84,13 @@ class DistributorAdminForm(forms.ModelForm):
         model = Distributor
         fields = '__all__'
 
+    # Validación para asegurar que el usuario es un distribuidor
     def clean_user(self):
         user = self.cleaned_data.get('user')
         if user.user_type != 2:
             raise forms.ValidationError("El usuario seleccionado no es un distribuidor.")
         return user
+
 
 class DistributorAdmin(admin.ModelAdmin):
     form = DistributorAdminForm
@@ -101,76 +101,71 @@ class DistributorAdmin(admin.ModelAdmin):
         (None, {'fields': ('user', 'company_name', 'address', 'is_active')}),
     )
 
+    # El campo 'user' es de solo lectura para distribuidores
     def get_readonly_fields(self, request, obj=None):
-        if request.user.user_type == 2:  # Distribuidor
-            # El campo 'user' es de solo lectura para los distribuidores
+        if request.user.is_superuser:  # Superusuario puede modificar todo
+            return []
+        if request.user.user_type == 2:  # Distribuidor solo puede ver el campo 'user' como lectura
             return ['user']
-        return []
-    
+        return []  # Otros roles pueden ver todo
+
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
+        if request.user.is_superuser:  # Superusuarios ven todo
             return qs
-        if request.user.user_type == 2:  # Distribuidor
-            # El distribuidor solo debe ver su propio perfil
+        if request.user.user_type == 2:  # Distribuidor solo ve su propio perfil
             return qs.filter(user=request.user)
-        return qs
-    
+        return qs.none()  # Otros usuarios no pueden ver nada
+
+
 admin.site.register(Distributor, DistributorAdmin)
 
+
 class ProductAdmin(admin.ModelAdmin):
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        if request.user.user_type == 2:  # Distribuidor
-            # Esto filtra los productos para que el distribuidor solo vea los suyos.
-            return qs.filter(distributor=request.user.distributor_profile)
-        if request.user.user_type == 1:  # Cliente
-            # Permitir que los clientes vean todos los productos
-            return qs
-        return qs.none()
+        return _get_user_queryset(request, qs)
 
+    # Los clientes, distribuidores y superusuarios pueden ver los productos
     def has_view_permission(self, request, obj=None):
-        if request.user.is_superuser:
-            return True
-        if request.user.user_type in [1, 2]:  # Cliente o Distribuidor
-            return True
-        return False
+        return request.user.user_type in [1, 2] or request.user.is_superuser
 
+    # Solo superusuarios y distribuidores pueden agregar productos
     def has_add_permission(self, request):
-        # Permitir a superusuarios y distribuidores agregar productos
         return request.user.is_superuser or request.user.user_type == 2
 
+    # Solo distribuidores pueden cambiar sus propios productos
     def has_change_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
-        # Los distribuidores pueden modificar sus propios productos, pero los clientes no
         if request.user.user_type == 2 and obj:
             return obj.distributor == request.user.distributor_profile
-        return False  # Los clientes no deberían tener permiso para cambiar productos
+        return False
 
+    # Distribuidores solo pueden eliminar sus propios productos
     def has_delete_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
-        # Los distribuidores pueden eliminar sus propios productos, pero los clientes no
         if request.user.user_type == 2 and obj:
             return obj.distributor == request.user.distributor_profile
-        return False  # Los clientes no deberían tener permiso para eliminar productos
+        return False
 
+    # Los distribuidores no pueden cambiar el campo 'distributor'
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
             return []
-        # Los distribuidores no pueden cambiar el campo distribuidor
         return ['distributor']
 
+    # Asignar distribuidor automáticamente al crear un nuevo producto
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser and not change:
-            # Setear el distribuidor actual para un nuevo producto
-            obj.distributor = request.user.distributor_profile
+        if request.user.user_type == 2:
+            if not change:  # Si está creando un nuevo producto
+                obj.distributor = request.user.distributor_profile
+            elif obj.distributor != request.user.distributor_profile:  # Intento de cambiar distribuidor
+                raise forms.ValidationError("No puedes cambiar el distribuidor de un producto.")
         super().save_model(request, obj, form, change)
-
-
 
     list_display = ('name', 'price', 'sku', 'stock', 'distributor', 'category', 'created_at')
     search_fields = ('name', 'sku')
@@ -178,9 +173,16 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug')
     search_fields = ('name', 'slug')
-    list_filter = ('name',)  
+    list_filter = ('name',)
+
+    # Generar slug automáticamente a partir del nombre si no está definido
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        super().save_model(request, obj, form, change)
 
 admin.site.register(Category, CategoryAdmin)
