@@ -2,9 +2,20 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
 
 def store(request):
-     products = Product.objects.all()
-     context = {'products': products}
-     return render(request, 'store/store.html', context)
+    products = Product.objects.all()
+
+    # Obtener el carrito del usuario actual
+    if request.user.is_authenticated:
+        order = Order.objects.filter(customer=request.user, status='pending').first()
+        cart_items_count = order.items.count() if order else 0
+    else:
+        cart_items_count = 0
+
+    context = {
+        'products': products,
+        'cart_items_count': cart_items_count,  # Contador de productos únicos en el carrito
+    }
+    return render(request, 'store/store.html', context)
 
 def cart(request):
     order, created = Order.objects.get_or_create(customer=request.user, status='pending')
@@ -45,4 +56,22 @@ def add_to_cart(request, product_id):
         order_item.save()
 
     # 5. Después de agregar el producto al carrito, redirigimos al usuario de nuevo al carrito o a otra página
+    return redirect('cart')
+
+def remove_from_cart(request, item_id):
+    order_item = get_object_or_404(OrderItem, id=item_id)
+    order_item.delete()  # Elimina el producto completamente
+    return redirect('cart')
+
+def decrease_quantity(request, item_id):
+    order_item = get_object_or_404(OrderItem, id=item_id)
+    
+    # Si la cantidad es mayor que 1, disminuye la cantidad
+    if order_item.quantity > 1:
+        order_item.quantity -= 1
+        order_item.save()
+    else:
+        # Si la cantidad es 1, eliminamos el item
+        order_item.delete()
+    
     return redirect('cart')

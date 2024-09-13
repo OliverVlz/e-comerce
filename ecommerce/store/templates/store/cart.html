@@ -1,48 +1,71 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box-element">
+<div class="container my-4">
+    <div class="row mb-3">
+        <div class="col-lg-12">
             <a class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
         </div>
-        <br>
-        <br>
-        <table class="table">
-            <tr>
-                <th><h5>Items: <strong>3</strong></h5></th>
-                <th><h5>Total: <strong> $99.9</strong></h5></th>
-                <th> <a style="float:right; margin: 5px;" class="btn btn-success" href="{% url 'checkout' %}">
-                    Checkout</a>
-                </th>
-            </tr>
-        </table>
+    </div>
 
-        <br>
-        <div class="box-element">
-            <div class="cart-row">
-                <div style="flex:2"></div>
-                <div style="flex:2"><strong>Item</strong></div>
-                <div style="flex:1"><strong>Price</strong></div>
-                <div style="flex:1"><strong>Quantity</strong></div>
-                <div style="flex:1"><strong>Total</strong></div>
-            </div>
-        </div>
-        <div class="box-element">
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{% static 'images/placeholder.png' %}"></div>
-                <div style="flex:2"><p>Product 1</p></div>
-                <div style="flex:1"><p>$19.99</p></div>
-                <div style="flex:1">
-                    <p class="quantity">2</p>
-                    <div class="quantity">
-                        <img class="chg-quantity" src="{% static 'images/arrow-up.png' %}">
-                        <img class="chg-quantity" src="{% static 'images/arrow-down.png' %}">
-                    </div>
-                </div>
-                <div style="flex:1"><p>$39.98</p></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Mostrar número de artículos y precio total del carrito -->
+                <h5>Items: <strong>{{ order.items.count }}</strong></h5>
+                <h5>Total: <strong>${{ order.get_total_price }}</strong></h5>
+                <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
             </div>
         </div>
     </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <table class="table table-hover align-middle text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td class="d-flex align-items-center">
+                            <img class="img-fluid rounded" src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ item.product.name }}" style="width: 70px; height: 70px; object-fit: cover;">
+                            <p class="ms-3 mb-0">{{ item.product.name }}</p>
+                        </td>
+                        <td><strong>${{ item.price }}</strong></td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <!-- Botones para cambiar la cantidad -->
+                                <a href="{% url 'decrease_quantity' item.id %}" class="btn btn-outline-secondary btn-sm me-2">-</a>
+                                <span>{{ item.quantity }}</span>
+                                <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-outline-secondary btn-sm ms-2">+</a>
+                            </div>
+                        </td>
+                        <td><strong>${{ item.get_total_item_price }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<style>
+    .chg-quantity {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+    }
+    .row-image {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
 {% endblock content %}

@@ -2,61 +2,108 @@
 {% load static %}
 {% block content %}
 
+<div class="container my-4">
     <div class="row">
-        <div class="col-lg-6">
-            <div class="box-element" id="form-wrapper">
+        <!-- Formulario -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm p-4">
+                <h4 class="mb-4">Información de Envío</h4>
                 <form id="form">
                     <div id="user-info">
-                        <div class="form-field">
-                            <input required class="form-control" type="text" name="name" placeholder="Nombre">
+                        <div class="mb-3">
+                            <input required class="form-control" type="text" name="name" placeholder="Nombre" value="{{ request.user.first_name }}">
                         </div>
-                        <div class="form-field">
-                            <input required class="form-control" type="email" name="email" placeholder="Email">
+                        <div class="mb-3">
+                            <input required class="form-control" type="email" name="email" placeholder="Email" value="{{ request.user.email }}">
                         </div>
                     </div>
 
-                    <div id="shipping-info">
+                    <div id="shipping-info" class="mt-4">
+                        <h5>Información de Envío</h5>
                         <hr>
-                        <p>Shipping Information:</p>
-                        <hr>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="address" placeholder="Direccion">
+                        <div class="mb-3">
+                            <input class="form-control" type="text" name="address" placeholder="Dirección">
                         </div>
-                        <div class="form-field">
+                        <div class="mb-3">
                             <input class="form-control" type="text" name="city" placeholder="Ciudad">
                         </div>
-                        <div class="form-field">
-                            <input class="form-control" type="text" name="zip" placeholder="Codigo Postal">
+                        <div class="mb-3">
+                            <input class="form-control" type="text" name="zip" placeholder="Código Postal">
                         </div>
                     </div>
 
                     <hr>
-                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                    <button id="form-button" class="btn btn-success w-100" type="submit">Continuar</button>
                 </form>
             </div>
 
-            <br>
-            <div class="box-element hidden" id="payment-info">
-                <small>Paypal Options</small>
+            <div class="card shadow-sm p-3 mt-4" id="payment-info">
+                <small class="text-muted">Opciones de Pago: Paypal</small>
             </div>
-			
-		</div>
+        </div>
 
-		<div class="col-lg-6">
-			<div class="box-element">
-                <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Continue Cart</a>
+        <!-- Resumen del Pedido -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm p-4">
+                <a class="btn btn-outline-dark mb-3" href="{% url 'cart' %}">&#x2190; Continuar en el Carrito</a>
                 <hr>
-                <h3>Order Summary</h3>
+                <h4>Resumen del Pedido</h4>
                 <hr>
-                <div class="cart-row">
-                    <div style="flex:2"><img class="row-image" src="{% static 'images/placeholder.png' %}"></div>
-                    <div style="flex:2"><p>Product 1</p></div>
-                    <div style="flex:1"><p>$19.99</p></div>
-                    <div style="flex:1"><p>x2</p></div>
+                <div class="cart-summary">
+                    {% for item in order.items.all %}
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <!-- Imagen del producto y nombre -->
+                        <div class="d-flex align-items-center">
+                            <img class="img-fluid rounded" src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ item.product.name }}" style="width: 70px; height: 70px; object-fit: cover;">
+                            <div class="ms-3">
+                                <p class="mb-0">{{ item.product.name }}</p>
+                                <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
+                            </div>
+                        </div>
+                        <!-- Precio total del producto -->
+                        <p class="mb-0 text-end" style="min-width: 100px;"><strong>${{ item.get_total_item_price }}</strong></p>
+                        <!-- Botón eliminar (la "x") -->
+                        <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-link text-danger p-0" type="submit">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-0">Items: <strong>{{ order.items.count }}</strong></h5>
+                        <h5 class="mb-0">Total: <strong>${{ order.get_total_price }}</strong></h5>
+                    </div>
                 </div>
-                <h5>Items: 2</h5>
-                <h5>Total: $4.00</h5>
             </div>
-		</div>
-	</div>
-{% endblock content %}  
+        </div>
+    </div>
+</div>
+
+<style>
+    .cart-summary img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    .cart-summary p {
+        margin-bottom: 0;
+    }
+    .cart-summary .btn-link {
+        font-size: 1.5rem;
+        text-decoration: none;
+        color: #dc3545;
+        transition: color 0.3s ease;
+    }
+    .cart-summary .btn-link:hover {
+        color: #ff6f61;
+    }
+    .cart-summary .btn-link i {
+        vertical-align: middle;
+    }
+</style>
+
+{% endblock content %}

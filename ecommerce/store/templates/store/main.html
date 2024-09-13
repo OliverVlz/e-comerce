@@ -10,6 +10,11 @@
     
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
+    <!-- Font Awesome CSS (para los íconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,7 +33,7 @@
                 <a href="#" class="btn btn-warning me-2">Login</a>
                 <a href="{% url 'cart' %}" class="d-flex align-items-center">
                     <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
-                    <p id="cart-total" class="ms-1">0</p>
+                    <p id="cart-total" class="ms-1">{{ cart_items_count }}</p>
                 </a>
             </div>
         </div>
