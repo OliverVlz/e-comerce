@@ -1,5 +1,10 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
+from .forms import UserSignupForm, UserLoginForm
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 def store(request):
     products = Product.objects.all()
@@ -17,11 +22,36 @@ def store(request):
     }
     return render(request, 'store/store.html', context)
 
+def signup(request):
+    if request.method == 'POST':
+        form = UserSignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user) 
+            return redirect('store')  
+    else:
+        form = UserSignupForm()
+    return render(request, 'store/signup.html', {'form': form})
+
+class CustomLoginView(LoginView):
+    form_class = UserLoginForm  
+    template_name = 'store/login.html'  
+
+@login_required
+def profile(request):
+    return render(request, 'store/profile.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('store')
+
+@login_required
 def cart(request):
     order, created = Order.objects.get_or_create(customer=request.user, status='pending')
     context = {'order': order}
     return render(request, 'store/cart.html', context)
 
+@login_required
 def checkout(request):
     order = get_object_or_404(Order, customer=request.user, status='pending')
 
@@ -38,6 +68,7 @@ def checkout(request):
     context = {'order': order}
     return render(request, 'store/checkout.html', context)
 
+@login_required
 def add_to_cart(request, product_id):
     # 1. Obtener el producto que se está agregando al carrito
     product = get_object_or_404(Product, id=product_id)
@@ -58,11 +89,13 @@ def add_to_cart(request, product_id):
     # 5. Después de agregar el producto al carrito, redirigimos al usuario de nuevo al carrito o a otra página
     return redirect('cart')
 
+@login_required
 def remove_from_cart(request, item_id):
     order_item = get_object_or_404(OrderItem, id=item_id)
     order_item.delete()  # Elimina el producto completamente
     return redirect('cart')
 
+@login_required
 def decrease_quantity(request, item_id):
     order_item = get_object_or_404(OrderItem, id=item_id)
     

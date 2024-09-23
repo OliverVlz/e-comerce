@@ -1,0 +1,144 @@
+{% extends 'store/main.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow p-4 border-0 rounded">
+                <h3 class="mb-4 text-center">Crear Cuenta</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="floating-label mb-4">
+                        {{ form.username }}
+                        <label class="floating-label-label">Nombre de Usuario</label>
+                    </div>
+                    <div class="floating-label mb-4">
+                        {{ form.email }}
+                        <label class="floating-label-label">Correo Electrónico</label>
+                    </div>
+                    <div class="floating-label mb-4">
+                        {{ form.first_name }}
+                        <label class="floating-label-label">Nombre</label>
+                    </div>
+                    <div class="floating-label mb-4">
+                        {{ form.last_name }}
+                        <label class="floating-label-label">Apellido</label>
+                    </div>
+                    <div class="floating-label mb-4">
+                        {{ form.password1 }}
+                        <label class="floating-label-label">Contraseña</label>
+                    </div>
+                    <div class="floating-label mb-4">
+                        {{ form.password2 }}
+                        <label class="floating-label-label">Confirmar Contraseña</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos CSS para Floating Labels -->
+<style>
+        /* Estilos básicos para el campo de entrada */
+    .floating-label {
+        position: relative;
+        margin-bottom: 1.5rem; /* Espacio entre campos */
+    }
+
+    .floating-label-input {
+        width: 100%;
+        padding: 0.75rem 1rem; /* Padding adecuado para el efecto */
+        font-size: 1rem;
+        border: 1px solid #007bff; /* Borde principal */
+        border-radius: 0.25rem; /* Bordes redondeados */
+        background-color: white; /* Fondo blanco */
+        position: relative; /* Para el uso de ::before y ::after */
+    }
+
+    /* Estilos para el label */
+    .floating-label-label {
+        position: absolute;
+        top: 50%; /* Posición inicial */
+        left: 1rem; /* Espaciado desde la izquierda */
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: all 0.2s;
+        color: #aaa;
+        font-size: 1rem;
+        background-color: rgb(255, 255, 255); /* Fondo blanco para "cortar" el borde */
+        padding: 0 0.25rem; /* Espacio alrededor del texto */
+    }
+
+    /* Efecto de corte en el borde con pseudo-elementos */
+    .floating-label-input::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 0.5rem; /* Ajusta esto según la posición del label */
+        height: 2px; /* Altura del corte */
+        width: calc(100% - 1rem); /* Ajustar el ancho del borde */
+        background-color: white; /* Color de fondo del contenedor */
+        z-index: 1;
+    }
+
+    /* Cuando el campo tiene enfoque o contenido */
+    .floating-label-input:focus + .floating-label-label,
+    .floating-label-input:not(:placeholder-shown) + .floating-label-label {
+        top: -0.75rem; /* Mover hacia arriba */
+        left: 1rem; /* Alinear con el campo */
+        font-size: 0.75rem; /* Reducir tamaño */
+        color: #007bff; /* Color del label */
+        font-weight: bold;
+    }
+
+    .floating-label-input:focus {
+        outline: none;
+        border-color: #007bff; /* Color de borde al enfoque */
+    }
+
+
+    /* Estilo para la tarjeta */
+    .card {
+        border-radius: 0.5rem; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra alrededor de la tarjeta */
+    }
+
+        /* Ocultar el placeholder haciéndolo transparente */
+    .floating-label-input::placeholder {
+        color: transparent; /* Hacer el placeholder invisible */
+        opacity: 0; /* Opción adicional para asegurar invisibilidad */
+    }
+
+    /* Para navegadores más antiguos que no soportan ::placeholder */
+    .floating-label-input:-ms-input-placeholder { /* IE 10+ */
+        color: transparent;
+    }
+    .floating-label-input::-ms-input-placeholder { /* Edge */
+        color: transparent;
+    }
+
+</style>
+
+<!-- Script para inicializar el efecto Floating Labels -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var inputs = document.querySelectorAll('.floating-label-input');
+    inputs.forEach(function(input) {
+        // Si el campo tiene valor, agregar la clase `has-value`
+        if (input.value) {
+            input.nextElementSibling.classList.add('active');
+        }
+        input.addEventListener('focus', function() {
+            input.nextElementSibling.classList.add('active');
+        });
+        input.addEventListener('blur', function() {
+            if (!input.value) {
+                input.nextElementSibling.classList.remove('active');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

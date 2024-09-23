@@ -1,8 +1,76 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from .models import CustomUser, Distributor
 from django.core.exceptions import ValidationError
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Fieldset, Field, Div, HTML, ButtonHolder
 
+"""Formulario para registro de usuarios"""
+
+class UserSignupForm(UserCreationForm):
+    usable_password = None
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}),
+    )
+    
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar Contraseña'}),
+    )
+    
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Nombre de Usuario'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Correo Electrónico'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'Nombre'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Apellido'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserSignupForm, self).__init__(*args, **kwargs)
+        
+        # Aplicar solo la clase 'form-control floating-label-input' a todos los campos
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control floating-label-input'
+        
+        # Configuración de Crispy Forms
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Div(
+                Field('username', css_class='mb-3'),
+                Field('email', css_class='mb-3'),
+                Field('first_name', css_class='mb-3'),
+                Field('last_name', css_class='mb-3'),
+                Field('password1', css_class='mb-3'),
+                Field('password2', css_class='mb-3'),
+                Submit('submit', 'Registrarse', css_class='btn btn-primary w-100'),
+                css_class='card-body'
+            ),
+        )
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError('Ya existe un usuario con este correo electrónico.')
+        return email
+class UserLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control floating-label-input',
+            'placeholder': 'Nombre de Usuario',
+        })
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control floating-label-input',
+            'placeholder': 'Contraseña',
+        })
+    )
+
+
+"""Formulario para panel de administración de usuarios"""
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
