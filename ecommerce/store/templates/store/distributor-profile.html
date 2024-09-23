@@ -1,0 +1,18 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Perfil de Distribuidor</h2>
+    <div class="card shadow-sm p-4 mb-4">
+        <h5 class="mb-3">Información Personal</h5>
+        <p><strong>Nombre de Usuario:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Teléfono:</strong> {{ user.phone_number }}</p>
+    </div>
+    <div class="card shadow-sm p-4">
+        <h5 class="mb-3">Información de la Empresa</h5>
+        <p><strong>Nombre de la Compañía:</strong> {{ user.distributor_profile.company_name }}</p>
+        <p><strong>Dirección:</strong> {{ user.distributor_profile.address }}</p>
+    </div>
+</div>
+{% endblock %}

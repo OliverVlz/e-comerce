@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
-from .forms import UserSignupForm, UserLoginForm
+from .forms import UserSignupForm, UserLoginForm, ProductForm
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
@@ -37,10 +37,31 @@ class CustomLoginView(LoginView):
     form_class = UserLoginForm  
     template_name = 'store/login.html'  
 
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)  # O puedes usar slug, como prefieras
+    context = {
+        'product': product,
+    }
+    return render(request, 'store/product-detail.html', context)
+
 @login_required
 def profile(request):
-    return render(request, 'store/profile.html')
+    # Lógica para distinguir entre tipos de usuarios
+    if request.user.user_type == 2:
+        # Es un distribuidor
+        return redirect('distributor_profile')
+    else:
+        # Es un cliente o administrador
+        return render(request, 'store/user-profile.html', {'user': request.user})
 
+@login_required
+def distributor_profile(request):
+    if request.user.user_type != 2:
+        # Redirige si no es distribuidor
+        return redirect('profile')
+    return render(request, 'store/distributor-profile.html', {'user': request.user})
+
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('store')
@@ -108,3 +129,25 @@ def decrease_quantity(request, item_id):
         order_item.delete()
     
     return redirect('cart')
+
+def add_product(request):
+    if request.user.user_type != 2:  # Verificar que el usuario sea distribuidor
+        return redirect('store')  # Redirigir si no es distribuidor
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.distributor = request.user.distributor_profile
+            product.save()
+            return redirect('distributor-products')  # Verifica que el nombre de la URL sea correcto
+    else:
+        form = ProductForm()
+    return render(request, 'store/add-product.html', {'form': form})  # Verifica que el nombre de la plantilla sea correcto
+
+def distributor_products(request):
+    if request.user.user_type != 2:  # Verificar que el usuario sea distribuidor
+        return redirect('store')  # Redirigir si no es distribuidor
+
+    products = Product.objects.filter(distributor=request.user.distributor_profile)
+    return render(request, 'store/distributor-products.html', {'products': products})

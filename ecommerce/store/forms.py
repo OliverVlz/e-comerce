@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from .models import CustomUser, Distributor
+from .models import CustomUser, Product, Distributor
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, Field, Div, HTML, ButtonHolder
@@ -69,6 +69,17 @@ class UserLoginForm(AuthenticationForm):
         })
     )
 
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price', 'sku', 'category', 'brand', 'stock', 'image', 
+                  'power_rating', 'voltage', 'efficiency', 'dimensions', 'weight']
+        
+        # Opcional: Agregar widgets para los campos del formulario para un mejor estilo
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4}),
+            'dimensions': forms.TextInput(attrs={'placeholder': 'Ej: 1650x992x35'}),
+        }
 
 """Formulario para panel de administración de usuarios"""
 class CustomUserCreationForm(UserCreationForm):

@@ -33,7 +33,12 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                   <li><a class="dropdown-item" href="{% url 'profile' %}">Ver Perfil</a></li>
-                  <li><hr class="dropdown-divider"></li>
+                  <!-- Verificar si el usuario no es un cliente (user_type != 1) -->
+                  {% if user.user_type != 1 %}
+                    <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
+                    <li><a class="dropdown-item" href="{% url 'add-product' %}">Agregar Producto</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                  {% endif %}
                   <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
                 </ul>
               </div>

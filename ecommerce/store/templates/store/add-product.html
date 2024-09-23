@@ -1,0 +1,14 @@
+<!-- store/add_product.html -->
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container my-5">
+    <h2>Agregar Producto</h2>
+    <hr>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+{% endblock %}
