@@ -1,9 +1,12 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from .models import CustomUser, Product, Distributor
+from .models import CustomUser, Product, Distributor, ProductAttribute, AttributeName
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, Field, Div, HTML, ButtonHolder
+from django.forms import modelformset_factory
+from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
+from django.contrib import admin
 
 """Formulario para registro de usuarios"""
 
@@ -72,14 +75,46 @@ class UserLoginForm(AuthenticationForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'sku', 'category', 'brand', 'stock', 'image', 
-                  'power_rating', 'voltage', 'efficiency', 'dimensions', 'weight']
+        fields = ['name', 'description', 'price', 'sku', 'category', 'brand', 'stock', 'image']
         
-        # Opcional: Agregar widgets para los campos del formulario para un mejor estilo
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
-            'dimensions': forms.TextInput(attrs={'placeholder': 'Ej: 1650x992x35'}),
         }
+class ProductAttributeForm(forms.ModelForm):
+    attribute = forms.ModelChoiceField(
+        queryset=AttributeName.objects.all(),  # Permitir seleccionar un atributo existente
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True,
+        label="Attribute Name"
+    )
+    value = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter value'}),
+        label="Value",
+        required=True
+    )
+
+    class Meta:
+        model = ProductAttribute
+        fields = ['attribute', 'value']
+    
+    def __init__(self, *args, **kwargs):
+        super(ProductAttributeForm, self).__init__(*args, **kwargs)
+
+        # Agregar el widget RelatedFieldWidgetWrapper para obtener los botones de agregar/editar/ver
+        self.fields['attribute'].widget = RelatedFieldWidgetWrapper(
+            self.fields['attribute'].widget,  # El widget del campo
+            ProductAttribute._meta.get_field('attribute').remote_field,  # Relación con el modelo AttributeName
+            admin_site=admin.site,  # Admin site que gestiona este modelo
+            can_add_related=True  # Para que se muestre el botón "+"
+        )
+
+ProductAttributeFormSet = forms.inlineformset_factory(
+    Product,
+    ProductAttribute,
+    form=ProductAttributeForm,
+    extra=1,  # Cantidad de formularios adicionales que se mostrarán por defecto
+    can_delete=True  # Permitir eliminar atributos también
+)
 
 """Formulario para panel de administración de usuarios"""
 class CustomUserCreationForm(UserCreationForm):

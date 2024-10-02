@@ -64,13 +64,6 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
-
-    power_rating = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, help_text="Power rating in watts (W)")
-    voltage = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, help_text="Operating voltage in volts (V)")
-    efficiency = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, help_text="Efficiency as a percentage")
-    dimensions = models.CharField(max_length=100, default='0000x000x00', help_text="Dimensions in mm, e.g., 1650x992x35")
-    weight = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, help_text="Weight in kilograms (kg)")
-
     def clean(self):
         if self.price < 0:
             raise ValidationError('The price cannot be negative.')
@@ -84,6 +77,20 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+class AttributeName(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+class ProductAttribute(models.Model):
+    attribute = models.ForeignKey(AttributeName, on_delete=models.CASCADE, default=1)
+    value = models.CharField(max_length=255)
+    product = models.ForeignKey('Product', related_name='attributes', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.attribute.name}: {self.value}"
+    
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),

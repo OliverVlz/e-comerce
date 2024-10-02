@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
-from .models import CustomUser, Distributor, Product, Category
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .models import CustomUser, Distributor, Product, Category, ProductAttribute, AttributeName 
+from .forms import CustomUserCreationForm, CustomUserChangeForm, ProductAttributeForm, ProductAttributeFormSet
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify  # Importación para generar slugs automáticamente
@@ -15,7 +15,7 @@ def _get_user_queryset(request, qs):
         return qs
     # Distribuidores solo ven sus propios datos
     if request.user.user_type == 2:  
-        return qs.filter(distributor_profile=request.user.distributor_profile)
+        return qs.filter(distributor=request.user.distributor_profile)
     # Clientes pueden ver todos los productos
     if request.user.user_type == 1:  
         return qs
@@ -91,6 +91,11 @@ class DistributorAdminForm(forms.ModelForm):
             raise forms.ValidationError("El usuario seleccionado no es un distribuidor.")
         return user
 
+class AttributeNameAdmin(admin.ModelAdmin):
+    list_display = ['name']  
+    search_fields = ['name'] 
+
+admin.site.register(AttributeName, AttributeNameAdmin)
 
 class DistributorAdmin(admin.ModelAdmin):
     form = DistributorAdminForm
@@ -121,8 +126,23 @@ class DistributorAdmin(admin.ModelAdmin):
 
 admin.site.register(Distributor, DistributorAdmin)
 
+class ProductAttributeInline(admin.TabularInline):
+    model = ProductAttribute
+    form = ProductAttributeForm
+    extra = 1  # Muestra un formulario en blanco adicional
+    can_delete = True  # Permite eliminar atributos
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Filtrar atributos solo para los productos que pertenecen al distribuidor
+        if request.user.user_type == 2:  # Si es distribuidor
+            return qs.filter(product__distributor=request.user.distributor_profile)
+        return qs
 class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'sku', 'stock', 'distributor', 'category', 'created_at')
+    search_fields = ('name', 'sku')
+    list_filter = ('category', 'distributor', 'stock', 'created_at')
+    inlines = [ProductAttributeInline]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -166,10 +186,6 @@ class ProductAdmin(admin.ModelAdmin):
             elif obj.distributor != request.user.distributor_profile:  # Intento de cambiar distribuidor
                 raise forms.ValidationError("No puedes cambiar el distribuidor de un producto.")
         super().save_model(request, obj, form, change)
-
-    list_display = ('name', 'price', 'sku', 'stock', 'distributor', 'category', 'created_at')
-    search_fields = ('name', 'sku')
-    list_filter = ('category', 'distributor', 'stock', 'created_at')
 
 admin.site.register(Product, ProductAdmin)
 

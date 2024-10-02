@@ -39,8 +39,10 @@ class CustomLoginView(LoginView):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)  # O puedes usar slug, como prefieras
+    attributes = product.attributes.all()
     context = {
         'product': product,
+        'attributes': attributes,
     }
     return render(request, 'store/product-detail.html', context)
 

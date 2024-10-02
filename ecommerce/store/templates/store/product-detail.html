@@ -19,11 +19,9 @@
                 <p class="text-muted"><strong>Descripción:</strong> {{ product.description }}</p>
                 <h5 class="mt-4">Especificaciones</h5>
                 <ul class="list-group mb-4">
-                    <li class="list-group-item"><strong>Potencia:</strong> {{ product.power_rating }} W</li>
-                    <li class="list-group-item"><strong>Voltaje:</strong> {{ product.voltage }} V</li>
-                    <li class="list-group-item"><strong>Eficiencia:</strong> {{ product.efficiency }}%</li>
-                    <li class="list-group-item"><strong>Dimensiones:</strong> {{ product.dimensions }} mm</li>
-                    <li class="list-group-item"><strong>Peso:</strong> {{ product.weight }} kg</li>
+                    {% for attribute in attributes %}
+                         <li>{{ attribute.name }}: {{ attribute.value }}</li>
+                    {% endfor %}
                 </ul>
                 <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success w-100">Añadir al carrito</a>
             </div>
