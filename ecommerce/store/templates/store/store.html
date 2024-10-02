@@ -17,7 +17,7 @@
                         <div class="mt-auto text-center"> <!-- Contenedor centrado -->
                             <div class="btn-group"> <!-- Grupo de botones centrado -->
                                 <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary add-to-cart">Añadir al carrito</a>
-                                <button type="button" class="btn btn-outline-success ms-2 view-details">Detalles</button>
+                                <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-success ms-2 view-details">Detalles</a>
                             </div>
                         </div>
                     </div>
