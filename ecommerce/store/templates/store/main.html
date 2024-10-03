@@ -4,63 +4,118 @@
 <head>
     <title>Ecom</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-    
+
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Font Awesome CSS Local -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/all.min.css' %}">
-
+    
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <style>
+        body {
+            background-color: #085db1;
+        }
+        /* Custom styles to ensure transparent navbar and visual alignment */
+        .navbar {
+            background-color: transparent !important;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+        .navbar-nav {
+            margin: auto;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .nav-link {
+            color: white;
+        }
+        .dropdown-menu {
+            min-width: 10rem;
+        }
+        .dropdown-toggle::after {
+            display: none; 
+        }
+
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'store' %}">Ecom</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-  
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'store' %}">Store <span class="sr-only">(current)</span></a>
-            </li>
-          </ul>
-          
-          <div class="d-flex align-items-center ms-auto">
-            {% if user.is_authenticated %}
-              <div class="dropdown">
-                <a class="btn btn-outline-light dropdown-toggle me-2" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fas fa-user"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                  <li><a class="dropdown-item" href="{% url 'profile' %}">Ver Perfil</a></li>
-                  <!-- Verificar si el usuario no es un cliente (user_type != 1) -->
-                  {% if user.user_type != 1 %}
-                    <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
-                    <li><a class="dropdown-item" href="{% url 'add-product' %}">Agregar Producto</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                  {% endif %}
-                  <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
-                </ul>
-              </div>
-            {% else %}
-              <a href="{% url 'signup' %}" class="btn btn-outline-light me-2">Crear Cuenta</a>
-              <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Ingresar</a>
-            {% endif %}
-            
-            <a href="{% url 'cart' %}" class="d-flex align-items-center text-light">
-                <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart" style="width: 24px;">
-                <p id="cart-total" class="ms-1 mb-0">{{ cart_items_count }}</p>
+    <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'store' %}">
+              <img src="{% static 'images/LogoPng.png' %}" alt="Logo" style="width: 150px; height: auto;">
             </a>
-          </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Center navigation items -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Cotización IA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Contacto</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'cart' %}" class="d-flex align-items-center text-light position-relative" style="margin-left: 100px;">
+                            <img id="cart-icon" src="{% static 'images/carritoA.svg' %}" alt="Cart" style="width: 30px; margin-bottom: 3px;">
+                            <span id="cart-total" class="cart-count position-absolute" style="top: 0; margin: 0 0 16px 17px; color: rgb(0, 0, 0); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">{{ cart_items_count }}</span>
+                        </a>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img id="user-icon" src="/static/images/usuario.svg" alt="user" style="width: 23px; padding-top: 8px; margin-left: 18px;">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">Ver Perfil</a></li>
+                                {% if user.user_type != 1 %}
+                                    <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'add-product' %}">Agregar Producto</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+                                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'cart' %}" class="d-flex align-items-center text-light" style="margin-left: 100px;">
+                            <img id="cart-icon" src="{% static 'images/carritoB.svg' %}" alt="Cart" style="width: 25px; padding-top: 5px">
+                        </a>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img id="user-icon" src="/static/images/usuario.svg" alt="user" style="width: 23px; padding-top: 8px; margin-left: 23px;">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                <li><a class="dropdown-item" href="{% url 'login' %}">Ingresar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'signup' %}">Crear Cuenta</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <br>
+    <div class="container mt-0">
         {% block content %}
         {% endblock content %}
     </div>
 
+    
+  
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
