@@ -1,42 +1,42 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-<div class="bodyHome">
-    <!-- Carousel wrapper -->
-    <div id="carouselBasicExample" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="7000">
-        <!-- Indicators -->
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselBasicExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselBasicExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        </div>
-    
-        <!-- Inner -->
-        <div class="carousel-inner">
+
+<!-- Carousel wrapper -->
+<div id="carouselBasicExample" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="700000">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselBasicExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselBasicExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    </div>
+
+    <!-- Inner -->
+    <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="./static/images/test0.4.png" class="d-block w-100" alt="Sunset Over the City" />
-                <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-caption d-flex justify-content-center align-items-center">
                     <button type="button" class="boton-cotizacion btn btn-lg">Empieza tu Cotizacion Gratis</button>
                 </div>
             </div>
-            <div class="carousel-item">
-                <img src="./static/images/test0.2.png" class="d-block w-100" alt="Sunset Over the City" />
-                <div class="carousel-caption d-none d-md-block">
-                    <button type="button" class="boton-expert btn btn-primary btn-lg">Habla con un Experto</button>
-                </div>
+        <div class="carousel-item">
+            <img src="./static/images/test0.2.png" class="d-block w-100" alt="Sunset Over the City" />
+            <div class="carousel-caption d-none d-md-block">
+                <button type="button" class="boton-expert btn btn-primary btn-lg">Habla con un Experto</button>
             </div>
         </div>
-    
-        <!-- Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselBasicExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselBasicExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBasicExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselBasicExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
+
 
 <!-- Productos o contenido adicional -->
 <div class="container mt-4">
@@ -65,7 +65,79 @@
         </div>
         {% endfor %}
     </div>
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Columna principal, producto grande -->
+            <div class="col-lg-8 col-md-12 mb-4">
+                <div class="card shadow-lg p-3 h-100">
+                    <div class="row no-gutters">
+                        <div class="col-md-6">
+                            <img src="ruta-imagen-principal.jpg" class="img-fluid" alt="Producto Principal">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h4 class="card-title text-primary">Sistema Fotovoltaico Residencial Completo</h4>
+                                <p class="card-text">Ahorra hasta un 80% en tu factura de luz. Incluye paneles solares, inversor y baterías. Instalación incluida.</p>
+                                <h3 class="text-primary">$7'000.000</h3>
+                                <a href="#" class="btn btn-success">COMPRAR ></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Columna secundaria, dos productos pequeños -->
+            <div class="col-lg-4 col-md-12">
+                <div class="card mb-4 shadow-sm p-3">
+                    <img src="ruta-imagen-secundaria-1.jpg" class="card-img-top img-fluid" alt="Producto Secundario 1">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Internet Satelital Antena Starlink</h5>
+                        <h4 class="text-primary">$3'000.000</h4>
+                        <a href="#" class="btn btn-success">COMPRAR ></a>
+                    </div>
+                </div>
+                <div class="card shadow-sm p-3">
+                    <img src="ruta-imagen-secundaria-2.jpg" class="card-img-top img-fluid" alt="Producto Secundario 2">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Electrodoméstico Solar Aire Acondicionado</h5>
+                        <h4 class="text-primary">$3'000.000</h4>
+                        <a href="#" class="btn btn-success">COMPRAR ></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
 </div>
+<!-- Beneficios adicionales --> 
+<div class="container mt-5">
+    <div class="row text-center">
+        <!-- Beneficio 1 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <img src="ruta-icono-envio.png" alt="Envío Rápido" class="img-fluid mb-2" style="width: 50px;">
+            <h5>ENTREGA RÁPIDA</h5>
+            <p>Envíos 24/7</p>
+        </div>
+        <!-- Beneficio 2 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <img src="ruta-icono-envio-nacional.png" alt="Envíos Nacionales" class="img-fluid mb-2" style="width: 50px;">
+            <h5>ENVÍOS NACIONALES</h5>
+            <p>Cualquier parte del país</p>
+        </div>
+        <!-- Beneficio 3 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <img src="ruta-icono-pago-seguro.png" alt="Pagos Seguros" class="img-fluid mb-2" style="width: 50px;">
+            <h5>PAGOS SEGUROS</h5>
+            <p>Tu pago está seguro</p>
+        </div>
+        <!-- Beneficio 4 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <img src="ruta-icono-soporte.png" alt="Soporte 24/7" class="img-fluid mb-2" style="width: 50px;">
+            <h5>SOPORTE 24/7</h5>
+            <p>Llamadas / mensajes</p>
+        </div>
+    </div>
+</div>
+
 
 <style>
     /* Estilo para hacer que el banner del carrusel ocupe toda la pantalla */
@@ -128,7 +200,7 @@
         color: white;
         position: absolute;
         bottom: -113px;
-        left: 310px;
+        left: 320px;
         padding: 10px 25px;
         font-size: 22px;
         font-weight: bold;
@@ -140,6 +212,108 @@
     .boton-cotizacion:hover {
         background-color: #88c13e;
     }
+
+    /*-----------------Estilos para las tarjetas de productos --------------*/
+    .card {
+        border: none; /* Sin bordes en las tarjetas */
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .btn {
+        border-radius: 50px;
+        font-weight: bold;
+        white-space: nowrap; /* Evitar que el texto se rompa */
+    }
+
+    .btn-success {
+        background-color: #96c952;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #88c13e;
+    }
+
+    .card-body h3, .card-body h4 {
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .shadow-sm {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    }
+
+    .shadow-lg {
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más fuerte para el producto principal */
+    }
+    
+    /* -----------------Estilos para la sección de beneficios --------------------*/
+.row.text-center {
+    background-color: #f8f9fa; /* Color de fondo claro */
+    padding: 20px 0; /* Espaciado vertical */
+    border-radius: 10px; /* Bordes redondeados para darle suavidad */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.row.text-center h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.row.text-center p {
+    font-size: 1rem;
+    color: #666;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.beneficios-adicionales {
+    background-color: white; /* Fondo blanco */
+    padding: 30px 0; /* Espaciado vertical */
+    width: 100%; /* Asegura que ocupe todo el ancho de la página */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Añade una sombra ligera */
+}
+
+.beneficios-adicionales .container {
+    max-width: 1200px; /* Ancho máximo del contenido, igual que la sección de productos */
+    margin: 0 auto; /* Centra el contenido */
+}
+
+.beneficios-adicionales h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.beneficios-adicionales p {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
+.beneficios-adicionales .img-fluid {
+    max-width: 50px; /* Tamaño uniforme para los íconos */
+    height: auto;
+    margin-bottom: 10px;
+}
+
 
 </style>
 {% endblock content %}
