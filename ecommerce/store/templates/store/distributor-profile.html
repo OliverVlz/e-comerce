@@ -1,7 +1,7 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-4">
     <h2>Perfil de Distribuidor</h2>
     <div class="card shadow-sm p-4 mb-4">
         <h5 class="mb-3">Información Personal</h5>
@@ -15,4 +15,12 @@
         <p><strong>Dirección:</strong> {{ user.distributor_profile.address }}</p>
     </div>
 </div>
+<style>
+    body{
+        background-color: #d1d7dc;
+    }
+    .navbar {
+        position: relative;
+    }
+</style>
 {% endblock %}
