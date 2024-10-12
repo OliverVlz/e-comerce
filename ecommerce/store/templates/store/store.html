@@ -43,54 +43,73 @@
 
 
 <!-- Productos o contenido adicional -->
-    <div class="container mt-5">
-        <div class="row">
-            <!-- Columna principal, producto grande -->
-            <div class="col-lg-8 col-md-12">
-                <div class="card shadow-lg p-4" style="height: 90%;">
-                    <div class="row no-gutters p-1">
-                        <div class="col-md-7">
-                            <div class="card-body" style="padding: 2.3rem 0 0 2rem;">
-                                <h2 class="card-title-large text-primary" style="font-size: 2rem; font-weight: bold;">Sistema Fotovoltaico Residencial Completo</h2>
-                                <p class="card-text" style="padding-top: 0.8rem; color: #333;">Ahorra hasta un 80% en tu factura de luz. Incluye paneles solares, inversor y baterías. Instalación incluida.</p>
-                                <h3 class="text-primary" style="padding-bottom: 0.8rem;">$7'000.000</h3>
-                                <a href="#" class="btn btn-success">COMPRAR ></a>
-                            </div>
-                        </div>
-                        <div class="col-md-5" style="padding: 1.8rem 1.5rem 0 0;">
-                            <img src="./static/images/combo-energia.png" class="img-fluid" alt="Producto Principal">
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Columna secundaria, dos productos pequeños -->
-            <div class="col-lg-4 col-md-12">
-                <div class="card mb-4 shadow-sm" style="height: 40%;">
-                    <div class="row no-gutters">
-                        <div class="col-md-7">
-                            <div class="card-body">
-                                <h5 class="card-title-small text-primary" style="font-size: 0.8rem; font-weight: bold;">Internet Satelital Antena Starlink</h5>
-                                <h4 class="text-primary">$3'000.000</h4>
-                                <a href="#" class="btn btn-success">COMPRAR ></a>
-                            </div>
-                        </div>
-                        <div class="col-md-5" style="padding: 0 0 0 0;">
-                            <img src="./static/images/Starlink.png" class="card-img-right img-fluid" alt="Producto Secundario 1" style="max-width: 100%; height: auto;">
+<div class="container mt-5">
+    <div class="row">
+        <!-- Columna principal, producto grande -->
+        <div class="col-lg-8 col-md-12">
+            <div class="card shadow-lg" style="padding: 0.5rem 2.2rem 1rem 1.5rem; height: 100%;">
+                <div class="row no-gutters p-1">
+                    <!-- Columna de contenido de texto -->
+                    <div class="col-md-7">
+                        <div class="card-body" style="padding: 2.3rem 0 0 2rem;">
+                            <h2 class="card-title-large text-primary" style="font-size: 2rem; font-weight: bold;">
+                                Sistema Fotovoltaico Residencial Completo
+                            </h2>
+                            <p class="card-text" style="padding-top: 0.8rem; color: #333;">
+                                Ahorra hasta un 80% en tu factura de luz. Incluye paneles solares, inversor y baterías. Instalación incluida.
+                            </p>
+                            <h3 class="text-primary" style="padding-bottom: 0.8rem;">$7'000.000</h3>
+                            <a href="#" class="btn btn-success">COMPRAR ></a>
                         </div>
                     </div>
-                </div>
-                <div class="card shadow-sm p-3">
-                    <img src="ruta-imagen-secundaria-2.jpg" class="card-img-top img-fluid" alt="Producto Secundario 2">
-                    <div class="card-body text-center">
-                        <h5 class="card-title text-primary">Electrodoméstico Solar Aire Acondicionado</h5>
-                        <h4 class="text-primary">$3'000.000</h4>
-                        <a href="#" class="btn btn-success">COMPRAR ></a>
+                    <div class="col-md-5 combo-energia-container">
+                        <img src="./static/images/combo-energia.png" class="img-fluid combo-energia-img" alt="Producto Principal">
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+
+        <!-- Columna secundaria, dos productos pequeños -->
+        <div class="col-lg-4 col-md-12">
+            <div class="card mb-4 shadow-sm p-2">
+                <div class="row no-gutters">
+                    <div class="col-md-7 p-0">
+                        <div class="card-body" style="padding: 1.5rem 0 1.5rem 2.8rem;">
+                            <h5 class="card-title-small text-primary" style="font-size: 1.1rem; font-weight: bold;">Internet Satelital<br><span style="color: rgb(78, 75, 75);">Antena Starlink</span></h5>
+                            <h4 class="text-primary" >$3'000.000</h4>
+                            <a href="#" class="btn btn-success">COMPRAR ></a>
+                        </div>
+                    </div>
+                    <div class="col-md-5" style="padding: 2.2rem 3.2rem 1rem 0;">
+                        <div class="card-body p-0 mb-2" >
+                            <img src="./static/images/starlink.png" class="card-img-right img-fluid" alt="Producto Secundario 1" style="max-width: 100%; height: auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4 shadow-sm p-2">
+                <div class="d-flex">
+                    <div class="flex-shrink-0" style="flex-basis: 35%; padding: 2.2rem 0 0 0.5rem;">
+                        <div class="card-body p-0 mb-2 d-flex align-items-center">
+                            <img src="./static/images/solar-air.png" class="card-img-right img-fluid" alt="Producto Secundario 1" style="max-width: 100%; height: auto;">
+                        </div>
+                    </div>
+                    <div class="flex-grow-1" style="flex-basis: 65%;">
+                        <div class="card-body" style="padding: 1.5rem 1.6rem 1rem 0; text-align: right;">
+                            <h5 class="card-title-small text-primary" style="font-size: 1.1rem; font-weight: bold;">
+                                Electrodoméstico Solar<br>
+                                <span style="color: rgb(78, 75, 75);">Aire Acondicionado</span>
+                            </h5>
+                            <h4 class="text-primary">$5'000.000</h4>
+                            <a href="#" class="btn btn-success">COMPRAR ></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
 
 <!-- Beneficios adicionales --> 
 <div class="container mt-5 mb-4">
@@ -344,6 +363,11 @@
     }
 
     /*-----------------Estilos para las tarjetas de productos --------------*/
+    .combo-energia-container {
+        flex: 1;
+        padding: 2rem 0 0 0;
+    }
+
     .card {
         border: none; /* Sin bordes en las tarjetas */
     }
