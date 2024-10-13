@@ -44,13 +44,13 @@
 
 <!-- Productos o contenido adicional -->
 <div class="container mt-5">
-    <div class="row">
-        <!-- Columna principal, producto grande -->
-        <div class="col-lg-8 col-md-12">
-            <div class="card shadow-lg" style="padding: 0.5rem 2.2rem 1rem 1.5rem; height: 100%;">
-                <div class="row no-gutters p-1">
-                    <!-- Columna de contenido de texto -->
-                    <div class="col-md-7">
+    <div class="d-flex flex-wrap" style="gap: 1rem;">
+        <!-- Producto grande (Se adapta automáticamente al espacio restante) -->
+        <div class="flex-grow-1" style="flex-basis: 0;">
+            <div class="card shadow-lg" style="padding: 1.9% 4% 0 2%; height: 100%;">
+                <div class="d-flex flex-wrap p-1">
+                    <!-- Columna de contenido de texto (producto grande) -->
+                    <div class="flex-grow-1" style="flex-basis: 60%;">
                         <div class="card-body" style="padding: 2.3rem 0 0 2rem;">
                             <h2 class="card-title-large text-primary" style="font-size: 2rem; font-weight: bold;">
                                 Sistema Fotovoltaico Residencial Completo
@@ -62,44 +62,44 @@
                             <a href="#" class="btn btn-success">COMPRAR ></a>
                         </div>
                     </div>
-                    <div class="col-md-5 combo-energia-container">
-                        <img src="./static/images/combo-energia.png" class="img-fluid combo-energia-img" alt="Producto Principal">
+                    <!-- Columna de imagen del producto grande -->
+                    <div class="flex-shrink-0" style="flex-basis: 40%; padding: 1.8rem 3rem 0 0;">
+                        <img src="./static/images/combo-energia.png" class="img-fluid combo-energia-img" alt="Producto Principal" style="max-width: 125%; height: auto;">
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Columna secundaria, dos productos pequeños -->
-        <div class="col-lg-4 col-md-12">
-            <div class="card mb-4 shadow-sm p-2">
-                <div class="row no-gutters">
-                    <div class="col-md-7 p-0">
-                        <div class="card-body" style="padding: 1.5rem 0 1.5rem 2.8rem;">
-                            <h5 class="card-title-small text-primary" style="font-size: 1.1rem; font-weight: bold;">Internet Satelital<br><span style="color: rgb(78, 75, 75);">Antena Starlink</span></h5>
-                            <h4 class="text-primary" >$3'000.000</h4>
+        <!-- Productos pequeños (35% fijo) -->
+        <div class="d-flex flex-column" style="flex-basis: 35%; gap:1rem;">
+            <!-- Producto pequeño 1 -->
+            <div class="card shadow-sm p-4">
+                <div class="d-flex flex-wrap">
+                    <div class="flex-grow-1" style="flex-basis: 50%;">
+                        <div class="card-body text-aling-center" style="padding: 0 0 0 0;">
+                            <h5 class="card-title-small text-primary" style="font-size: 1.2rem; font-weight: bold;">
+                                Internet Satelital<br><span style="color: rgb(78, 75, 75);">Antena Starlink</span>
+                            </h5>
+                            <h4 class="text-primary">$3'000.000</h4>
                             <a href="#" class="btn btn-success">COMPRAR ></a>
                         </div>
                     </div>
-                    <div class="col-md-5" style="padding: 2.2rem 3.2rem 1rem 0;">
-                        <div class="card-body p-0 mb-2" >
-                            <img src="./static/images/starlink.png" class="card-img-right img-fluid" alt="Producto Secundario 1" style="max-width: 100%; height: auto;">
-                        </div>
+                    <div class="flex-shrink-0" style="flex-basis: 40%; padding: 0;">
+                        <img src="./static/images/starlink.png" class="img-fluid" alt="Producto Secundario 1" style="max-width: 50%; height: auto;">
                     </div>
                 </div>
             </div>
 
-            <div class="card mt-4 shadow-sm p-2">
-                <div class="d-flex">
-                    <div class="flex-shrink-0" style="flex-basis: 35%; padding: 2.2rem 0 0 0.5rem;">
-                        <div class="card-body p-0 mb-2 d-flex align-items-center">
-                            <img src="./static/images/solar-air.png" class="card-img-right img-fluid" alt="Producto Secundario 1" style="max-width: 100%; height: auto;">
-                        </div>
+            <!-- Producto pequeño 2 -->
+            <div class="card shadow-sm p-4">
+                <div class="d-flex flex-wrap">
+                    <div class="flex-shrink-0" style="flex-basis: 35%; padding: 0 0 0 0;">
+                        <img src="./static/images/solar-air.png" class="img-fluid" alt="Producto Secundario 2" style="max-width: 100%; height: auto;">
                     </div>
                     <div class="flex-grow-1" style="flex-basis: 65%;">
-                        <div class="card-body" style="padding: 1.5rem 1.6rem 1rem 0; text-align: right;">
-                            <h5 class="card-title-small text-primary" style="font-size: 1.1rem; font-weight: bold;">
-                                Electrodoméstico Solar<br>
-                                <span style="color: rgb(78, 75, 75);">Aire Acondicionado</span>
+                        <div class="card-body" style="padding: 0 0 0 0; text-align: right;">
+                            <h5 class="card-title-small text-primary" style="font-size: 1.2rem; font-weight: bold;">
+                                Electrodoméstico Solar<br><span style="color: rgb(78, 75, 75);">Aire Acondicionado</span>
                             </h5>
                             <h4 class="text-primary">$5'000.000</h4>
                             <a href="#" class="btn btn-success">COMPRAR ></a>
@@ -109,7 +109,10 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
+
+
+   
 
 <!-- Beneficios adicionales --> 
 <div class="container mt-5 mb-4">
@@ -367,6 +370,17 @@
         flex: 1;
         padding: 2rem 0 0 0;
     }
+
+    .custom-width {
+            width: 100%;
+        }
+
+        /* Cuando el ancho de la pantalla es de 992px o más, se establece el ancho en 63% */
+        @media (min-width: 992px) {
+            .custom-width {
+                width: 63%;
+            }
+        }
 
     .card {
         border: none; /* Sin bordes en las tarjetas */

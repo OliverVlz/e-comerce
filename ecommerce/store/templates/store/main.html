@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+
 <html>
 <head>
     <title>Ecom</title>
@@ -116,7 +117,8 @@
         {% endblock content %}
     </div>
 
-    
+    {% load django_browser_reload %}
+    {% django_browser_reload_script %}
   
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
