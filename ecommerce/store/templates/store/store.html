@@ -168,19 +168,19 @@
     
 
     <!-- Sección de ofertas -->
-    <div class="row mt-5">
+    <div class="row mt-4">
         <!-- Oferta Principal (Columna grande) -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow-lg h-100">
-                <div class="position-relative">
-                    <img src="ruta-imagen-principal.jpg" class="card-img-top img-fluid" alt="Oferta principal">
+        <div class="col-lg-6 mb-4" style="padding-right: 3px;">
+            <div class="card shadow-lg h-100" style="padding: 2rem 1.8rem 0 1.8rem;">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="./static/images/prom-paneles.png" class="card-img-top" alt="Oferta principal" style="max-width: 70%; height: auto;">
                     <span class="badge bg-danger position-absolute top-0 end-0 m-2">20% OFF</span>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">¡Pack Familiar Solar con Descuento!</h5>
+                <div class="card-body" style="padding: 1rem 0 0 1rem">
+                    <h5 class="card-title" style="font-size: 1.4rem; font-weight: bold;">¡Pack Familiar Solar con Descuento!</h5>
                     <p class="card-text">
                         <del>$2'000.000</del>
-                        <strong class="text-success"> $1'600.000</strong>
+                        <strong class="text-primary"> $1'600.000</strong>
                     </p>
                     <p>Incluye paneles solares de distintas capacidades para cubrir el consumo familiar. Ahorra 20% y obtén soporte técnico gratis el primer año.</p>
                     <a href="#" class="btn btn-success">CONOCE EL PACK FAMILIAR ></a>
@@ -191,116 +191,146 @@
         <!-- Ofertas Secundarias (Tarjetas pequeñas) -->
         <div class="col-lg-6">
             <div class="row">
-                <!-- Oferta 1 -->
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="position-relative">
-                            <img src="ruta-imagen-producto1.jpg" class="card-img-top img-fluid" alt="Cámaras de vigilancia">
+                <!-- Oferta 1 (Cámaras) -->
+                <div class="col-md-6" style="padding: 0 3px; margin-bottom: 6px;">
+                    <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
+                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                            <img src="./static/images/prom-camaras.png" class="card-img-top img-fluid" alt="Cámaras de vigilancia" style="padding-top: 1.8rem; max-width: 62%; height: auto;">
                             <span class="badge bg-danger position-absolute top-0 end-0 m-2">X2</span>
+                            <!-- Contenedor de los íconos -->
+                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                            </div>
                         </div>
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Cámaras de vigilancia WIFI con Visión Nocturna X2</h6>
-                            <p class="text-primary">$120.000</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Oferta 2 -->
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="position-relative">
-                            <img src="ruta-imagen-producto2.jpg" class="card-img-top img-fluid" alt="Lámpara Solar">
-                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
-                        </div>
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Lámpara Solar Todo en Uno 50W-500W</h6>
-                            <p><del>$200.000</del> <span class="text-primary">$120.000</span></p>
+                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title"><strong>Cámaras de vigilancia WIFI con Visión Nocturna X2</strong></h6>
+                            <div class="card-text">
+                                <del>$2'000.000</del>
+                                <strong class="text-primary"> $120.000</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Oferta 3 -->
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="position-relative">
-                            <img src="ruta-imagen-producto3.jpg" class="card-img-top img-fluid" alt="Batería GEL">
+        
+                <!-- Oferta 2 (Lámpara) -->
+                <div class="col-md-6" style="padding-left: 3px; margin-bottom: 6px;">
+                    <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
+                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                            <img src="./static/images/prom-lampara.png" class="card-img-top img-fluid" alt="Lámpara Solar" style="padding-top: 1.5rem; max-width: 70%; height: auto;">
                             <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
+                            <!-- Contenedor de los íconos -->
+                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                            </div>
                         </div>
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Batería GEL de ciclo profundo Aokly 12V 40AH</h6>
-                            <p><del>$200.000</del> <span class="text-primary">$120.000</span></p>
+                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title"><strong>Lámpara Solar Todo en Uno 50W-500W</strong></h6>
+                            <div class="card-text">
+                                <del>$2'000.000</del>
+                                <strong class="text-primary"> $120.000</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Oferta 4 -->
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="position-relative">
-                            <img src="ruta-imagen-producto4.jpg" class="card-img-top img-fluid" alt="Congelador Solar">
+        
+                <!-- Oferta 3 (Batería) -->
+                <div class="col-md-6 mb-4" style="padding: 0 3px;">
+                    <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
+                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                            <img src="./static/images/prom-bateria.png" class="card-img-top img-fluid" alt="Batería GEL" style="padding-top: 1.8rem; max-width: 60%; height: auto;">
                             <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
+                            <!-- Contenedor de los íconos -->
+                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                            </div>
                         </div>
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Congelador Solar Horizontal Doble Tapa 430LT - 710LT</h6>
-                            <p><del>$200.000</del> <span class="text-primary">$120.000</span></p>
+                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title"><strong>Batería GEL de ciclo profundo Aokly 12V 40AH</strong></h6>
+                            <div class="card-text">
+                                <del>$2'000.000</del>
+                                <strong class="text-primary"> $120.000</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Oferta 4 (Congelador) -->
+                <div class="col-md-6 mb-4" style="padding-left: 3px;">
+                    <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
+                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                            <img src="./static/images/prom-congelador.png" class="card-img-top img-fluid" alt="Congelador Solar" style="padding-top: 2rem; max-width: 50%; height: auto;">
+                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
+                            <!-- Contenedor de los íconos -->
+                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title"><strong>Congelador Solar Doble Tapa 430LT - 710LT</strong></h6>
+                            <div class="card-text">
+                                <del>$2'000.000</del>
+                                <strong class="text-primary"> $120.000</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>               
     </div>
 </div>
 
 <!-- CATEGORIAS DESTACADAS -->
-
 <div class="container mt-5">
+
     <!-- Título de la sección -->
-    <div class="row">
-        <div class="col-12 text-center">
-            <h2 class="bg-primary text-white py-3 rounded">CATEGORÍAS DESTACADAS</h2>
-        </div>
+    <div class="col-12 text-center">
+        <h1 class="text-white py-3 rounded" style="font-weight: bold; font-size: 1.6rem; background-color: rgba(0, 0, 0, 0.282);">CATEGORÍAS DESTACADAS</h1>
     </div>
 
     <!-- Categorías -->
-    <div class="row mt-4">
+    <div class="row">
         <!-- Categoría 1: Sistemas Fotovoltaicos -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="ruta-imagen-solar.jpg" class="card-img-top img-fluid" alt="Sistemas Fotovoltaicos">
+            <div class="card h-100 shadow-sm category-card">
+                <img src="ruta-imagen-solar.jpg" class="card-img-top img-fluid rounded-top" alt="Sistemas Fotovoltaicos">
                 <div class="card-body text-center">
                     <h5 class="card-title">Sistemas Fotovoltaicos</h5>
                     <p class="card-text">
                         Soluciones solares para hogares y empresas. Sistemas conectados a la red o aislados con almacenamiento. La opción ideal para cada necesidad.
                     </p>
-                    <a href="#" class="btn btn-success active" style="background-color: #88c13e; border-color: #88c13e;">Ver Sistemas Solares</a>
+                    <a href="#" class="btn btn-primary btn-lg">Ver Sistemas Solares</a>
                 </div>
             </div>
         </div>
 
         <!-- Categoría 2: Electrodomésticos Solares -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="ruta-imagen-electrodomesticos.jpg" class="card-img-top img-fluid" alt="Electrodomésticos Solares">
+            <div class="card h-100 shadow-sm category-card">
+                <img src="ruta-imagen-electrodomesticos.jpg" class="card-img-top img-fluid rounded-top" alt="Electrodomésticos Solares">
                 <div class="card-body text-center">
                     <h5 class="card-title">Electrodomésticos Solares</h5>
                     <p class="card-text">
                         Electrodomésticos diseñados para funcionar con energía solar. Desde refrigeradores hasta aires acondicionados, descubre opciones eficientes y sostenibles.
                     </p>
-                    <a href="#" class="btn btn-outline-success">Ver Electrodomésticos</a>
+                    <a href="#" class="btn btn-outline-primary btn-lg">Ver Electrodomésticos</a>
                 </div>
             </div>
         </div>
 
         <!-- Categoría 3: Conectividad y Seguridad -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="ruta-imagen-seguridad.jpg" class="card-img-top img-fluid" alt="Conectividad y Seguridad">
+            <div class="card h-100 shadow-sm category-card">
+                <img src="ruta-imagen-seguridad.jpg" class="card-img-top img-fluid rounded-top" alt="Conectividad y Seguridad">
                 <div class="card-body text-center">
                     <h5 class="card-title">Conectividad y Seguridad</h5>
                     <p class="card-text">
                         Soluciones de conectividad y seguridad para hogar o negocio. Desde routers y cámaras hasta sistemas de domótica, mejora tu red y protege lo que más importa.
                     </p>
-                    <a href="#" class="btn btn-outline-success">Explorar Productos</a>
+                    <a href="#" class="btn btn-outline-primary btn-lg">Explorar Productos</a>
                 </div>
             </div>
         </div>
@@ -379,25 +409,7 @@
     }
 
     /*-----------------Estilos para las tarjetas de productos --------------*/
-    .combo-energia-container {
-        flex: 1;
-        padding: 2rem 0 0 0;
-    }
 
-    .custom-width {
-            width: 100%;
-        }
-
-        /* Cuando el ancho de la pantalla es de 992px o más, se establece el ancho en 63% */
-        @media (min-width: 992px) {
-            .custom-width {
-                width: 63%;
-            }
-        }
-
-    .card {
-        border: none; /* Sin bordes en las tarjetas */
-    }
 
     .btn {
         border-radius: 50px;
@@ -419,73 +431,43 @@
         font-weight: bold;
     }
 
-    .card-body {
-        padding: 1.5rem;
+    
+    /* -----------------Estilos para la sección de ofertas especiales --------------------*/
+
+    .icon-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem; /* Espacio entre los íconos */
+        opacity: 0; /* Ocultar los íconos inicialmente */
+        transition: opacity 0.3s ease;
+        padding-top: 1.5rem;
     }
 
-    .shadow-sm {
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    .icon-container img {
+        width: 40px; /* Tamaño de los íconos */
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.926); /* Fondo blanco semitransparente */
+        padding: 4px;
+        border-radius: 50%;
+        transition: transform 0.3s ease, content 0.3s ease, background-color 0.4s ease;
     }
 
-    .shadow-lg {
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más fuerte para el producto principal */
+    .cart-icon:hover{
+        transform: scale(1.2); /* Aumentar tamaño al pasar el ratón */
+        content: url('./static/images/cart-dark.png'); /* Cambiar a ícono oscuro */
+        background-color: #96c953df;
     }
     
-    /* -----------------Estilos para la sección de beneficios --------------------*/
-.row.text-center {
-    background-color: #f8f9fa; /* Color de fondo claro */
-    padding: 20px 0; /* Espaciado vertical */
-    border-radius: 10px; /* Bordes redondeados para darle suavidad */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-}
+    .eye-icon:hover {
+        transform: scale(1.2); /* Aumentar tamaño al pasar el ratón */
+        content: url('./static/images/eye-dark.png'); /* Cambiar a ícono oscuro */
+        background-color: #96c953df;
+    }
 
-.row.text-center h5 {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.row.text-center p {
-    font-size: 1rem;
-    color: #666;
-}
-
-.img-fluid {
-    max-width: 100%;
-    height: auto;
-}
-
-.beneficios-adicionales {
-    background-color: white; /* Fondo blanco */
-    padding: 30px 0; /* Espaciado vertical */
-    width: 100%; /* Asegura que ocupe todo el ancho de la página */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Añade una sombra ligera */
-}
-
-.beneficios-adicionales .container {
-    max-width: 1200px; /* Ancho máximo del contenido, igual que la sección de productos */
-    margin: 0 auto; /* Centra el contenido */
-}
-
-.beneficios-adicionales h5 {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.beneficios-adicionales p {
-    font-size: 1rem;
-    color: #666;
-    margin: 0;
-}
-
-.beneficios-adicionales .img-fluid {
-    max-width: 50px; /* Tamaño uniforme para los íconos */
-    height: auto;
-    margin-bottom: 10px;
-}
-
+    .card:hover .icon-container {
+        opacity: 1; /* Mostrar los íconos al pasar el ratón sobre la tarjeta */
+    }
 
 </style>
 {% endblock content %}
