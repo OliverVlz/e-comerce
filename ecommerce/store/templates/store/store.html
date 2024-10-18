@@ -285,52 +285,57 @@
 
 <!-- CATEGORIAS DESTACADAS -->
 <div class="container mt-5">
-
     <!-- Título de la sección -->
     <div class="col-12 text-center">
-        <h1 class="text-white py-3 rounded" style="font-weight: bold; font-size: 1.6rem; background-color: rgba(0, 0, 0, 0.282);">CATEGORÍAS DESTACADAS</h1>
+        <h1 class="text-white py-3 rounded mb-4" style="font-weight: bold; font-size: 1.6rem; background-color: rgba(0, 0, 0, 0.282);">CATEGORÍAS DESTACADAS</h1>
     </div>
 
     <!-- Categorías -->
     <div class="row">
         <!-- Categoría 1: Sistemas Fotovoltaicos -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm category-card">
-                <img src="ruta-imagen-solar.jpg" class="card-img-top img-fluid rounded-top" alt="Sistemas Fotovoltaicos">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Sistemas Fotovoltaicos</h5>
-                    <p class="card-text">
+            <div class="card h-100 category-card">                
+                <img src="./static/images/sist-fotovoltaicos.png" class="card-img-top img-fluid rounded-top" alt="Sistemas Fotovoltaicos" style="min-height: 200px;">
+                <div class="card-body d-flex flex-column justify-content-between" style="min-height: 60%;">
+                    <h4 class="card-title text-center">Sistemas Fotovoltaicos</h4>
+                    <p class="card-text px-2">
                         Soluciones solares para hogares y empresas. Sistemas conectados a la red o aislados con almacenamiento. La opción ideal para cada necesidad.
                     </p>
-                    <a href="#" class="btn btn-primary btn-lg">Ver Sistemas Solares</a>
+                    <div class="btn d-flex justify-content-center m-0 p-3">
+                        <button type="button" class="btn-categoria btn btn-lg">Ver Sistemas Solares</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Categoría 2: Electrodomésticos Solares -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm category-card">
-                <img src="ruta-imagen-electrodomesticos.jpg" class="card-img-top img-fluid rounded-top" alt="Electrodomésticos Solares">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Electrodomésticos Solares</h5>
-                    <p class="card-text">
+            <div class="card h-100 category-card">
+                <img src="./static/images/electrodomesticos.png" class="card-img-top img-fluid rounded-top" alt="Electrodomésticos Solares" style="min-height: 200px;">
+                <div class="card-body d-flex flex-column justify-content-between" style="min-height: 60%;">
+                    <h4 class="card-title text-center">Electrodomésticos Solares</h4>
+                    <p class="card-text px-2">
                         Electrodomésticos diseñados para funcionar con energía solar. Desde refrigeradores hasta aires acondicionados, descubre opciones eficientes y sostenibles.
                     </p>
-                    <a href="#" class="btn btn-outline-primary btn-lg">Ver Electrodomésticos</a>
+                    <div class="btn d-flex justify-content-center m-0 p-3">
+                        <button type="button" class="btn-categoria btn btn-lg">Ver Electrodomésticos</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Categoría 3: Conectividad y Seguridad -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm category-card">
-                <img src="ruta-imagen-seguridad.jpg" class="card-img-top img-fluid rounded-top" alt="Conectividad y Seguridad">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Conectividad y Seguridad</h5>
-                    <p class="card-text">
-                        Soluciones de conectividad y seguridad para hogar o negocio. Desde routers y cámaras hasta sistemas de domótica, mejora tu red y protege lo que más importa.
+            <div class="card h-100 category-card">
+                <img src="./static/images/conectividad.png" class="card-img-top img-fluid rounded-top" alt="Conectividad y Seguridad" style="min-height: 200px;">
+                <div class="card-body d-flex flex-column justify-content-between" style="min-height: 60%;">
+                    <h4 class="card-title text-center">Conectividad y Seguridad</h4>
+                    <p class="card-text px-2">
+                        Soluciones de conectividad y seguridad para hogar o negocio. Desde routers y cámaras hasta sistemas de domótica, mejora tu red y privacidad.
                     </p>
-                    <a href="#" class="btn btn-outline-primary btn-lg">Explorar Productos</a>
+                    <div class="btn d-flex justify-content-center m-0 p-3">
+                        <button type="button" class="btn-categoria btn btn-lg">Explorar Productos</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -468,6 +473,40 @@
     .card:hover .icon-container {
         opacity: 1; /* Mostrar los íconos al pasar el ratón sobre la tarjeta */
     }
+
+    /* -----------------Estilos para las categorías destacadas --------------------*/
+
+/* Asegurar que las tarjetas tengan la misma altura */
+.category-card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+.category-card:hover {
+    transform: translateY(-10px); /* Efecto hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra al hacer hover */
+}
+
+/* Estilo personalizado para los botones */
+.btn-categoria {
+    background-color: #96c952;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: white;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-categoria:hover {
+    background-color: #88c13e;
+    color: white;
+}
+
 
 </style>
 {% endblock content %}
