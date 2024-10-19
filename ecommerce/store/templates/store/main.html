@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
-
+{% load static %}  
 <html>
 <head>
     <title>Ecom</title>
@@ -39,6 +38,15 @@
         }
         .dropdown-toggle::after {
             display: none; 
+        }
+        /* Footer */
+        .footer {
+            background-color:rgb(7, 52, 96);
+            color: white;
+        }
+        ul.list-unstyled li i {
+            margin-left: 8px; /* Espacio entre el texto y el ícono */
+            vertical-align: middle; /* Alinea el ícono con el texto */
         }
 
     </style>
@@ -111,11 +119,62 @@
             </div>
         </div>
     </nav>
+    
 
     <div class="container-global mt-0">
         {% block content %}
         {% endblock content %}
     </div>
+
+    <!-- Footer -->
+    <footer class="footer text-white pt-5 pb-2">
+        <div class="container">
+            <div class="row justify-content-between">
+                
+                <!-- Logo y Descripción -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a class="navbar-brand" href="{% url 'store' %}">
+                        <img src="{% static 'images/LogoPng.png' %}" alt="Logo" style="width: 150px; height: auto;">
+                    </a>
+                    <p class="text-white mt-3">Líderes en Tecnología</p>
+                </div>
+
+                
+
+                <!-- Redes Sociales -->
+                <div class="col-lg-4 col-md-6 mb-4 text-center">
+                    <h5 class="mb-3">Síguenos</h5>
+                    <ul class="list-unstyled d-flex justify-content-lg-center justify-content-center">
+                        <li><a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a></li>
+                        
+                    </ul>
+                </div>
+
+                <!-- Información de Contacto -->
+                <div class="col-lg-4 col-md-6 text-lg-end">
+                    <h5 class="mb-3">Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li>Villavicencio-Meta <i class="fas fa-map-marker-alt"></i></li>
+                        <li>+57 3100000000 <i class="fas fa-phone-alt"></i></li>
+                        <li>contacto@miecommerce.com <i class="fas fa-envelope"></i></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Términos y condiciones -->
+            <div class="row mt-2">
+                <div class="col-12 text-center">
+                    <p class="terms">&copy;  {% now 'Y' %} Entelco. Todos los derechos reservados. | 
+                        <a href="#" class="text-white-50">Política de privacidad</a> | 
+                        <a href="#" class="text-white-50">Términos y condiciones</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     {% load django_browser_reload %}
     {% django_browser_reload_script %}
