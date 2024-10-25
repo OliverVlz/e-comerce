@@ -13,18 +13,19 @@
     <style>
         body {
             background-color: #085db1;
-            /*background-color: #f3f3f3;*/
+            /*background-color: rgb(7, 52, 96)*/
             overflow-x: hidden;
         }
         
         /* Custom styles to ensure transparent navbar and visual alignment */
         .navbar {
-            background-color: rgba(0, 0, 0, 0.282); /* Fondo negro medio transparente */
-            position: fixed;
+            background-color: rgb(7, 52, 96); /* Fondo negro medio transparente */
+            position: relative;
             width: 100vw;
             z-index: 10;
             padding: 10px 0;
             box-sizing: border-box;
+            top: 0;
         }
         
         .navbar-brand {
@@ -68,10 +69,7 @@
                         <a class="nav-link" href="{% url 'store' %}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">Cotización IA</a>
+                        <a class="nav-link" href="{% url 'products' %}">Productos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link">Servicios</a>

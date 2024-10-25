@@ -1,114 +1,199 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-    <div class="row">
-        {% for product in products %}
+
+<div class="container mt-5">
+    <h1 class="text-center fw-bold mb-4" style="color: #05478a;">Descubre Nuestros Productos</h1>
+    
+    
+        <!-- Grid de categorías -->
+    <div class="row text-center">
+        <!-- Categoría 1 -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <!-- Enlace envolviendo la tarjeta completa -->
-            <a href="{% url 'product_detail' product.id %}" class="card-link-wrapper" style="text-decoration: none;">
-                <div class="card h-100 shadow-sm rounded-3 product-card" style="transition: transform 0.2s, box-shadow 0.2s;">
-                    <img class="card-img-top" 
-                        src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
-                        alt="{{ product.name }}">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title font-weight-bold text-center">{{ product.name }}</h5>
-                        <hr>
-                        <h4 class="text-center text-primary"><strong>${{ product.price|floatformat:2 }}</strong></h4> <!-- Precio centrado -->
-                        <div class="mt-auto text-center"> <!-- Contenedor centrado -->
-                            <div class="btn-group"> <!-- Grupo de botones centrado -->
-                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary add-to-cart">Añadir al carrito</a>
-                                <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-success ms-2 view-details">Detalles</a>
-                            </div>
-                        </div>
+            <a href="#" class="text-decoration-none">
+                <div class="card h-100" style="cursor: pointer;">
+                    <img src="{% static 'images/products-sist-foto.png' %}" class="card-img-top img-fluid" alt="Sistemas Fotovoltaicos">
+                    <div class="card-img-overlay d-flex align-items-center justify-content-center">
+                        <h3 class="text-white fw-bold">Sistemas </br> Fotovoltaicos</h3>
                     </div>
                 </div>
             </a>
         </div>
-        {% endfor %}
+
+        <!-- Categoría 2 -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <a href="#" class="text-decoration-none">
+                <div class="card h-100" style="cursor: pointer;">
+                    <img src="{% static 'images/products-sist-elec.png' %}" class="card-img-top img-fluid" alt="Electrodomésticos Solares">
+                    <div class="card-img-overlay d-flex align-items-center justify-content-center">
+                        <h3 class="text-white fw-bold">Electrodomésticos Solares</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Categoría 3 -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <a href="#" class="text-decoration-none">
+                <div class="card h-100" style="cursor: pointer;">
+                    <img src="{% static 'images/products-sist-seg.png' %}" class="card-img-top img-fluid" alt="Conectividad y Seguridad">
+                    <div class="card-img-overlay d-flex align-items-center justify-content-center">
+                        <h3 class="text-white fw-bold">Conectividad y Seguridad</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 
-    <style>
-        body{
-            background-color: #d1d7dc;
-        }
-        .navbar {
-            position: relative;
-        }
-        /* Efecto hover en la tarjeta del producto */
-        .product-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
 
-        /* Estilos para los botones */
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+    <div class="col-lg-12 col-md-6 mb-4">
+        <div class="card h-100" style="position: relative;"> <!-- Tarjeta con posición relativa -->
+            <img src="{% static 'images/horizontal-boton.png' %}" class="card-img-top rounded img-fluid" alt="Conectividad y Seguridad">
+            
+            <!-- Botón "Cotiza Ahora" -->
+            <div class="text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                <a href="#" class="btn btn-primary btn-lg">Solicitar Asesor!</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
+<div class="container mt-5">
+    <h2 class="fw-bold" style="color: #05478a;">Sistemas Fotovoltaicos</h2>
+    <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
+    <div class="row text-center">
+        <!-- Producto 1 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card"  style="height: 95%;">
+                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/cat-paneles-solares.png' %}" class="card-img-top" alt="Producto 1" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-center">
+                    <h3 class="card-title" style="font-size: 1.1rem;">Inversores de conexion de red</h3>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Producto 2 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card" style="height: 95%;">
+                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/cat-baterias-litio.png' %}" class="card-img-top img-fluid" alt="Producto 2" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-center">
+                    <h3 class="card-title" style="font-size: 1.1rem;">Baterias de Litio</h3>
+                </div>
+            </div>
+        </div>
 
-        .card-img-top {
-            height: 250px;
-            object-fit: cover;
-        }
+        <!-- Producto 3 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card" style="height: 95%;">
+                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/cat-baterias-ciclo.png' %}" class="card-img-top img-fluid" alt="Producto 2" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-center">
+                    <h3 class="card-title" style="font-size: 1.1rem;">Baterias de Litio</h3>
+                </div>
+            </div>
+        </div>
 
-        .btn-group {
-            display: flex;
-            justify-content: center; /* Centra los botones horizontalmente */
-        }
+        <!-- Producto 4 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="space-images" style="height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/cat-controlador-pwm.png' %}" class="card-img-top img-fluid" alt="Producto 4" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-end">
+                    <h5 class="card-title">Producto 4</h5>
+                </div>
+            </div>
+        </div>
 
-        .btn-group .btn {
-            min-width: 120px; /* Ancho mínimo para los botones */
-            margin: 5px; /* Espacio entre botones */
-        }
+        <!-- Producto 5 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="space-images" style="height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/product5.png' %}" class="card-img-top img-fluid" alt="Producto 5" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-end">
+                    <h5 class="card-title">Producto 5</h5>
+                </div>
+            </div>
+        </div>
 
-        .text-center {
-            text-align: center;
-        }
+        <!-- Producto 6 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="space-images" style="height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/product6.png' %}" class="card-img-top img-fluid" alt="Producto 6" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-end">
+                    <h5 class="card-title">Producto 6</h5>
+                </div>
+            </div>
+        </div>
 
-        .text-primary {
-            color: #007bff;
-        }
+        <!-- Producto 7 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="space-images" style="height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/product7.png' %}" class="card-img-top img-fluid" alt="Producto 7" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-end">
+                    <h5 class="card-title">Producto 7</h5>
+                </div>
+            </div>
+        </div>
 
-        /* Asegurar que el enlace no afecte el diseño de la tarjeta */
-        .card-link-wrapper {
-            display: block;
-            color: inherit; /* Mantener el color del texto */
-            text-decoration: none; /* Sin subrayado */
-        }
+        <!-- Producto 8 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="space-images" style="height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/product8.png' %}" class="card-img-top img-fluid" alt="Producto 8" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-end">
+                    <h5 class="card-title">Producto 8</h5>
+                </div>
+            </div>
+        </div>
 
-        /* Deshabilitar pointer-events para el enlace completo cuando se hace clic en un botón */
-        .card-link-wrapper .btn, .card-link-wrapper .btn-outline-success {
-            pointer-events: none;
-        }
+        <!-- Producto 9 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="space-images" style="height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/product9.png' %}" class="card-img-top img-fluid" alt="Producto 9" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-end">
+                    <h5 class="card-title">Producto 9</h5>
+                </div>
+            </div>
+        </div>
 
-        /* Quitar la sombra del enlace cuando se hace hover en los botones */
-        .card-link-wrapper:hover .product-card {
-            box-shadow: none;
-        }
-    </style>
+        <!-- Producto 10 -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="space-images" style="height: 70%; overflow: hidden;">
+                    <img src="{% static 'images/product10.png' %}" class="card-img-top img-fluid" alt="Producto 10" style="width: auto; height: 100%;">
+                </div>
+                <div class="card-body p-2 d-flex justify-content-center align-items-end">
+                    <h5 class="card-title">Producto 10</h5>
+                </div>
+            </div>
+        </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var cardLinks = document.querySelectorAll('.card-link-wrapper');
-            cardLinks.forEach(function(cardLink) {
-                // Deshabilitar la redirección de la tarjeta cuando se hace clic en los botones internos
-                var addToCartButton = cardLink.querySelector('.add-to-cart');
-                var viewDetailsButton = cardLink.querySelector('.view-details');
-                
-                addToCartButton.addEventListener('click', function(event) {
-                    event.stopPropagation(); // Evita la redirección
-                });
+    </div>    
+</div>
 
-                viewDetailsButton.addEventListener('click', function(event) {
-                    event.stopPropagation(); // Evita la redirección
-                    window.location.href = cardLink.href; // Redirige al enlace de detalles
-                });
-            });
-        });
-    </script>
+
+<style>
+    body {
+        background-color: #f6f6f6;
+    }
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Añade una sombra suave */
+        transform: scale(1.02);  /* Aumenta ligeramente el tamaño */
+        transition: all 0.3s ease-in-out;  /* Hace la animación suave */
+    }
+</style>
 {% endblock content %}

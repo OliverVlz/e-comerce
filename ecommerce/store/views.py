@@ -37,15 +37,6 @@ class CustomLoginView(LoginView):
     form_class = UserLoginForm  
     template_name = 'store/login.html'  
 
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)  # O puedes usar slug, como prefieras
-    attributes = product.attributes.all()
-    context = {
-        'product': product,
-        'attributes': attributes,
-    }
-    return render(request, 'store/product-detail.html', context)
-
 @login_required
 def profile(request):
     # Lógica para distinguir entre tipos de usuarios
@@ -153,3 +144,57 @@ def distributor_products(request):
 
     products = Product.objects.filter(distributor=request.user.distributor_profile)
     return render(request, 'store/distributor-products.html', {'products': products})
+
+def products(request):
+    products = Product.objects.all()  # Obtener todos los productos
+
+    context = {
+        'products': products,  # Pasar los productos al contexto
+    }
+    return render(request, 'store/products.html', context)
+
+def products_view(request, category_slug=None):
+    # Obtener la categoría principal basada en el slug de la URL
+    category = get_object_or_404(Category, slug=category_slug, parent__isnull=True)  # Solo categorías principales
+    
+    # Obtener las subcategorías de esa categoría principal
+    subcategories = category.subcategories.all()
+    
+    # Si se selecciona una subcategoría, filtrar productos por esa subcategoría
+    subcategory_slug = request.GET.get('subcategory')  # Subcategoría seleccionada
+    if subcategory_slug:
+        subcategory = get_object_or_404(Category, slug=subcategory_slug, parent=category)
+        products = Product.objects.filter(category=subcategory)
+    else:
+        products = Product.objects.none()  # Si no hay subcategoría seleccionada, no mostramos productos aún
+    
+    context = {
+        'category': category,
+        'subcategories': subcategories,
+        'products': products,
+    }
+    
+    return render(request, 'store/products.html', context)
+
+def product_list(request, category_slug=None):
+    category = None
+    products = Product.objects.filter(is_active=True)  # Mostrar solo productos activos
+
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
+
+    context = {
+        'category': category,
+        'products': products,
+    }
+    return render(request, 'store/product-list.html', context)
+
+def product_detail(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)  # O puedes usar slug, como prefieras
+    attributes = product.attributes.all()
+    context = {
+        'product': product,
+        'attributes': attributes,
+    }
+    return render(request, 'store/product-detail.html', context)

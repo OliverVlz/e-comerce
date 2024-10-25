@@ -139,15 +139,23 @@ class ProductAttributeInline(admin.TabularInline):
             return qs.filter(product__distributor=request.user.distributor_profile)
         return qs
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'sku', 'stock', 'distributor', 'category', 'created_at')
-    search_fields = ('name', 'sku')
+    list_display = ('name', 'slug', 'price', 'sku','is_active', 'stock', 'category', 'created_at')
+    search_fields = ('name', 'slug', 'sku', 'is_active')
     list_filter = ('category', 'distributor', 'stock', 'created_at')
+    list_editable = ('is_active',)
     inlines = [ProductAttributeInline]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return _get_user_queryset(request, qs)
 
+    # Solo permitir subcategorías en el campo 'category'
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'category':
+            # Filtrar solo subcategorías (las que tienen parent)
+            kwargs["queryset"] = Category.objects.filter(parent__isnull=False)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
     # Los clientes, distribuidores y superusuarios pueden ver los productos
     def has_view_permission(self, request, obj=None):
         return request.user.user_type in [1, 2] or request.user.is_superuser
@@ -185,15 +193,18 @@ class ProductAdmin(admin.ModelAdmin):
                 obj.distributor = request.user.distributor_profile
             elif obj.distributor != request.user.distributor_profile:  # Intento de cambiar distribuidor
                 raise forms.ValidationError("No puedes cambiar el distribuidor de un producto.")
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
         super().save_model(request, obj, form, change)
 
 admin.site.register(Product, ProductAdmin)
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
-    search_fields = ('name', 'slug')
-    list_filter = ('name',)
+    list_display = ('name', 'slug', 'parent', 'is_active', 'image')
+    search_fields = ('name', 'slug', 'is_active')
+    list_filter = ('parent', 'is_active',)
+    list_editable = ('is_active',)
 
     # Generar slug automáticamente a partir del nombre si no está definido
     def save_model(self, request, obj, form, change):
