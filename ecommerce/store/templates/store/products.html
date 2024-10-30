@@ -4,9 +4,8 @@
 
 <div class="container mt-5">
     <h1 class="text-center fw-bold mb-4" style="color: #05478a;">Descubre Nuestros Productos</h1>
-    
-    
-        <!-- Grid de categorías -->
+
+    <!-- Grid de categorías -->
     <div class="row text-center">
         <!-- Categoría 1 -->
         <div class="col-lg-4 col-md-6 mb-4">
@@ -45,7 +44,6 @@
         </div>
     </div>
 
-
     <div class="col-lg-12 col-md-6 mb-4">
         <div class="card h-100" style="position: relative;"> <!-- Tarjeta con posición relativa -->
             <img src="{% static 'images/horizontal-boton.png' %}" class="card-img-top rounded img-fluid" alt="Conectividad y Seguridad">
@@ -58,133 +56,64 @@
     </div>
 </div>
 
-<div class="container mt-5">
-    <h2 class="fw-bold" style="color: #05478a;">Sistemas Fotovoltaicos</h2>
-    <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
-    <div class="row text-center">
-        <!-- Producto 1 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card"  style="height: 95%;">
-                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/cat-paneles-solares.png' %}" class="card-img-top" alt="Producto 1" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                    <h3 class="card-title" style="font-size: 1.1rem;">Inversores de conexion de red</h3>
-                </div>
+<!-- Mostrar primero "Sistemas Fotovoltaicos" -->
+{% for data in category_data %}
+    {% if data.category.name == "Sistemas Fotovoltaicos" %}
+        <div class="container mt-5">
+            <h2 class="fw-bold" style="color: #05478a;">{{ data.category.name }}</h2>
+            <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
+            <div class="row">
+                {% for subcategory_data in data.subcategories %}
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
+                            <div class="card" style="height: 95%;">
+                                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
+                                    <!-- Verifica si la subcategoría tiene imagen -->
+                                    <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%;">
+                                </div>
+                                <div class="card-body p-2 d-flex justify-content-center align-items-center">
+                                    <h3 class="card-title" style="font-size: 1.1rem;">{{ subcategory_data.subcategory.name }}</h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% empty %}
+                <p class="text-center">No hay subcategorías disponibles.</p>
+                {% endfor %}
             </div>
         </div>
-    
-        <!-- Producto 2 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card" style="height: 95%;">
-                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/cat-baterias-litio.png' %}" class="card-img-top img-fluid" alt="Producto 2" style="width: auto; height: 100%;">
+    {% endif %}
+{% endfor %}
+
+
+<!-- Mostrar otras categorías después -->
+{% for data in category_data %}
+    {% if data.category.name != "Sistemas Fotovoltaicos" %}
+    <div class="container mt-5">
+        <h2 class="fw-bold" style="color: #05478a;">{{ data.category.name }}</h2>
+        <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
+        <div class="row">
+            {% for subcategory_data in data.subcategories %}
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
+                        <div class="card" style="height: 95%;">
+                            <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
+                                <!-- Verifica si la subcategoría tiene imagen -->
+                                <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%;">
+                            </div>
+                            <div class="card-body p-2 d-flex justify-content-center align-items-center">
+                                <h3 class="card-title" style="font-size: 1.1rem;">{{ subcategory_data.subcategory.name }}</h3>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                    <h3 class="card-title" style="font-size: 1.1rem;">Baterias de Litio</h3>
-                </div>
-            </div>
+            {% empty %}
+            <p class="text-center">No hay subcategorías disponibles.</p>
+            {% endfor %}
         </div>
-
-        <!-- Producto 3 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card" style="height: 95%;">
-                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/cat-baterias-ciclo.png' %}" class="card-img-top img-fluid" alt="Producto 2" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                    <h3 class="card-title" style="font-size: 1.1rem;">Baterias de Litio</h3>
-                </div>
-            </div>
-        </div>
-
-        <!-- Producto 4 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="space-images" style="height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/cat-controlador-pwm.png' %}" class="card-img-top img-fluid" alt="Producto 4" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-end">
-                    <h5 class="card-title">Producto 4</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Producto 5 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="space-images" style="height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/product5.png' %}" class="card-img-top img-fluid" alt="Producto 5" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-end">
-                    <h5 class="card-title">Producto 5</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Producto 6 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="space-images" style="height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/product6.png' %}" class="card-img-top img-fluid" alt="Producto 6" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-end">
-                    <h5 class="card-title">Producto 6</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Producto 7 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="space-images" style="height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/product7.png' %}" class="card-img-top img-fluid" alt="Producto 7" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-end">
-                    <h5 class="card-title">Producto 7</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Producto 8 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="space-images" style="height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/product8.png' %}" class="card-img-top img-fluid" alt="Producto 8" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-end">
-                    <h5 class="card-title">Producto 8</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Producto 9 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="space-images" style="height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/product9.png' %}" class="card-img-top img-fluid" alt="Producto 9" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-end">
-                    <h5 class="card-title">Producto 9</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Producto 10 -->
-        <div class="col-lg-2 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="space-images" style="height: 70%; overflow: hidden;">
-                    <img src="{% static 'images/product10.png' %}" class="card-img-top img-fluid" alt="Producto 10" style="width: auto; height: 100%;">
-                </div>
-                <div class="card-body p-2 d-flex justify-content-center align-items-end">
-                    <h5 class="card-title">Producto 10</h5>
-                </div>
-            </div>
-        </div>
-
-    </div>    
-</div>
-
+    </div>
+{% endif %}
+{% endfor %}
 
 <style>
     body {

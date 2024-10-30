@@ -153,42 +153,44 @@ def products(request):
     }
     return render(request, 'store/products.html', context)
 
-def products_view(request, category_slug=None):
-    # Obtener la categoría principal basada en el slug de la URL
-    category = get_object_or_404(Category, slug=category_slug, parent__isnull=True)  # Solo categorías principales
+def products_view(request):
+    categories = Category.objects.filter(parent__isnull=True)
     
-    # Obtener las subcategorías de esa categoría principal
-    subcategories = category.subcategories.all()
+    category_data = []
+    for category in categories:
+        subcategories = category.subcategories.all()
+        category_data.append({
+            'category': category,
+            'subcategories': [
+                {
+                    'subcategory': subcategory,
+                    'products': Product.objects.filter(category=subcategory, is_active=True)  # Solo productos activos
+                }
+                for subcategory in subcategories
+            ]
+        })
     
-    # Si se selecciona una subcategoría, filtrar productos por esa subcategoría
-    subcategory_slug = request.GET.get('subcategory')  # Subcategoría seleccionada
-    if subcategory_slug:
-        subcategory = get_object_or_404(Category, slug=subcategory_slug, parent=category)
-        products = Product.objects.filter(category=subcategory)
-    else:
-        products = Product.objects.none()  # Si no hay subcategoría seleccionada, no mostramos productos aún
+    print(category_data)  # Imprime los datos en la consola para verificar
     
     context = {
-        'category': category,
-        'subcategories': subcategories,
-        'products': products,
+        'category_data': category_data,
     }
     
     return render(request, 'store/products.html', context)
 
-def product_list(request, category_slug=None):
-    category = None
-    products = Product.objects.filter(is_active=True)  # Mostrar solo productos activos
-
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
-
+def products_list(request, subcategory_slug):
+    # Obtener la subcategoría basada en el slug
+    subcategory = get_object_or_404(Category, slug=subcategory_slug)
+    
+    # Obtener todos los productos de esa subcategoría
+    products = Product.objects.filter(category=subcategory)
+    
     context = {
-        'category': category,
-        'products': products,
+        'subcategory': subcategory,
+        'products': products
     }
-    return render(request, 'store/product-list.html', context)
+    
+    return render(request, 'store/products-list.html', context)
 
 def product_detail(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)  # O puedes usar slug, como prefieras
