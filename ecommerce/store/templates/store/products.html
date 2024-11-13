@@ -67,12 +67,12 @@
                     <div class="col-lg-2 col-md-6 mb-4">
                         <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
                             <div class="card" style="height: 95%;">
-                                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
+                                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden; aspect-ratio: 3/4;">
                                     <!-- Verifica si la subcategoría tiene imagen -->
-                                    <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%;">
+                                    <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%; object-fit: contain;">
                                 </div>
                                 <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                                    <h3 class="card-title" style="font-size: 1.1rem;">{{ subcategory_data.subcategory.name }}</h3>
+                                    <h3 class="card-title" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
                                 </div>
                             </div>
                         </a>
@@ -97,12 +97,12 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
                         <div class="card" style="height: 95%;">
-                            <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden;">
+                            <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%;  overflow: hidden; aspect-ratio: 3/4;">
                                 <!-- Verifica si la subcategoría tiene imagen -->
-                                <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%;">
+                                <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%; object-fit: contain;">
                             </div>
                             <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                                <h3 class="card-title" style="font-size: 1.1rem;">{{ subcategory_data.subcategory.name }}</h3>
+                                <h3 class="card-title" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
                             </div>
                         </div>
                     </a>
