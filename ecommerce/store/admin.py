@@ -13,14 +13,24 @@ def _get_user_queryset(request, qs):
     # Superusuarios pueden ver todo
     if request.user.is_superuser:
         return qs
-    # Distribuidores solo ven sus propios datos
-    if request.user.user_type == 2:  
-        return qs.filter(distributor=request.user.distributor_profile)
-    # Clientes pueden ver todos los productos
-    if request.user.user_type == 1:  
-        return qs
-    return qs.none()  # Otros usuarios no ven nada
 
+    # Si el queryset es de CustomUser (en el caso de la vista de usuarios)
+    if qs.model == CustomUser:
+        if request.user.user_type == 2:  # Distribuidor
+            return qs.filter(id=request.user.id)  # Solo permite ver su propio usuario
+        elif request.user.user_type == 1:  # Cliente
+            return qs  # Los clientes pueden ver todos los usuarios (o se puede personalizar)
+
+    # Si el queryset es de Product (en el caso de la vista de productos)
+    if qs.model == Product:
+        if request.user.user_type == 2:  # Distribuidor
+            return qs.filter(distributor=request.user.distributor_profile)  # Solo permite ver sus productos
+
+    # Otros usuarios no ven nada
+    return qs.none()
+
+
+from django.contrib.auth.admin import UserAdmin
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -32,13 +42,24 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('username', 'email')
     ordering = ('-date_joined',)
 
-    fieldsets = (
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+        if request.user.user_type == 2:  # Distribuidor
+            # Remueve los permisos para los distribuidores
+            fieldsets = [fs for fs in fieldsets if fs[0] not in ('Permissions', 'Groups & Permissions')]
+        return fieldsets
+
+    # Define los fieldsets con y sin los campos de permisos
+    base_fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'phone_number')}),
         ('Distributor Info', {'fields': ('company_name', 'address')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+
+    superuser_fieldsets = base_fieldsets + (
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_type')}),
         ('Groups & Permissions', {'fields': ('groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
     add_fieldsets = (
@@ -47,6 +68,20 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'phone_number', 'is_active', 'is_staff', 'user_type'),
         }),
     )
+
+    def get_fieldsets(self, request, obj=None):
+        # Si el usuario es un superusuario, muestra todos los campos de permisos
+        if request.user.is_superuser:
+            return self.superuser_fieldsets
+        # Si el usuario no es superusuario, oculta los campos de permisos
+        return self.base_fieldsets
+
+    def get_readonly_fields(self, request, obj=None):
+        # Para distribuidores, hacer los campos de permisos de solo lectura
+        if request.user.user_type == 2:  # Distribuidor
+            return ['is_staff', 'is_superuser', 'user_type', 'groups', 'user_permissions']
+        # Para otros usuarios (excepto superusuarios), permitir modificar solo sus datos
+        return super().get_readonly_fields(request, obj)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -211,5 +246,31 @@ class CategoryAdmin(admin.ModelAdmin):
         if not obj.slug:
             obj.slug = slugify(obj.name)
         super().save_model(request, obj, form, change)
+
+    # Permitir que distribuidores puedan ver categorías
+    def has_view_permission(self, request, obj=None):
+        if request.user.user_type == 2 or request.user.is_superuser:
+            return True
+        return False
+
+    # Permitir que distribuidores puedan cambiar categorías
+    def has_change_permission(self, request, obj=None):
+        if request.user.user_type == 2 or request.user.is_superuser:
+            return True
+        return False
+
+    # Permitir que distribuidores puedan agregar categorías
+    def has_add_permission(self, request):
+        return request.user.is_superuser or request.user.user_type == 2
+
+    # Permitir que distribuidores puedan eliminar categorías
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser or request.user.user_type == 2
+
+    # Opcional: puedes limitar los campos que pueden editar los distribuidores
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.user_type == 2:  # Distribuidores
+            return ['parent']  # Ejemplo: no pueden cambiar el campo 'parent'
+        return []
 
 admin.site.register(Category, CategoryAdmin)

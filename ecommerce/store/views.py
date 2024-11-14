@@ -218,3 +218,6 @@ def services(request):
         # Añade más servicios si es necesario
     ]
     return render(request, 'store/services.html', {'services': services_list})
+
+def contact(request):
+    return render(request, 'store/contact.html')

@@ -2,25 +2,33 @@
 {% load static %}
 {% block content %}
 <div class="container mt-4">
-    <h2>Perfil de Distribuidor</h2>
-    <div class="card shadow-sm p-4 mb-4">
+    <h2 class="mb-4">Perfil de Distribuidor</h2>
+    
+    <div class="card shadow-sm p-4 mb-4 position-relative">
         <h5 class="mb-3">Información Personal</h5>
+        
+        {% if user.is_staff %}
+        <!-- Botón para acceder al administrador de Django en la esquina superior derecha -->
+        <a href="/admin/" class="btn btn-primary position-absolute" style="top: 20px; right: 20px;">
+            Editar Información
+        </a>
+        {% endif %}
+        
         <p><strong>Nombre de Usuario:</strong> {{ user.username }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
         <p><strong>Teléfono:</strong> {{ user.phone_number }}</p>
     </div>
-    <div class="card shadow-sm p-4">
+    
+    <div class="card shadow-sm p-4 mb-5">
         <h5 class="mb-3">Información de la Empresa</h5>
         <p><strong>Nombre de la Compañía:</strong> {{ user.distributor_profile.company_name }}</p>
         <p><strong>Dirección:</strong> {{ user.distributor_profile.address }}</p>
     </div>
 </div>
+
 <style>
-    body{
-        background-color: #d1d7dc;
-    }
-    .navbar {
-        position: relative;
+    body {
+        background-color: #f6f6f6;
     }
 </style>
 {% endblock %}

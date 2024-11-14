@@ -2,34 +2,60 @@
 {% load static %}
 {% block content %}
 <div class="container mt-5">
-    <h2>Mis Productos</h2>
+    <!-- Contenedor de título y botón de editar -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Mis Productos</h2>
+        <a href="{% url 'admin:store_product_changelist' %}" class="btn btn-warning btn-sm">Editar Productos</a>
+    </div>
+
     <div class="row">
         {% for product in products %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                {% if product.image %}
-                    <!-- Si el producto tiene imagen -->
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                {% else %}
-                    <!-- Si no tiene imagen, mostramos una imagen de marcador de posición -->
-                    <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="{{ product.name }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description }}</p>
-                    <p class="card-text"><strong>${{ product.price }}</strong></p>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0 rounded">
+                <!-- Contenedor de imagen con aspecto 1:1 y ajuste de altura -->
+                <div class="space-images d-flex justify-content-center align-items-center" style="padding: 1rem; overflow: hidden; aspect-ratio: 1/1;">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                         class="card-img-top img-fluid" 
+                         alt="{{ product.name }}" 
+                         style="object-fit: contain; max-height: 100%; width: auto;">
+                </div>
+                
+                <!-- Detalles del producto -->
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">{{ product.name }}</h5>
+                    <p class="card-text mt-auto"><strong>${{ product.price|floatformat:2 }}</strong></p>
+                </div>
+                
+                <!-- Botón de "Ver más" -->
+                <div class="card-footer bg-white border-0 d-flex justify-content-center">
+                    <a href="{% url 'product_detail' product.slug %}" class="btn btn-primary btn-sm w-75">Ver más</a>
                 </div>
             </div>
         </div>
+        {% empty %}
+        <p class="text-center text-muted">No hay productos disponibles.</p>
         {% endfor %}
     </div>
 </div>
+
+<!-- Estilos adicionales -->
 <style>
-    body{
-        background-color: #d1d7dc;
+    body {
+        background-color: #f6f6f6;
     }
-    .navbar {
-        position: relative;
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .card-text {
+        font-size: 0.9rem;
     }
 </style>
 {% endblock content %}

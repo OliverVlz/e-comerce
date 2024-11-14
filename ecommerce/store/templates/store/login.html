@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card shadow p-4 border-0 rounded">
@@ -19,6 +19,12 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">Iniciar Sesión</button>
                 </form>
+                <!-- Enlace para registrarse -->
+                <div class="text-center mt-3">
+                    <p class="mb-0">¿No tienes una cuenta? 
+                        <a href="{% url 'signup' %}" class="text-primary fw-bold">Regístrate aquí</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -26,6 +32,9 @@
 
 <!-- Estilos CSS para Floating Labels -->
 <style>
+    body {
+        background-color: #f6f6f6;
+    }
     .navbar {
         position: relative;
     }

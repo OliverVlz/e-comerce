@@ -51,44 +51,49 @@
                 <hr>
                 <div class="cart-summary">
                     {% for item in order.items.all %}
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <!-- Imagen del producto y nombre -->
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid rounded" src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ item.product.name }}" style="width: 70px; height: 70px; object-fit: cover;">
-                            <div class="ms-3">
-                                <p class="mb-0">{{ item.product.name }}</p>
-                                <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
-                            </div>
-                        </div>
-                        <!-- Precio total del producto -->
-                        <p class="mb-0 text-end" style="min-width: 100px;"><strong>${{ item.get_total_item_price }}</strong></p>
-                        <!-- Botón eliminar (la "x") -->
-                        <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                    <div class="d-flex align-items-center justify-content-between mb-3 position-relative">
+                        <!-- Botón eliminar en la esquina superior derecha -->
+                        <form method="POST" action="{% url 'remove_from_cart' item.id %}" class="position-absolute end-0" style="top: -12px;">
                             {% csrf_token %}
-                            <button class="btn btn-link text-danger p-0" type="submit">
+                            <button class="btn btn-link text-danger p-0" type="submit" style="font-size: 1rem;">
                                 <i class="fas fa-times"></i>
                             </button>
                         </form>
+                
+                        <!-- Imagen del producto y nombre -->
+                        <div class="d-flex align-items-center flex-grow-1">
+                            <img class="img-fluid rounded" 
+                                 src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                                 alt="{{ item.product.name }}" 
+                                 style="width: 70px; height: 70px; object-fit: cover;">
+                            <div class="ms-3">
+                                <p class="mb-0 fw-bold">{{ item.product.name }}</p>
+                                <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Precio total del producto -->
+                        <p class="mb-0 text-end" style="min-width: 100px;"><strong>${{ item.get_total_item_price }}</strong></p>
                     </div>
                     <hr>
                     {% endfor %}
-                    <div class="d-flex justify-content-between">
+                    
+                    <!-- Resumen final -->
+                    <div class="d-flex justify-content-between mt-3">
                         <h5 class="mb-0">Items: <strong>{{ order.items.count }}</strong></h5>
                         <h5 class="mb-0">Total: <strong>${{ order.get_total_price }}</strong></h5>
                     </div>
-                </div>
+                </div>                
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    body{
-        background-color: #d1d7dc;
+    body {
+        background-color: #f6f6f6;
     }
-    .navbar {
-        position: relative;
-    }
+    
     .cart-summary img {
         width: 70px;
         height: 70px;
