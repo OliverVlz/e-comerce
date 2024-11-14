@@ -8,7 +8,8 @@ urlpatterns = [
     path('checkout/', views.checkout, name="checkout"),
     path('signup/', views.signup, name='signup'), 
     path('login/', LoginView.as_view(template_name='store/login.html'), name='login'),  # URL para login usando LoginView
-    path('profile/', views.profile, name='profile'),
+    path('profile/', views.user_profile, name='user_profile'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('distributor-profile/', views.distributor_profile, name='distributor_profile'), 
     path('logout/', views.logout_view, name='logout'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),

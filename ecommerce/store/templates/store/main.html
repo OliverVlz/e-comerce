@@ -90,7 +90,7 @@
                                 <img id="user-icon" src="/static/images/usuario.svg" alt="user" style="width: 23px; padding-top: 8px; margin-left: 18px;">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                                <li><a class="dropdown-item" href="{% url 'profile' %}">Ver Perfil</a></li>
+                                <li><a class="dropdown-item" href="{% url 'user_profile' %}">Ver Perfil</a></li>
                                 {% if user.user_type != 1 %}
                                     <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
                                     <li><a class="dropdown-item" href="{% url 'add-product' %}">Agregar Producto</a></li>

@@ -1,10 +1,11 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
-from .forms import UserSignupForm, UserLoginForm, ProductForm
+from .forms import UserSignupForm, UserLoginForm, ProductForm, UserProfileForm
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib import messages
 
 def store(request):
     products = Product.objects.all()
@@ -38,7 +39,7 @@ class CustomLoginView(LoginView):
     template_name = 'store/login.html'  
 
 @login_required
-def profile(request):
+def user_profile(request):
     # Lógica para distinguir entre tipos de usuarios
     if request.user.user_type == 2:
         # Es un distribuidor
@@ -221,3 +222,16 @@ def services(request):
 
 def contact(request):
     return render(request, 'store/contact.html')
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Tu perfil ha sido actualizado con éxito.")
+            return redirect('user_profile')
+    else:
+        form = UserProfileForm(instance=request.user)
+
+    return render(request, 'store/edit-profile.html', {'form': form})
