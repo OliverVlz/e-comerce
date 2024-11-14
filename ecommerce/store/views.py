@@ -193,10 +193,28 @@ def products_list(request, subcategory_slug):
     return render(request, 'store/products-list.html', context)
 
 def product_detail(request, product_slug):
-    product = get_object_or_404(Product, slug=product_slug)  # O puedes usar slug, como prefieras
-    attributes = product.attributes.all()
+    product = get_object_or_404(Product, slug=product_slug)  # Obtén el producto basado en su slug
     context = {
-        'product': product,
-        'attributes': attributes,
+        'product': product
     }
     return render(request, 'store/product-detail.html', context)
+
+def services(request):
+    services_list = [
+        {
+            'title': 'Instalación de Sistemas Fotovoltaicos y Equipos de Conectividad',
+            'description': 'Ofrecemos instalación profesional y segura de sistemas fotovoltaicos, antenas satelitales y cámaras de seguridad, asegurando que todos los equipos estén correctamente conectados y funcionando. Nuestro equipo de expertos cubre hogares, empresas y áreas rurales, garantizando una instalación rápida, eficiente y con total garantía de funcionamiento.',
+            'image': 'images/service1.png',  # Ruta relativa a la carpeta "static"
+            'action_text': 'Solicita tu Instalación',
+            'action_link': '#'
+        },
+        {
+            'title': 'Consultoría para Proyectos de Energía Solar y Seguridad',
+            'description': 'Ofrecemos consultoría personalizada para proyectos de energía solar y seguridad, guiándote en cada paso del proceso de instalación de sistemas solares o equipos de conectividad. Ya sea para tu hogar o empresa, te proporcionamos soluciones a medida para maximizar la eficiencia y el ahorro, con una evaluación detallada de tus necesidades y presupuestos personalizados según tus requerimientos.',
+            'image': 'images/service2.png',
+            'action_text': 'Solicita tu Asesoría',
+            'action_link': '#'
+        },
+        # Añade más servicios si es necesario
+    ]
+    return render(request, 'store/services.html', {'services': services_list})

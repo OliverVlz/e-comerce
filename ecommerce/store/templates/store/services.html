@@ -1,0 +1,56 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold mb-3" style="color: #05478a;">Nuestros Servicios</h1>
+    <hr class="mb-5">
+
+    {% for service in services %}
+        <div class="col-md-12 mb-5">
+            <div class="row align-items-center">
+                {% if forloop.counter|divisibleby:"2" %}
+                    <!-- Imagen a la derecha -->
+                    <div class="col-md-8">
+                        <h2 class="fw-bold">{{ service.title }}</h2>
+                        <p>{{ service.description }}</p>
+                        <a href="{{ service.action_link }}" class="btn btn-success">{{ service.action_text }}</a>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="{% static service.image %}" class="img-fluid rounded" alt="{{ service.title }}">
+                    </div>
+                {% else %}
+                    <!-- Imagen a la izquierda -->
+                    <div class="col-md-4">
+                        <img src="{% static service.image %}" class="img-fluid rounded" alt="{{ service.title }}">
+                    </div>
+                    <div class="col-md-8">
+                        <h2 class="fw-bold">{{ service.title }}</h2>
+                        <p>{{ service.description }}</p>
+                        <a href="{{ service.action_link }}" class="btn btn-success">{{ service.action_text }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    body {
+        background-color: #f6f6f6;
+    }
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    h2 {
+        font-size: 1.6rem;
+    }
+    
+</style>
+
+{% endblock %}

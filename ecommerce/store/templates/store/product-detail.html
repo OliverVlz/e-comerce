@@ -1,6 +1,7 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
+
 <div class="container mt-5">
     <div class="row g-4">
         <!-- Imagen del producto -->
@@ -9,20 +10,25 @@
                 <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" class="img-fluid rounded" alt="{{ product.name }}">
             </div>
         </div>
+
         <!-- Detalles del producto -->
         <div class="col-md-6">
             <div class="product-details-wrapper p-4 bg-white shadow-sm rounded">
-                <h2 class="mb-3">{{ product.name }}</h2>
-                <h4 class="text-success mb-3"><strong>${{ product.price }}</strong></h4>
-                <p class="text-muted"><strong>Marca:</strong> {{ product.brand }}</p>
-                <p class="text-muted"><strong>Stock:</strong> {{ product.stock }}</p>
+                <h2 class="mb-1">{{ product.name }}</h2>
+                <h4 class="text-success mb-3"><strong>${{ product.price|floatformat:2 }}</strong></h4>
+                <p class="text-muted mb-0"><strong>Referencia: </strong> {{ product.sku }}</p>
                 <p class="text-muted"><strong>Descripción:</strong> {{ product.description }}</p>
+                
+                <!-- Especificaciones -->
                 <h5 class="mt-4">Especificaciones</h5>
                 <ul class="list-group mb-4">
                     {% for attribute in attributes %}
-                         <li>{{ attribute.name }}: {{ attribute.value }}</li>
+                        <li class="list-group-item">{{ attribute.name }}: {{ attribute.value }}</li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No hay especificaciones disponibles.</li>
                     {% endfor %}
                 </ul>
+
                 <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success w-100">Añadir al carrito</a>
             </div>
         </div>
@@ -30,73 +36,38 @@
 
     <hr class="my-5">
 
-    <div class="row">
-        <div class="col-md-12">
-            <h5>Otros productos del distribuidor:</h5>
-            <div class="row g-4">
-                {% for other_product in product.distributor.products.all %}
-                    {% if other_product.id != product.id %}
-                        <div class="col-md-3">
-                            <div class="card h-100 shadow-sm">
-                                <img src="{% if other_product.image %}{{ other_product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" class="card-img-top" alt="{{ other_product.name }}" style="height: 180px; object-fit: cover;">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">{{ other_product.name }}</h5>
-                                    <p class="card-text text-success"><strong>${{ other_product.price }}</strong></p>
-                                    <a href="{% url 'product_detail' other_product.id %}" class="btn btn-primary mt-auto">Ver detalles</a>
-                                </div>
-                            </div>
+    <!-- Productos Similares -->
+    <div class="similar-products mt-5">
+        <h4 class="fw-bold mb-4">Productos Similares</h4>
+        <div class="row">
+            {% for similar_product in similar_products %}
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <a href="{% url 'product_detail' similar_product.slug %}">
+                            <img src="{% if similar_product.image %}{{ similar_product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" class="card-img-top img-fluid" alt="{{ similar_product.name }}" style="height: 200px; object-fit: cover;">
+                        </a>
+                        <div class="card-body text-center">
+                            <h6 class="card-title">{{ similar_product.name|truncatechars:30 }}</h6>
+                            <p class="text-primary fw-bold">${{ similar_product.price|floatformat:2 }}</p>
                         </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+                            <a href="{% url 'product_detail' similar_product.slug %}" class="btn btn-outline-primary btn-sm flex-grow-1 text-center">Ver detalles</a>
+                            <a href="{% url 'add_to_cart' similar_product.id %}" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 30px;">
+                                <img src="{% static 'images/carritoB.svg' %}" alt="Carrito de compras" style="width: 18px; height: 18px;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center text-muted">No hay productos similares disponibles.</p>
+            {% endfor %}
         </div>
     </div>
 </div>
 
 <style>
-    /* Wrapper para la imagen del producto */
-    .product-image-wrapper {
-        border: 1px solid #e0e0e0;
-    }
-
-    /* Detalles del producto */
-    .product-details-wrapper {
-        font-size: 1rem;
-        color: #333;
-    }
-
-    /* Título del producto */
-    .product-details-wrapper h2 {
-        color: #007bff;
-    }
-
-    /* Precio */
-    .product-details-wrapper h4 {
-        color: #28a745;
-    }
-
-    /* Lista de especificaciones */
-    .list-group-item {
-        border: none;
-        padding: 0.75rem 1rem;
-    }
-
-    /* Imagen de otros productos */
-    .card-img-top {
-        height: 180px;
-        object-fit: cover;
-    }
-
-    /* Efecto hover para tarjetas de productos */
-    .card:hover {
-        transform: scale(1.02);
-        transition: transform 0.2s;
-    }
-
-    /* Sombra para la tarjeta */
-    .card {
-        border: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    body {
+        background-color: #f6f6f6;
     }
 </style>
 {% endblock %}
