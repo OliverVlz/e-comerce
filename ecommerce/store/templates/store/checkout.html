@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div class="container my-4">
+<div class="container my-5">
     <div class="row">
         <!-- Formulario -->
         <div class="col-lg-6 mb-4">
@@ -37,9 +37,6 @@
                 </form>
             </div>
 
-            <div class="card shadow-sm p-3 mt-4" id="payment-info">
-                <small class="text-muted">Opciones de Pago: Paypal</small>
-            </div>
         </div>
 
         <!-- Resumen del Pedido -->
@@ -51,29 +48,33 @@
                 <hr>
                 <div class="cart-summary">
                     {% for item in order.items.all %}
-                    <div class="d-flex align-items-center justify-content-between mb-3 position-relative">
-                        <!-- Botón eliminar en la esquina superior derecha -->
-                        <form method="POST" action="{% url 'remove_from_cart' item.id %}" class="position-absolute end-0" style="top: -12px;">
-                            {% csrf_token %}
-                            <button class="btn btn-link text-danger p-0" type="submit" style="font-size: 1rem;">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </form>
-                
-                        <!-- Imagen del producto y nombre -->
-                        <div class="d-flex align-items-center flex-grow-1">
+                    <div class="row align-items-center mb-3 position-relative">
+                        <!-- Imagen del producto -->
+                        <div class="col-2 d-flex justify-content-center">
                             <img class="img-fluid rounded" 
-                                 src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
-                                 alt="{{ item.product.name }}" 
-                                 style="width: 70px; height: 70px; object-fit: cover;">
-                            <div class="ms-3">
-                                <p class="mb-0 fw-bold">{{ item.product.name }}</p>
-                                <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
-                            </div>
+                                src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                                alt="{{ item.product.name }}" 
+                                style="width: 70px; height: 70px; object-fit: contain;">
                         </div>
                         
-                        <!-- Precio total del producto -->
-                        <p class="mb-0 text-end" style="min-width: 100px;"><strong>${{ item.get_total_item_price }}</strong></p>
+                        <!-- Nombre del producto y cantidad -->
+                        <div class="col-7">
+                            <p class="mb-0 fw-bold product-name">{{ item.product.name }}</p>
+                            <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
+                        </div>
+
+                        <!-- Precio total del producto y botón eliminar -->
+                        <div class="col-3 text-end position-relative">
+                            <!-- Botón eliminar en la esquina superior derecha de la columna -->
+                            <form method="POST" action="{% url 'remove_from_checkout' item.id %}" class="position-absolute" style="top: -37px; right: 11px;">
+                                {% csrf_token %}
+                                <button class="btn btn-link text-danger p-0" type="submit" style="font-size: 1rem;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </form>
+                            <!-- Precio total del producto -->
+                            <p class="mb-0"><strong>${{ item.get_total_item_price }}</strong></p>
+                        </div>
                     </div>
                     <hr>
                     {% endfor %}
@@ -114,6 +115,16 @@
     }
     .cart-summary .btn-link i {
         vertical-align: middle;
+    }
+    .product-name {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limita a 2 líneas */
+        line-clamp: 2; 
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.2; 
+        max-height: calc(1.2em * 2);
     }
 </style>
 

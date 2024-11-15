@@ -3,60 +3,77 @@
 {% block content %}
 
 <div class="container mt-5">
-    <div class="row g-4">
+    <div class="row g-4 align-items-stretch">
         <!-- Imagen del producto -->
-        <div class="col-md-6 text-center">
-            <div class="product-image-wrapper p-3 shadow-sm rounded bg-white">
-                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" class="img-fluid rounded" alt="{{ product.name }}">
+        <div class="col-lg-7 col-md-12 d-flex bg-white shadow-sm rounded justify-content-center align-items-center">
+            <div class="product-image-wrapper p-4 w-100">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                     class="img-fluid" 
+                     alt="{{ product.name }}" 
+                     style="object-fit: contain; width: 100%; max-height: 400px;">
             </div>
         </div>
 
         <!-- Detalles del producto -->
-        <div class="col-md-6">
-            <div class="product-details-wrapper p-4 bg-white shadow-sm rounded">
-                <h2 class="mb-1">{{ product.name }}</h2>
+        <div class="col-lg-5 col-md-12 d-flex">
+            <div class="product-details-wrapper p-5 bg-white shadow-sm rounded w-100 d-flex flex-column">
+                <h2 class="mb-3">{{ product.name }}</h2>
                 <h4 class="text-success mb-3"><strong>${{ product.price|floatformat:2 }}</strong></h4>
                 <p class="text-muted mb-0"><strong>Referencia: </strong> {{ product.sku }}</p>
-                <p class="text-muted"><strong>Descripción:</strong> {{ product.description }}</p>
                 
-                <!-- Especificaciones -->
-                <h5 class="mt-4">Especificaciones</h5>
-                <ul class="list-group mb-4">
-                    {% for attribute in attributes %}
-                        <li class="list-group-item">{{ attribute.name }}: {{ attribute.value }}</li>
-                    {% empty %}
-                        <li class="list-group-item text-muted">No hay especificaciones disponibles.</li>
-                    {% endfor %}
-                </ul>
+                <!-- Envío a toda Colombia -->
+                <p class="text-muted mt-3 mb-3"><strong>Envíos a todo Colombia</strong></p>
+                
+                <!-- Selección de cantidad -->
+                <div class="quantity-wrapper d-flex align-items-center">
+                    <label for="quantity" class="form-label me-2"><strong>Cantidad:</strong></label>
+                    <div class="input-group" style="width: 80px;">
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control text-start">
+                    </div>
+                </div>
 
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success w-100">Añadir al carrito</a>
+                <!-- Botones de acción -->
+                <div class="mt-auto d-flex gap-2">
+                    <a href="#" onclick="buyNow()" class="btn btn-primary w-50">Comprar Ahora</a>
+                    <a href="#" onclick="addToCart()" class="btn btn-outline-success w-50">Añadir al Carrito</a>
+                </div>
             </div>
         </div>
     </div>
 
     <hr class="my-5">
+    <p class="text-muted"><strong>Descripción:</strong> {{ product.description }}</p>
+    <!-- Especificaciones -->
+    <h5 class="mt-4">Especificaciones</h5>
+    <ul class="list-group list-group-flush mb-4">
+        {% for attribute in attributes %}
+            <li class="list-group-item">{{ attribute.attribute.name }}: {{ attribute.value }}</li>
+        {% empty %}
+            <li class="list-group-item text-muted">No hay especificaciones disponibles.</li>
+        {% endfor %}
+    </ul>
 
     <!-- Productos Similares -->
-    <div class="similar-products mt-5">
-        <h4 class="fw-bold mb-4">Productos Similares</h4>
+    <div class="container mt-5 mb-5">
+        <h4 class="fw-bold mb-4" style="color: #05478a;">Productos Similares</h4>
+        <hr style="margin-bottom: 2rem; border: 1px solid black; width: 100%;">
+
         <div class="row">
             {% for similar_product in similar_products %}
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <a href="{% url 'product_detail' similar_product.slug %}">
-                            <img src="{% if similar_product.image %}{{ similar_product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" class="card-img-top img-fluid" alt="{{ similar_product.name }}" style="height: 200px; object-fit: cover;">
-                        </a>
-                        <div class="card-body text-center">
-                            <h6 class="card-title">{{ similar_product.name|truncatechars:30 }}</h6>
-                            <p class="text-primary fw-bold">${{ similar_product.price|floatformat:2 }}</p>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <a href="{% url 'product_detail' similar_product.slug %}" class="text-decoration-none">
+                        <div class="card h-100" style="height: 95%;">
+                            <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden; aspect-ratio: 3/4;">
+                                <img src="{% if similar_product.image %}{{ similar_product.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ similar_product.name }}" style="width: auto; height: 100%; object-fit: contain;">
+                            </div>
+                            <div class="card-body p-2 d-flex justify-content-center align-items-center">
+                                <h3 class="card-title text-center" style="font-size: 1.1rem; padding-left: 4%;">{{ similar_product.name|truncatechars:30 }}</h3>
+                            </div>
+                            <div class="card-footer bg-white text-center">
+                                <p class="text-success fw-bold mb-0">${{ similar_product.price|floatformat:2 }}</p>
+                            </div>
                         </div>
-                        <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
-                            <a href="{% url 'product_detail' similar_product.slug %}" class="btn btn-outline-primary btn-sm flex-grow-1 text-center">Ver detalles</a>
-                            <a href="{% url 'add_to_cart' similar_product.id %}" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 30px;">
-                                <img src="{% static 'images/carritoB.svg' %}" alt="Carrito de compras" style="width: 18px; height: 18px;">
-                            </a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             {% empty %}
                 <p class="text-center text-muted">No hay productos similares disponibles.</p>
@@ -69,5 +86,32 @@
     body {
         background-color: #f6f6f6;
     }
+
+    /* Asegura que ambos bloques de imagen y detalles ocupen la misma altura */
+    .product-image-wrapper, .product-details-wrapper {
+        height: 100%;
+    }
+
+    /* Ajuste en imágenes de productos similares */
+    .card-img-top {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+    }
 </style>
-{% endblock %}
+
+<script>
+    function buyNow() {
+        const quantity = document.getElementById('quantity').value;
+        const productId = "{{ product.id }}";
+        window.location.href = `{% url 'buy_now' product.id %}?quantity=${quantity}`;
+    }
+
+    function addToCart() {
+        const quantity = document.getElementById('quantity').value;
+        const productId = "{{ product.id }}";
+        window.location.href = `{% url 'add_to_cart' product.id %}?quantity=${quantity}`;
+    }
+</script>
+
+{% endblock content %}

@@ -7,21 +7,19 @@
 
     <!-- Grid de categorías -->
     <div class="row text-center">
-        <!-- Categoría 1 -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <a href="#" class="text-decoration-none">
+            <a href="#sistemas-fotovoltaicos" class="text-decoration-none">
                 <div class="card h-100" style="cursor: pointer;">
                     <img src="{% static 'images/products-sist-foto.png' %}" class="card-img-top img-fluid" alt="Sistemas Fotovoltaicos">
                     <div class="card-img-overlay d-flex align-items-center justify-content-center">
-                        <h3 class="text-white fw-bold">Sistemas </br> Fotovoltaicos</h3>
+                        <h3 class="text-white fw-bold">Sistemas <br> Fotovoltaicos</h3>
                     </div>
                 </div>
             </a>
         </div>
 
-        <!-- Categoría 2 -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <a href="#" class="text-decoration-none">
+            <a href="#electrodomesticos-solares" class="text-decoration-none">
                 <div class="card h-100" style="cursor: pointer;">
                     <img src="{% static 'images/products-sist-elec.png' %}" class="card-img-top img-fluid" alt="Electrodomésticos Solares">
                     <div class="card-img-overlay d-flex align-items-center justify-content-center">
@@ -31,9 +29,8 @@
             </a>
         </div>
 
-        <!-- Categoría 3 -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <a href="#" class="text-decoration-none">
+            <a href="#conectividad-y-seguridad" class="text-decoration-none">
                 <div class="card h-100" style="cursor: pointer;">
                     <img src="{% static 'images/products-sist-seg.png' %}" class="card-img-top img-fluid" alt="Conectividad y Seguridad">
                     <div class="card-img-overlay d-flex align-items-center justify-content-center">
@@ -44,13 +41,16 @@
         </div>
     </div>
 
-    <div class="col-lg-12 col-md-6 mb-4">
+    <div class="col-lg-12 col-md-6 mb-5 pb-1">
         <div class="card h-100" style="position: relative;"> <!-- Tarjeta con posición relativa -->
             <img src="{% static 'images/horizontal-boton.png' %}" class="card-img-top rounded img-fluid" alt="Conectividad y Seguridad">
             
             <!-- Botón "Cotiza Ahora" -->
             <div class="text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-                <a href="#" class="btn btn-primary btn-lg">Solicitar Asesor!</a>
+                <a href="https://wa.me/573165259154?text=Hola,%20estoy%20interesado%20en%20conocer%20más%20sobre%20sus%20productos.%20¿Podrían%20ayudarme?" 
+                    target="_blank" class="btn btn-primary btn-lg">
+                        Solictar Asesor!
+                </a>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
 <!-- Mostrar primero "Sistemas Fotovoltaicos" -->
 {% for data in category_data %}
     {% if data.category.name == "Sistemas Fotovoltaicos" %}
-        <div class="container mt-5">
+        <div id="{{ data.category.name|slugify }}" class="container mt-0 mb-4">
             <h2 class="fw-bold" style="color: #05478a;">{{ data.category.name }}</h2>
             <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
             <div class="row">
@@ -89,31 +89,32 @@
 <!-- Mostrar otras categorías después -->
 {% for data in category_data %}
     {% if data.category.name != "Sistemas Fotovoltaicos" %}
-    <div class="container mt-5">
-        <h2 class="fw-bold" style="color: #05478a;">{{ data.category.name }}</h2>
-        <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
-        <div class="row">
-            {% for subcategory_data in data.subcategories %}
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
-                        <div class="card" style="height: 95%;">
-                            <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%;  overflow: hidden; aspect-ratio: 3/4;">
-                                <!-- Verifica si la subcategoría tiene imagen -->
-                                <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%; object-fit: contain;">
+        <div id="{{ data.category.name|slugify }}" class="container mt-0 mb-4">
+            <h2 class="fw-bold" style="color: #05478a;">{{ data.category.name }}</h2>
+            <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
+            <div class="row">
+                {% for subcategory_data in data.subcategories %}
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
+                            <div class="card" style="height: 95%;">
+                                <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%;  overflow: hidden; aspect-ratio: 3/4;">
+                                    <!-- Verifica si la subcategoría tiene imagen -->
+                                    <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%; object-fit: contain;">
+                                </div>
+                                <div class="card-body p-2 d-flex justify-content-center align-items-center">
+                                    <h3 class="card-title" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
+                                </div>
                             </div>
-                            <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                                <h3 class="card-title" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            {% empty %}
-            <p class="text-center">No hay subcategorías disponibles.</p>
-            {% endfor %}
+                        </a>
+                    </div>
+                {% empty %}
+                <p class="text-center">No hay subcategorías disponibles.</p>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 {% endfor %}
+<br>
 
 <style>
     body {

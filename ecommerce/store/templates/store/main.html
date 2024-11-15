@@ -93,7 +93,7 @@
                                 <li><a class="dropdown-item" href="{% url 'user_profile' %}">Ver Perfil</a></li>
                                 {% if user.user_type != 1 %}
                                     <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'add-product' %}">Agregar Producto</a></li>
+                                    <li><a class="dropdown-item" href="/admin/store/product/add/">Agregar Producto</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                 {% endif %}
                                 <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
@@ -134,19 +134,15 @@
                     <a class="navbar-brand" href="{% url 'store' %}">
                         <img src="{% static 'images/LogoPng.png' %}" alt="Logo" style="width: 150px; height: auto;">
                     </a>
-                    <p class="text-white mt-3">Líderes en Tecnología</p>
+                    <p class="text-white mt-3">Energía Solar y Telecomunicaciones</p>
                 </div>
-
-                
-
                 <!-- Redes Sociales -->
                 <div class="col-lg-4 col-md-6 mb-4 text-center">
-                    <h5 class="mb-3">Síguenos</h5>
+                    <h5 class="mb-3"> Síguenos</h5>
                     <ul class="list-unstyled d-flex justify-content-lg-center justify-content-center">
-                        <li><a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a></li>
-                        <li><a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a></li>
-                        
+                        <li><a href="https://www.facebook.com/EntelcoSAS" target="_blank" class="text-white me-3"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="https://www.instagram.com/entelcosoluciones_net/" target="_blank" class="text-white me-3"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="https://wa.me/573165259154" target="_blank" class="text-white"><i class="fab fa-whatsapp"></i></a></li>
                     </ul>
                 </div>
 
@@ -155,11 +151,10 @@
                     <h5 class="mb-3">Contacto</h5>
                     <ul class="list-unstyled">
                         <li>Villavicencio-Meta <i class="fas fa-map-marker-alt"></i></li>
-                        <li>+57 3100000000 <i class="fas fa-phone-alt"></i></li>
-                        <li>contacto@miecommerce.com <i class="fas fa-envelope"></i></li>
+                        <li>+57 316 5259154 <i class="fas fa-phone-alt"></i></li>
+                        <li><a href="mailto:entelcosoluciones@gmail.com" class="text-white">entelcosoluciones@gmail.com</a> <i class="fas fa-envelope"></i></li>
                     </ul>
                 </div>
-
             </div>
 
             <!-- Términos y condiciones -->

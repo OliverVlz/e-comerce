@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
+import random
 
 def store(request):
     products = Product.objects.all()
@@ -31,7 +32,7 @@ def signup(request):
             login(request, user) 
             return redirect('store')  
         else:
-            print("Errores del formulario:", form.errors)
+            print(form.errors)
     else:
         form = UserSignupForm()
     return render(request, 'store/signup.html', {'form': form})
@@ -70,40 +71,66 @@ def cart(request):
 
 @login_required
 def checkout(request):
+    # Obtener el pedido "pendiente" (carrito) del usuario
     order = get_object_or_404(Order, customer=request.user, status='pending')
 
     if request.method == 'POST':
-        # Cuando el usuario confirma el pedido, se procesa
+        # Cambiar el estado a "processed" para confirmar el pedido
         order.status = 'processed'
-        order.get_total_price()  # Calcular el total
+        order.get_total_price()
         order.save()
 
-        # Mostrar una página de agradecimiento o redirigir a una página de éxito
+        # Mostrar una página de éxito o redirigir
         return render(request, 'store/checkout_success.html', {'order': order})
 
-    # Mostrar la vista de checkout para que el usuario confirme el pedido
+    # Mostrar la página de checkout
     context = {'order': order}
     return render(request, 'store/checkout.html', context)
 
 @login_required
-def add_to_cart(request, product_id):
-    # 1. Obtener el producto que se está agregando al carrito
+def buy_now(request, product_id):
+    # Obtener el producto que se está comprando
     product = get_object_or_404(Product, id=product_id)
 
-    # 2. Obtener el pedido pendiente del usuario, o crear uno nuevo si no existe
-    # Esto asegura que cada usuario tenga un único pedido "pendiente" (el carrito actual)
+    # Obtener la cantidad de la solicitud, con valor predeterminado de 1
+    quantity = int(request.GET.get('quantity', 1))
+
+    # Obtener o crear el pedido pendiente (carrito) del usuario
     order, created = Order.objects.get_or_create(customer=request.user, status='pending')
 
-    # 3. Verificar si el producto ya está en el carrito (es decir, en el pedido pendiente)
-    # Si ya existe el producto en el pedido, no lo volvemos a agregar, solo incrementamos la cantidad
+    # Agregar el producto al carrito o incrementar la cantidad si ya existe
+    order_item, created = OrderItem.objects.get_or_create(order=order, product=product, price=product.price)
+    if not created:
+        order_item.quantity += quantity
+    else:
+        order_item.quantity = quantity
+    order_item.save()
+
+    # Redirigir al checkout para completar la compra
+    return redirect('checkout')
+
+@login_required
+def add_to_cart(request, product_id):
+    # Obtener el producto que se está agregando al carrito
+    product = get_object_or_404(Product, id=product_id)
+
+    # Obtener la cantidad de la solicitud, con valor predeterminado de 1
+    quantity = int(request.GET.get('quantity', 1))
+
+    # Obtener el pedido pendiente del usuario, o crear uno nuevo si no existe
+    order, created = Order.objects.get_or_create(customer=request.user, status='pending')
+
+    # Verificar si el producto ya está en el carrito
     order_item, created = OrderItem.objects.get_or_create(order=order, product=product, price=product.price)
 
-    # 4. Si el producto ya estaba en el carrito, simplemente incrementamos la cantidad
+    # Ajustar la cantidad del OrderItem
     if not created:
-        order_item.quantity += 1
-        order_item.save()
+        order_item.quantity += quantity
+    else:
+        order_item.quantity = quantity
+    order_item.save()
 
-    # 5. Después de agregar el producto al carrito, redirigimos al usuario de nuevo al carrito o a otra página
+    # Redirigir al carrito
     return redirect('cart')
 
 @login_required
@@ -111,6 +138,13 @@ def remove_from_cart(request, item_id):
     order_item = get_object_or_404(OrderItem, id=item_id)
     order_item.delete()  # Elimina el producto completamente
     return redirect('cart')
+
+@login_required
+def remove_from_checkout(request, item_id):
+    # Obtener el item del pedido
+    item = get_object_or_404(OrderItem, id=item_id, order__customer=request.user, order__status='pending')
+    item.delete()
+    return redirect('checkout')
 
 @login_required
 def decrease_quantity(request, item_id):
@@ -195,12 +229,24 @@ def products_list(request, subcategory_slug):
     
     return render(request, 'store/products-list.html', context)
 
-def product_detail(request, product_slug):
-    product = get_object_or_404(Product, slug=product_slug)  # Obtén el producto basado en su slug
-    context = {
-        'product': product
-    }
-    return render(request, 'store/product-detail.html', context)
+def product_detail(request, slug):
+    # Obtener el producto actual
+    product = get_object_or_404(Product, slug=slug)
+    attributes = product.attributes.all()
+    # Obtener la subcategoría del producto
+    subcategory = product.category
+
+    # Filtrar productos que están en la misma subcategoría y excluye el producto actual
+    similar_products = Product.objects.filter(category=subcategory).exclude(id=product.id)
+    
+    # Seleccionar hasta 6 productos al azar
+    similar_products = random.sample(list(similar_products), min(len(similar_products), 6))
+
+    return render(request, 'store/product-detail.html', {
+        'product': product,
+        'similar_products': similar_products,
+        'attributes': attributes,
+    })
 
 def services(request):
     services_list = [

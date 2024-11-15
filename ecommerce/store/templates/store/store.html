@@ -16,7 +16,7 @@
                 <img src="./static/images/primero.png" class="d-block w-100" alt="Sunset Over the City" />
                 <div class="carousel-caption d-flex justify-content-center align-items-center">
                     <div class="boton-cotizacion-container">
-                        <button type="button" class="boton-cotizacion btn btn-lg">Explorar Productos</button>
+                        <a href="{% url 'products' %}" class="boton-cotizacion btn btn-lg">Explorar Productos</a>
                     </div>    
                 </div>
             </div>
@@ -24,7 +24,10 @@
             <img src="./static/images/test0.2.png" class="d-block w-100" alt="Sunset Over the City" />
             <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
                 <div class="boton-expert-container">
-                    <button type="button" class="boton-expert btn btn-primary btn-lg">Habla con un Experto</button>
+                    <a href="https://wa.me/573165259154?text=Hola,%20estoy%20interesado%20en%20conocer%20más%20sobre%20sus%20productos.%20¿Podrían%20ayudarme?" 
+                    target="_blank" class="boton-expert btn btn-primary btn-lg">
+                        Habla con un Experto
+                    </a>
                 </div>
             </div>
         </div>
@@ -284,7 +287,7 @@
 </div>
 
 <!-- CATEGORIAS DESTACADAS -->
-<div class="container mt-5">
+<div class="container mt-4 mb-5">
     <!-- Título de la sección -->
     <div class="col-12 text-center">
         <h1 class="text-white py-3 rounded mb-4" style="font-weight: bold; font-size: 1.6rem; background-color: rgba(0, 0, 0, 0.282);">CATEGORÍAS DESTACADAS</h1>
@@ -302,7 +305,7 @@
                         Soluciones solares para hogares y empresas. Sistemas conectados a la red o aislados con almacenamiento. La opción ideal para cada necesidad.
                     </p>
                     <div class="btn d-flex justify-content-center m-0 p-3">
-                        <button type="button" class="btn-categoria btn btn-lg">Ver Sistemas Solares</button>
+                        <a href="{% url 'products' %}#sistemas-fotovoltaicos"  class="btn-categoria btn btn-lg">Ver Sistemas Fotovoltaicos</a>
                     </div>
                 </div>
             </div>
@@ -318,7 +321,7 @@
                         Electrodomésticos diseñados para funcionar con energía solar. Desde refrigeradores hasta aires acondicionados, descubre opciones eficientes y sostenibles.
                     </p>
                     <div class="btn d-flex justify-content-center m-0 p-3">
-                        <button type="button" class="btn-categoria btn btn-lg">Ver Electrodomésticos</button>
+                        <a href="{% url 'products' %}#electrodomesticos-solares" class="btn-categoria btn btn-lg">Ver Electrodomésticos</a>
                     </div>
                 </div>
             </div>
@@ -334,7 +337,7 @@
                         Soluciones de conectividad y seguridad para hogar o negocio. Desde routers y cámaras hasta sistemas de domótica, mejora tu red y privacidad.
                     </p>
                     <div class="btn d-flex justify-content-center m-0 p-3">
-                        <button type="button" class="btn-categoria btn btn-lg">Explorar Productos</button>
+                        <a href="{% url 'products' %}#conectividad-y-seguridad" class="btn-categoria btn btn-lg">Explorar Productos</a>
                     </div>
                 </div>
             </div>

@@ -7,32 +7,38 @@
     <hr class="mb-5">
 
     {% for service in services %}
-        <div class="col-md-12 mb-5">
-            <div class="row align-items-center">
-                {% if forloop.counter|divisibleby:"2" %}
-                    <!-- Imagen a la derecha -->
-                    <div class="col-md-8">
-                        <h2 class="fw-bold">{{ service.title }}</h2>
-                        <p>{{ service.description }}</p>
-                        <a href="{{ service.action_link }}" class="btn btn-success">{{ service.action_text }}</a>
+        <!-- Aplicando el estilo de card con sombra y borde redondeado a cada servicio -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-12">
+                <div class="card shadow p-5 border-0 rounded">
+                    <div class="row">
+                        {% if forloop.counter|divisibleby:"2" %}
+                            <!-- Imagen a la derecha -->
+                            <div class="col-md-8 d-flex flex-column align-items-start">
+                                <h2 class="fw-bold">{{ service.title }}</h2>
+                                <p>{{ service.description }}</p>
+                                <a href="{{ service.action_link }}" class="btn btn-success">{{ service.action_text }}</a>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="{% static service.image %}" class="img-fluid rounded" alt="{{ service.title }}">
+                            </div>
+                        {% else %}
+                            <!-- Imagen a la izquierda -->
+                            <div class="col-md-4">
+                                <img src="{% static service.image %}" class="img-fluid rounded" alt="{{ service.title }}">
+                            </div>
+                            <div class="col-md-8">
+                                <h2 class="fw-bold">{{ service.title }}</h2>
+                                <p>{{ service.description }}</p>
+                                <a href="{{ service.action_link }}" class="btn btn-success">{{ service.action_text }}</a>
+                            </div>
+                        {% endif %}
                     </div>
-                    <div class="col-md-4">
-                        <img src="{% static service.image %}" class="img-fluid rounded" alt="{{ service.title }}">
-                    </div>
-                {% else %}
-                    <!-- Imagen a la izquierda -->
-                    <div class="col-md-4">
-                        <img src="{% static service.image %}" class="img-fluid rounded" alt="{{ service.title }}">
-                    </div>
-                    <div class="col-md-8">
-                        <h2 class="fw-bold">{{ service.title }}</h2>
-                        <p>{{ service.description }}</p>
-                        <a href="{{ service.action_link }}" class="btn btn-success">{{ service.action_text }}</a>
-                    </div>
-                {% endif %}
+                </div>
             </div>
         </div>
     {% endfor %}
+    <br><br>
 </div>
 
 <style>
@@ -50,7 +56,6 @@
     h2 {
         font-size: 1.6rem;
     }
-    
 </style>
 
 {% endblock %}
