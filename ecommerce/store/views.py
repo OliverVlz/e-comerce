@@ -30,6 +30,8 @@ def signup(request):
             user = form.save()
             login(request, user) 
             return redirect('store')  
+        else:
+            print("Errores del formulario:", form.errors)
     else:
         form = UserSignupForm()
     return render(request, 'store/signup.html', {'form': form})

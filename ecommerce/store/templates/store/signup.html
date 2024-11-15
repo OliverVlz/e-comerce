@@ -1,36 +1,57 @@
 {% extends 'store/main.html' %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
 {% block content %}
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card shadow p-4 border-0 rounded">
                 <h3 class="mb-4 text-center">Crear Cuenta</h3>
+                
+                <!-- Mensaje de error si hay errores en el formulario -->
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
                 <form method="post">
                     {% csrf_token %}
+                    
                     <div class="floating-label mb-4">
-                        {{ form.username }}
+                        {{ form.username|add_class:"floating-label-input" }}
                         <label class="floating-label-label">Nombre de Usuario</label>
                     </div>
                     <div class="floating-label mb-4">
-                        {{ form.email }}
+                        {{ form.email|add_class:"floating-label-input" }}
                         <label class="floating-label-label">Correo Electrónico</label>
                     </div>
                     <div class="floating-label mb-4">
-                        {{ form.first_name }}
+                        {{ form.first_name|add_class:"floating-label-input" }}
                         <label class="floating-label-label">Nombre</label>
                     </div>
                     <div class="floating-label mb-4">
-                        {{ form.last_name }}
+                        {{ form.last_name|add_class:"floating-label-input" }}
                         <label class="floating-label-label">Apellido</label>
                     </div>
-                    <div class="floating-label mb-4">
-                        {{ form.password1 }}
+                    <div class="floating-label mb-4 position-relative">
+                        {{ form.password1|add_class:"floating-label-input password-field" }}
                         <label class="floating-label-label">Contraseña</label>
+                        <span class="toggle-password" onclick="togglePassword('id_password1')" style="display: none;">
+                            <i class="fas fa-eye"></i>
+                        </span>
                     </div>
-                    <div class="floating-label mb-4">
-                        {{ form.password2 }}
+                    <div class="floating-label mb-4 position-relative">
+                        {{ form.password2|add_class:"floating-label-input password-field" }}
                         <label class="floating-label-label">Confirmar Contraseña</label>
+                        <span class="toggle-password" onclick="togglePassword('id_password2')" style="display: none;">
+                            <i class="fas fa-eye"></i>
+                        </span>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">Registrarse</button>
                 </form>
@@ -39,7 +60,7 @@
     </div>
 </div>
 
-<!-- Estilos CSS para Floating Labels -->
+<!-- Estilos CSS para Floating Labels y Errores -->
 <style>
     body {
         background-color: #f6f6f6;
@@ -47,104 +68,123 @@
     .navbar {
         position: relative;
     }
-        /* Estilos básicos para el campo de entrada */
+
+    /* Estilos de mensaje de error */
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #842029;
+        border-color: #f5c2c7;
+        border-radius: 0.25rem;
+        padding: 0.8rem;
+        margin-bottom: 2rem;
+    }
+
     .floating-label {
         position: relative;
-        margin-bottom: 1.5rem; /* Espacio entre campos */
+        margin-bottom: 1.5rem;
     }
 
     .floating-label-input {
         width: 100%;
-        padding: 0.75rem 1rem; /* Padding adecuado para el efecto */
+        padding: 0.75rem 1rem;
         font-size: 1rem;
-        border: 1px solid #007bff; /* Borde principal */
-        border-radius: 0.25rem; /* Bordes redondeados */
-        background-color: white; /* Fondo blanco */
-        position: relative; /* Para el uso de ::before y ::after */
+        border: 1px solid #007bff;
+        border-radius: 0.25rem;
+        background-color: white;
+        position: relative;
     }
 
-    /* Estilos para el label */
     .floating-label-label {
         position: absolute;
-        top: 50%; /* Posición inicial */
-        left: 1rem; /* Espaciado desde la izquierda */
+        top: 50%;
+        left: 1rem;
         transform: translateY(-50%);
         pointer-events: none;
         transition: all 0.2s;
         color: #aaa;
         font-size: 1rem;
-        background-color: rgb(255, 255, 255); /* Fondo blanco para "cortar" el borde */
-        padding: 0 0.25rem; /* Espacio alrededor del texto */
+        background-color: white;
+        padding: 0 0.25rem;
     }
 
-    /* Efecto de corte en el borde con pseudo-elementos */
-    .floating-label-input::before {
-        content: '';
-        position: absolute;
-        top: 10px;
-        left: 0.5rem; /* Ajusta esto según la posición del label */
-        height: 2px; /* Altura del corte */
-        width: calc(100% - 1rem); /* Ajustar el ancho del borde */
-        background-color: white; /* Color de fondo del contenedor */
-        z-index: 1;
-    }
-
-    /* Cuando el campo tiene enfoque o contenido */
     .floating-label-input:focus + .floating-label-label,
     .floating-label-input:not(:placeholder-shown) + .floating-label-label {
-        top: -0.75rem; /* Mover hacia arriba */
-        left: 1rem; /* Alinear con el campo */
-        font-size: 0.75rem; /* Reducir tamaño */
-        color: #007bff; /* Color del label */
+        top: -0.75rem;
+        left: 1rem;
+        font-size: 0.75rem;
+        color: #007bff;
         font-weight: bold;
     }
 
     .floating-label-input:focus {
         outline: none;
-        border-color: #007bff; /* Color de borde al enfoque */
+        border-color: #007bff;
     }
 
-
-    /* Estilo para la tarjeta */
     .card {
-        border-radius: 0.5rem; /* Bordes redondeados */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra alrededor de la tarjeta */
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-        /* Ocultar el placeholder haciéndolo transparente */
-    .floating-label-input::placeholder {
-        color: transparent; /* Hacer el placeholder invisible */
-        opacity: 0; /* Opción adicional para asegurar invisibilidad */
+    /* Estilos para el ícono de "ojito" */
+    .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: #007bff;
     }
 
-    /* Para navegadores más antiguos que no soportan ::placeholder */
-    .floating-label-input:-ms-input-placeholder { /* IE 10+ */
-        color: transparent;
+    /* CSS para desactivar el ícono de ojo predeterminado */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear {
+        display: none;
     }
-    .floating-label-input::-ms-input-placeholder { /* Edge */
-        color: transparent;
-    }
-
 </style>
 
-<!-- Script para inicializar el efecto Floating Labels -->
+<!-- Script para alternar visibilidad de contraseña -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var inputs = document.querySelectorAll('.floating-label-input');
-    inputs.forEach(function(input) {
-        // Si el campo tiene valor, agregar la clase `has-value`
-        if (input.value) {
-            input.nextElementSibling.classList.add('active');
+    function togglePassword(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const toggleIcon = passwordField.nextElementSibling.querySelector('i');
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
         }
-        input.addEventListener('focus', function() {
-            input.nextElementSibling.classList.add('active');
-        });
-        input.addEventListener('blur', function() {
-            if (!input.value) {
-                input.nextElementSibling.classList.remove('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputs = document.querySelectorAll('.floating-label-input');
+        inputs.forEach(function(input) {
+            if (input.value) {
+                input.nextElementSibling.classList.add('active');
             }
+            input.addEventListener('focus', function() {
+                input.nextElementSibling.classList.add('active');
+            });
+            input.addEventListener('blur', function() {
+                if (!input.value) {
+                    input.nextElementSibling.classList.remove('active');
+                }
+            });
+        });
+
+        // Mostrar ícono solo al hacer foco en los campos de contraseña
+        const passwordFields = document.querySelectorAll('.password-field');
+        passwordFields.forEach(field => {
+            const toggle = field.parentNode.querySelector('.toggle-password');
+            field.addEventListener('focus', () => toggle.style.display = 'inline');
+            field.addEventListener('blur', () => {
+                if (!field.value) toggle.style.display = 'none';
+            });
         });
     });
-});
 </script>
 {% endblock %}
