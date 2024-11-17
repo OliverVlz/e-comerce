@@ -1,105 +1,103 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-<div class="container my-4 mb-5" style="min-height: 70vh;">
-    <div class="row mb-3">
-        <div class="col-lg-12">
-            <a class="btn btn-outline-dark" href="{% url 'products' %}">&#x2190; Continuar Comprando</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <!-- Mostrar número de artículos y precio total del carrito -->
-                <h5>Items: <strong>{{ order.items.count }}</strong></h5>
-                <h5>Total: <strong>${{ order.get_total_price }}</strong></h5>
-                <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+<div class="container my-4 mb-5">
+    <h1 class="text-center fw-bold mb-4" style="color: #05478a;">Carrito de Compras</h1>
+    <hr class="mb-4 linea-m">
+    <!-- Sección del total -->
+    <div class="row mt-2 mb-3">
+        <div class="col-12">
+            <div class="card p-3 shadow-sm w-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a class="btn btn-outline-dark d-none d-md-block" href="{% url 'products' %}">&#x2190; Volver</a>
+                    <h5 class="total">Total: <strong>${{ order.get_total_price }}</strong></h5>
+                    <a class="btn btn-primary fw-bold" href="{% url 'checkout' %}">Continuar</a>
+                </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        {% for item in order.items.all %}
+        <!-- Bloque por cada producto -->
+        <div class="col-12 mb-3">
+            <div class="card shadow-sm p-3">
+                <!-- Contenido del producto -->
+                <div class="d-flex align-items-start">
+                    <!-- Imagen del producto -->
+                    <img class="rounded img-fluid" src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                        alt="{{ item.product.name }}" style="width: 80px; height: 80px; object-fit: contain; margin-right: 15px;">
+                    
+                    <!-- Detalles del producto -->
+                    <div class="flex-grow-1">
+                        <h5 class="fw-bold mb-1">{{ item.product.name }}</h5>
+                        <p class="text-muted mb-2">Precio: ${{ item.price }}</p>
 
-    <div class="row mb-4">
-        <div class="col-lg-12">
-            <table class="table table-hover align-middle text-center">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in order.items.all %}
-                    <tr>
-                        <td class="d-flex align-items-center">
-                            <img class="img-fluid rounded row-image" src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ item.product.name }}" style="width: 70px; height: 70px; object-fit: contain;">
-                            <p class="ms-3 mb-0">{{ item.product.name }}</p>
-                        </td>
-                        <td>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <!-- Botones para cambiar la cantidad -->
-                                <a href="{% url 'decrease_quantity' item.id %}" class="btn btn-outline-secondary btn-sm me-2">-</a>
-                                <span>{{ item.quantity }}</span>
-                                <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-outline-secondary btn-sm ms-2">+</a>
-                            </div>
-                        </td>
-                        <td><strong>${{ item.price }}</strong></td>
-                        <td class="position-relative">
-                            <!-- Botón eliminar en la esquina superior derecha de la celda de precio -->
-                            <form method="POST" action="{% url 'remove_from_cart' item.id %}" class="remove-item-form">
-                                {% csrf_token %}
-                                <button class="btn btn-link text-danger p-0 remove-item-btn" type="submit">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </form>
-                            <strong>${{ item.get_total_item_price }}</strong>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        <!-- Controles de cantidad -->
+                        <div class="d-flex align-items-center">
+                            <a href="{% url 'decrease_quantity' item.id %}" class="btn btn-outline-secondary btn-sm me-2">-</a>
+                            <span>{{ item.quantity }}</span>
+                            <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-outline-secondary btn-sm ms-2">+</a>
+                        </div>
+                    </div>
+
+                    <!-- Botón de eliminar -->
+                    <div>
+                        <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-link text-danger p-0" type="submit">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Precio total del producto -->
+                <div class="text-end mt-2">
+                    <strong>Total: ${{ item.get_total_item_price }}</strong>
+                </div>
+            </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 
 <style>
+    /* General */
     body {
         background-color: #f6f6f6;
     }
 
-    .row-image {
-        width: 70px;
-        height: 70px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-
-    /* Estilos para el botón de eliminación */
-    .remove-item-form {
-        position: absolute;
-        top: 1px;
-        right: 8px;
-    }
-
-    .remove-item-btn {
-        font-size: 1rem;
-        color: #dc3545;
-        text-decoration: none;
+    /* Card del producto */
+    .card {
         border: none;
-        background: none;
+        border-radius: 10px;
+    }
+
+    .card img {
+        object-fit: contain;
+    }
+
+    /* Controles de cantidad */
+    .btn-outline-secondary {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 0;
     }
 
-    .remove-item-btn:hover {
-        color: #ff6f61;
-        cursor: pointer;
+    /* Botón de eliminar */
+    .btn-link {
+        font-size: 1.2rem;
+        padding: 0;
     }
 
-    .remove-item-btn i {
-        vertical-align: middle;
+    /* Total */
+    .card .text-end {
+        font-size: 1rem;
+        font-weight: bold;
     }
 </style>
-
-{% endblock content %}
+{% endblock %}

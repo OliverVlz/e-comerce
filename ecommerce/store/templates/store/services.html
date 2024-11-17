@@ -3,14 +3,15 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h1 class="text-center fw-bold mb-3" style="color: #05478a;">Nuestros Servicios</h1>
-    <hr class="mb-5">
+    <h1 class="text-center titulo-principal-m fw-bold mb-3" style="color: #05478a;">Nuestros Servicios</h1>
+    <hr class="mb-5 linea-m">
 
     {% for service in services %}
         <!-- Aplicando el estilo de card con sombra y borde redondeado a cada servicio -->
-        <div class="row justify-content-center mb-4">
+        <!-- Versión escritorio -->
+        <div class="row justify-content-center mb-4 d-none d-md-block">
             <div class="col-md-12">
-                <div class="card shadow p-5 border-0 rounded">
+                <div class="card shadow-sm p-5 border-0 rounded" style="border: 1px solid #dee2e6;">
                     <div class="row">
                         {% if forloop.counter|divisibleby:"2" %}
                             <!-- Imagen a la derecha -->
@@ -30,9 +31,28 @@
                             <div class="col-md-8">
                                 <h2 class="fw-bold">{{ service.title }}</h2>
                                 <p>{{ service.description }}</p>
-                                <a href="{{ service.action_link }}" class="btn btn-success">{{ service.action_text }}</a>
+                                <a href="{{ service.action_link }}" class="btn btn-success btn-block">{{ service.action_text }}</a>
                             </div>
                         {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Versión móvil -->
+        <div class="row mb-4 d-md-none">
+            <div class="col-md-12">
+                <div class="card shadow-sm p-4 border-0 rounded" style="border: 1px solid #dee2e6;">
+                    <div class="row flex-column flex-md-row">
+                        <!-- Imagen, título y descripción para móvil -->
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <img src="{% static service.image %}" class="img-fluid rounded" alt="{{ service.title }}">
+                        </div>
+                        <div class="col-md-8 text-md-start">
+                            <h2 class="fw-bold titulo-m">{{ service.title }}</h2>
+                            <p class="descripcion-m">{{ service.description }}</p>
+                            <a href="{{ service.action_link }}" class="btn btn-success btn-block w-100">{{ service.action_text }}</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,16 +66,37 @@
         background-color: #f6f6f6;
     }
     .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
+        background-color: #96c952;
+        color: white;
+        border: none;
+        padding: 0.4rem 2rem;
     }
+
     .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
+        background-color: #88c13e;
     }
     h2 {
         font-size: 1.6rem;
     }
+
+    @media (max-width: 768px) {
+    .btn-success {
+        padding: 0.5rem;
+    }
+    .titulo-m {
+        color: #022141;
+        padding-bottom: 1rem;
+    }
+    .descripcion-m {
+        padding-bottom: 1rem;
+    }
+    .titulo-principal-m {
+        font-size: 2rem;
+    }
+    .linea-m {
+        margin-bottom: 2rem !important;
+    }
+}
 </style>
 
 {% endblock %}

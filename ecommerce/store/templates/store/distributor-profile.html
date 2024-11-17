@@ -2,33 +2,112 @@
 {% load static %}
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4">Perfil de Distribuidor</h2>
-    
-    <div class="card shadow-sm p-4 mb-4 position-relative">
-        <h5 class="mb-3">Información Personal</h5>
-        
+    <!-- Encabezado del perfil -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold perfil mb-3">Perfil de Distribuidor</h2>
         {% if user.is_staff %}
-        <!-- Botón para acceder al administrador de Django en la esquina superior derecha -->
-        <a href="/admin/" class="btn btn-primary position-absolute" style="top: 20px; right: 20px;">
-            Editar Información
+        <a href="/admin/" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-edit me-1"></i> Editar Información
         </a>
         {% endif %}
-        
-        <p><strong>Nombre de Usuario:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Teléfono:</strong> {{ user.phone_number }}</p>
     </div>
-    
+
+    <!-- Información Personal -->
+    <div class="card shadow-sm p-4 mb-4">
+        <h5 class="text-secondary fw-bold mb-4">Información Personal</h5>
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-user-circle me-3 text-secondary" style="font-size: 1.5rem;"></i>
+            <p class="mb-0"><strong>Nombre de Usuario:</strong> {{ user.username }}</p>
+        </div>
+        <hr>
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-envelope me-3 text-secondary" style="font-size: 1.5rem;"></i>
+            <p class="mb-0"><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+        <hr>
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-phone me-3 text-secondary" style="font-size: 1.5rem;"></i>
+            <p class="mb-0"><strong>Teléfono:</strong> {{ user.phone_number }}</p>
+        </div>
+    </div>
+
+    <!-- Información de la Empresa -->
     <div class="card shadow-sm p-4 mb-5">
-        <h5 class="mb-3">Información de la Empresa</h5>
-        <p><strong>Nombre de la Compañía:</strong> {{ user.distributor_profile.company_name }}</p>
-        <p><strong>Dirección:</strong> {{ user.distributor_profile.address }}</p>
+        <h5 class="text-secondary fw-bold mb-4">Información de la Empresa</h5>
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-building me-3 text-secondary" style="font-size: 1.5rem;"></i>
+            <p class="mb-0"><strong>Nombre de la Compañía:</strong> {{ user.distributor_profile.company_name }}</p>
+        </div>
+        <hr>
+        <div class="d-flex align-items-center">
+            <i class="fas fa-map-marker-alt me-3 text-secondary" style="font-size: 1.5rem;"></i>
+            <p class="mb-0"><strong>Dirección:</strong> {{ user.distributor_profile.address }}</p>
+        </div>
     </div>
 </div>
 
 <style>
     body {
         background-color: #f6f6f6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Asegura que el body ocupe toda la altura del viewport */
+    }
+
+    .container {
+        flex: 1; /* El contenido principal se expande para ocupar el espacio disponible */
+    }
+
+    h2 {
+        color: #05478a;
+    }
+
+    .card {
+        border-radius: 10px;
+        border: none;
+    }
+
+    label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .btn-outline-primary {
+        font-size: 0.9rem;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #05478a;
+        color: white;
+    }
+
+    .card h5 {
+        color: #333;
+    }
+
+    .card p {
+        margin-bottom: 0;
+    }
+
+    .card i {
+        font-size: 1.5rem;
+        color: #05478a;
+    }
+
+    /* Responsividad para dispositivos móviles */
+    @media (max-width: 768px) {
+        .d-flex {
+            flex-wrap: wrap;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        .btn-outline-primary {
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>
 {% endblock %}

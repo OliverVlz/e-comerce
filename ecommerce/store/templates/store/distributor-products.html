@@ -2,38 +2,48 @@
 {% load static %}
 {% block content %}
 <div class="container mt-5 mb-5">
-    <!-- Contenedor de título y botón de editar -->
+    <!-- Contenedor del título y botón de editar -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Mis Productos</h2>
-        <a href="{% url 'admin:store_product_changelist' %}" class="btn btn-warning btn-sm">Editar Productos</a>
+        <h2 class="fw-bold mb-3">Mis Productos</h2>
+        <a href="{% url 'admin:store_product_changelist' %}" class="btn btn-warning btn-sm">
+            <i class="fas fa-edit me-1"></i> Editar Productos
+        </a>
     </div>
 
+    <!-- Lista de productos -->
     <div class="row">
         {% for product in products %}
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-6 col-lg-3 col-md-6 mb-4">
             <div class="card h-100 shadow-sm border-0 rounded">
-                <!-- Contenedor de imagen con aspecto 1:1 y ajuste de altura -->
-                <div class="space-images d-flex justify-content-center align-items-center" style="padding: 1rem; overflow: hidden; aspect-ratio: 1/1;">
-                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
-                         class="card-img-top img-fluid" 
-                         alt="{{ product.name }}" 
-                         style="object-fit: contain; max-height: 100%; width: auto;">
-                </div>
-                
-                <!-- Detalles del producto -->
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title text-truncate">{{ product.name }}</h5>
-                    <p class="card-text mt-auto"><strong>${{ product.price|floatformat:2 }}</strong></p>
-                </div>
-                
-                <!-- Botón de "Ver más" -->
-                <div class="card-footer bg-white border-0 d-flex justify-content-center">
-                    <a href="{% url 'product_detail' product.slug %}" class="btn btn-primary btn-sm w-75">Ver más</a>
-                </div>
+                <a href="{% url 'product_detail' product.slug %}" class="stretched-link text-decoration-none text-reset">
+                    <div class="space-images d-flex justify-content-center align-items-center bg-light" 
+                        style="padding: 1rem; overflow: hidden; aspect-ratio: 1;">
+                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                            class="img-fluid rounded" 
+                            alt="{{ product.name }}" 
+                            style="object-fit: contain; max-height: 100%; width: auto;">
+                    </div>
+                    
+                    <!-- Detalles del producto -->
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title product-title text-truncate" title="{{ product.name }}">{{ product.name }}</h5>
+                        <p class="card-text text-muted mb-2">Código: <span class="fw-semibold">{{ product.sku }}</span></p>
+                        <p class="card-text mt-auto"><strong>${{ product.price|floatformat:2 }}</strong></p>
+                    </div>
+                    
+                    <!-- Botón de acción -->
+                    <div class="card-footer bg-white border-0 d-flex justify-content-center">
+                        <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-primary btn-sm w-75">
+                            Ver Detalles
+                        </a>
+                    </div>
+                </a>
             </div>
         </div>
         {% empty %}
-        <p class="text-center text-muted">No hay productos disponibles.</p>
+        <div class="col-12">
+            <p class="text-center text-muted">No tienes productos disponibles.</p>
+        </div>
         {% endfor %}
     </div>
 </div>
@@ -42,20 +52,83 @@
 <style>
     body {
         background-color: #f6f6f6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Asegura que el body ocupe toda la altura del viewport */
     }
+
+    .container {
+        flex: 1; /* El contenido principal se expande para ocupar el espacio disponible */
+    }
+    
+    h2 {
+        color: #05478a;
+    }
+    /* Estilo para las tarjetas */
     .card {
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
+
     .card-title {
         font-size: 1.1rem;
         font-weight: bold;
+        color: #05478a;
     }
+
     .card-text {
         font-size: 0.9rem;
     }
+
+    .btn-outline-primary {
+        font-size: 0.9rem;
+    }
+
+    .btn-warning {
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Responsividad para móviles */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        .btn-warning {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+        }
+        .d-flex {
+            flex-wrap: wrap;
+        }
+
+        .product-title {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* Limita a 2 líneas */
+            line-clamp: 2; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4em;
+            width: 100%; /* Ajusta el ancho para evitar desbordamientos */
+            white-space: normal; /* Asegura que el texto haga salto de línea */
+            font-size: 1.1rem;
+            height: 2.8em;
+            line-height: 1.4em;
+        }
+    }
 </style>
-{% endblock content %}
+{% endblock %}

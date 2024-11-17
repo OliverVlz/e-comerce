@@ -1,19 +1,104 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Editar Perfil</h2>
-    <div class="card shadow-sm p-4 mb-4">
-        <form method="post" action="{% url 'edit_profile' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
-        </form>
-        <a href="{% url 'user_profile' %}" class="btn btn-link mt-2">Cancelar</a>
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <!-- Encabezado -->
+        <div class="col-12 mb-4">
+            <h2 class="text-primary text-center fw-bold">Editar Perfil</h2>
+        </div>
+    </div>
+
+    <!-- Formulario de edición -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-sm p-4">
+                <h5 class="mb-4 text-secondary fw-bold">Actualizar Información Personal</h5>
+                <form method="post" action="{% url 'edit_profile' %}">
+                    {% csrf_token %}
+
+                    <!-- Campo Nombre -->
+                    <div class="mb-3">
+                        <label for="id_first_name" class="form-label">Nombre</label>
+                        <input type="text" name="first_name" id="id_first_name" class="form-control" value="{{ user.first_name }}" placeholder="Ingrese su nombre" required>
+                    </div>
+
+                    <!-- Campo Apellido -->
+                    <div class="mb-3">
+                        <label for="id_last_name" class="form-label">Apellido</label>
+                        <input type="text" name="last_name" id="id_last_name" class="form-control" value="{{ user.last_name }}" placeholder="Ingrese su apellido" required>
+                    </div>
+
+                    <!-- Campo Email -->
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Correo Electrónico</label>
+                        <input type="email" name="email" id="id_email" class="form-control" value="{{ user.email }}" placeholder="Ingrese su correo electrónico" required>
+                    </div>
+
+                    <!-- Campo Teléfono -->
+                    <div class="mb-3">
+                        <label for="id_phone_number" class="form-label">Teléfono</label>
+                        <input type="text" name="phone_number" id="id_phone_number" class="form-control" value="{{ user.phone_number }}" placeholder="Ingrese su número de teléfono">
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <a href="{% url 'user_profile' %}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
+
 <style>
     body {
+        background-color: #f6f6f6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Asegura que el body ocupe toda la altura del viewport */
+    }
+
+    .container {
+        flex: 1; /* El contenido principal se expande para ocupar el espacio disponible */
+    }
+
+    h2 {
+        color: #05478a;
+    }
+
+    .card {
+        border-radius: 10px;
+        border: none;
+    }
+
+    label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #80bdff;
+    }
+
+    .btn-primary {
+        background-color: #05478a;
+        border-color: #05478a;
+    }
+
+    .btn-primary:hover {
+        background-color: #033d73;
+        border-color: #033d73;
+    }
+
+    .btn-outline-secondary:hover {
         background-color: #f6f6f6;
     }
 </style>

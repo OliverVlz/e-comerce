@@ -151,15 +151,18 @@
     .product-title {
         display: -webkit-box;
         -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; /* Limita a 2 líneas */
+        line-clamp: 2; 
         overflow: hidden;
         text-overflow: ellipsis;
         line-height: 1.4em;
-        width: 90%; /* Ajusta el ancho para evitar desbordamientos */
+        width: 100%; /* Ajusta el ancho para evitar desbordamientos */
         white-space: normal; /* Asegura que el texto haga salto de línea */
         font-size: 1.1rem;
         height: 2.8em;
         line-height: 1.4em;
     }
+    
 
     @media (max-width: 768px) {
         .product-title {

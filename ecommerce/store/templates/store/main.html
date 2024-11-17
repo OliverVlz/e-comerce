@@ -147,18 +147,21 @@
         <!-- Íconos (Usuario y carrito) -->
         <div class="d-flex align-items-center">
             {% if user.is_authenticated %}
-                <!-- Ícono de carrito -->
-                <a href="{% url 'cart' %}" class="d-flex align-items-center text-light position-relative me-3">
-                    <img id="cart-icon" src="{% static 'images/carritoA.svg' %}" alt="Cart" style="width: 30px;">
-                    <span id="cart-total" class="cart-count position-absolute" style="top: -1.2px; right: -1px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border-radius: 50%; width: 20px; height: 20px; font-size: 13px; display: flex; justify-content: center; align-items: center;">{{ cart_items_count }}</span>
+                <a href="{% url 'cart' %}" class="d-flex align-items-center text-light position-relative" style="margin-left: 100px;">
+                    <img id="cart-icon" src="{% static 'images/carritoA.svg' %}" alt="Cart" style="width: 30px; margin-bottom: 3px;">
+                    <span id="cart-total" class="cart-count position-absolute" style="top: 0; margin: 0 0 16px 17px; color: rgb(7, 52, 96); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">{{ cart_items_count }}</span>
                 </a>
-                <!-- Ícono de usuario -->
                 <div class="dropdown">
-                    <a class="dropdown-toggle text-light" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img id="user-icon" src="/static/images/usuario.svg" alt="user" style="width: 25px;">
+                    <a class="dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img id="user-icon" src="/static/images/usuario.svg" alt="user" style="width: 23px; padding-top: 8px; margin-left: 18px;">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="{% url 'user_profile' %}">Ver Perfil</a></li>
+                        {% if user.user_type != 1 %}
+                            <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
+                            <li><a class="dropdown-item" href="/admin/store/product/add/">Agregar Producto</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                        {% endif %}
                         <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
                     </ul>
                 </div>
