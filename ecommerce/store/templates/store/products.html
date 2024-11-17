@@ -3,36 +3,39 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h1 class="text-center fw-bold mb-4" style="color: #05478a;">Descubre Nuestros Productos</h1>
-
+    <h1 class="text-center fw-bold mb-4 d-none d-md-block" style="color: #05478a;">Descubre Nuestros Productos</h1>
+    <div class="d-md-none">
+        <h1 class="text-center descubre fw-bold mb-4" style="color: #05478a;">Descubre<br>Nuestros Productos</h1>
+        <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
+    </div>
     <!-- Grid de categorías -->
-    <div class="row text-center">
-        <div class="col-lg-4 col-md-6 mb-4">
+    <div class="row text-center categorias-img">
+        <div class="col-lg-4 col-md-6 col-12 mb-3">
             <a href="#sistemas-fotovoltaicos" class="text-decoration-none">
                 <div class="card h-100" style="cursor: pointer;">
-                    <img src="{% static 'images/products-sist-foto.png' %}" class="card-img-top img-fluid" alt="Sistemas Fotovoltaicos">
+                    <img src="{% static 'images/products-sist-foto.png' %}" class="card-img-top categorias-img-card" alt="Sistemas Fotovoltaicos">
                     <div class="card-img-overlay d-flex align-items-center justify-content-center">
                         <h3 class="text-white fw-bold">Sistemas <br> Fotovoltaicos</h3>
                     </div>
                 </div>
             </a>
         </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
+    
+        <div class="col-lg-4 col-md-6 col-12 mb-3">
             <a href="#electrodomesticos-solares" class="text-decoration-none">
                 <div class="card h-100" style="cursor: pointer;">
-                    <img src="{% static 'images/products-sist-elec.png' %}" class="card-img-top img-fluid" alt="Electrodomésticos Solares">
+                    <img src="{% static 'images/products-sist-elec.png' %}" class="card-img-top categorias-img-card" alt="Electrodomésticos Solares">
                     <div class="card-img-overlay d-flex align-items-center justify-content-center">
                         <h3 class="text-white fw-bold">Electrodomésticos Solares</h3>
                     </div>
                 </div>
             </a>
         </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
+    
+        <div class="col-lg-4 col-md-6 col-12 mb-3">
             <a href="#conectividad-y-seguridad" class="text-decoration-none">
                 <div class="card h-100" style="cursor: pointer;">
-                    <img src="{% static 'images/products-sist-seg.png' %}" class="card-img-top img-fluid" alt="Conectividad y Seguridad">
+                    <img src="{% static 'images/products-sist-seg.png' %}" class="card-img-top categorias-img-card" alt="Conectividad y Seguridad">
                     <div class="card-img-overlay d-flex align-items-center justify-content-center">
                         <h3 class="text-white fw-bold">Conectividad y Seguridad</h3>
                     </div>
@@ -41,11 +44,11 @@
         </div>
     </div>
 
-    <div class="col-lg-12 col-md-6 mb-5 pb-1">
+    <!-- Botón Escritorio -->
+    <div class="col-lg-12 col-md-6 mb-5 pb-1 d-none d-md-block">
         <div class="card h-100" style="position: relative;"> <!-- Tarjeta con posición relativa -->
             <img src="{% static 'images/horizontal-boton.png' %}" class="card-img-top rounded img-fluid" alt="Conectividad y Seguridad">
             
-            <!-- Botón "Cotiza Ahora" -->
             <div class="text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
                 <a href="https://wa.me/573165259154?text=Hola,%20estoy%20interesado%20en%20conocer%20más%20sobre%20sus%20productos.%20¿Podrían%20ayudarme?" 
                     target="_blank" class="btn btn-primary btn-lg">
@@ -54,17 +57,25 @@
             </div>
         </div>
     </div>
+    <!-- Botón Movil -->
+    <div class="text-center d-md-none">
+        <a href="https://wa.me/573165259154?text=Hola,%20estoy%20interesado%20en%20conocer%20más%20sobre%20sus%20productos.%20¿Podrían%20ayudarme?" 
+        target="_blank" class="btn btn-solicitar mb-5" style="padding: 6px 20px;">
+                Solictar Asesor!
+        </a>
+    </div>
+
 </div>
 
 <!-- Mostrar primero "Sistemas Fotovoltaicos" -->
 {% for data in category_data %}
     {% if data.category.name == "Sistemas Fotovoltaicos" %}
         <div id="{{ data.category.name|slugify }}" class="container mt-0 mb-4">
-            <h2 class="fw-bold" style="color: #05478a;">{{ data.category.name }}</h2>
+            <h2 class="fw-bold categoria" style="color: #05478a;">{{ data.category.name }}</h2>
             <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
             <div class="row">
                 {% for subcategory_data in data.subcategories %}
-                    <div class="col-lg-2 col-md-6 mb-4">
+                    <div class=" col-6 col-lg-2 col-md-6 mb-4">
                         <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
                             <div class="card" style="height: 95%;">
                                 <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden; aspect-ratio: 3/4;">
@@ -72,7 +83,7 @@
                                     <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%; object-fit: contain;">
                                 </div>
                                 <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                                    <h3 class="card-title" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
+                                    <h3 class="card-title fw-bold" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
                                 </div>
                             </div>
                         </a>
@@ -90,11 +101,11 @@
 {% for data in category_data %}
     {% if data.category.name != "Sistemas Fotovoltaicos" %}
         <div id="{{ data.category.name|slugify }}" class="container mt-0 mb-4">
-            <h2 class="fw-bold" style="color: #05478a;">{{ data.category.name }}</h2>
+            <h2 class="fw-bold categoria" style="color: #05478a;">{{ data.category.name }}</h2>
             <hr style="margin-bottom: 3rem; border: 1px solid black; width: 100%;">
             <div class="row">
                 {% for subcategory_data in data.subcategories %}
-                    <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="col-6 col-lg-2 col-md-6 mb-4">
                         <a href="{% url 'products_list' subcategory_data.subcategory.slug %}" class="text-decoration-none">
                             <div class="card" style="height: 95%;">
                                 <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%;  overflow: hidden; aspect-ratio: 3/4;">
@@ -102,7 +113,7 @@
                                     <img src="{% if subcategory_data.subcategory.image %}{{ subcategory_data.subcategory.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ subcategory_data.subcategory.name }}" style="width: auto; height: 100%; object-fit: contain;">
                                 </div>
                                 <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                                    <h3 class="card-title" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
+                                    <h3 class="card-title fw-bold" style="font-size: 1.1rem; padding-left: 4%;">{{ subcategory_data.subcategory.name }}</h3>
                                 </div>
                             </div>
                         </a>
@@ -125,5 +136,36 @@
         transform: scale(1.02);  /* Aumenta ligeramente el tamaño */
         transition: all 0.3s ease-in-out;  /* Hace la animación suave */
     }
+    /* Para dispositivos móviles */
+@media (max-width: 768px) {
+        .categorias-img .col-12 .card {
+            height: 100px !important; /* Cada tarjeta ocupa la mitad del viewport */
+        }
+
+        .categorias-img-card {
+            height: 100%; /* Imagen ajustada al nuevo tamaño */
+            object-fit: cover;
+        }
+
+        .card-img-overlay h3 {
+            font-size: 1.2rem; /* Ajusta el tamaño del texto para móviles */
+            text-align: center;
+        }
+
+        .categoria{
+            font-size: 1.8rem; 
+            text-align: center;
+        }
+
+        .descubre{
+            font-size: 2.1rem;
+            line-height: 1;
+        }
+        .btn-solicitar {
+            background-color: #96c952;
+            color: white;
+        }
+    }
+
 </style>
 {% endblock content %}

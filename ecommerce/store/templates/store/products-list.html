@@ -2,16 +2,18 @@
 {% load static %}
 {% block content %}
 
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <div class="row">
-        <!-- Barra lateral de filtros -->
-        <div class="col-lg-3 mt-5">
+        
+        <!-- Barra lateral de filtros para escritorio -->
+        <div class="col-lg-3 mt-5 d-none d-lg-block">
             <h5 class="fw-bold mb-3">Filtrar por</h5>
             
             <h6 class="fw-bold">Marca</h6>
             <ul class="list-group mb-4">
                 <li class="list-group-item">
-                    <input type="checkbox" id="brand1" name="brand1"> <label for="brand1" class="ms-2">AIKO</label>
+                    <input type="checkbox" id="brand1" name="brand1"> 
+                    <label for="brand1" class="ms-2">AIKO</label>
                 </li>
                 <!-- Añade más marcas aquí -->
             </ul>
@@ -19,7 +21,8 @@
             <h6 class="fw-bold">Potencia (W)</h6>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <input type="checkbox" id="power1" name="power1"> <label for="power1" class="ms-2">350 - 395</label>
+                    <input type="checkbox" id="power1" name="power1"> 
+                    <label for="power1" class="ms-2">350 - 395</label>
                 </li>
                 <!-- Añade más opciones de potencia aquí -->
             </ul>
@@ -28,41 +31,72 @@
 
 
         <!-- Sección principal de productos -->
-        <div class="col-lg-9">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <h1 class="fw-bold mb-2">{{ subcategory.name }}</h1>
+        <div class="col-lg-9 mb-5">
+            <!-- Título -->
+            <div class="col-12">
+                <div class="d-flex cat1 justify-content-between align-items-center mb-1">
+                    <h1 class="fw-bold mb-2">{{ subcategory.name }}</h1>
+                </div>
             </div>
-            <hr>
+            <hr style="margin:0 0 1.2rem 0; border: 1px solid black; width: 100%;">
+
+            <!-- Filtro para Mobile (Colapsable) -->
+            <div class="col-12 d-lg-none mb-3">
+                <button class="btn btn-filtro w-100" type="button" data-bs-toggle="collapse" data-bs-target="#mobileFilter" aria-expanded="false" aria-controls="mobileFilter">
+                    Filtrar por
+                </button>
+                <div class="collapse mt-3" id="mobileFilter">
+                    <div class="card card-body">
+                        <h6 class="fw-bold">Marca</h6>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">
+                                <input type="checkbox" id="brand1-mobile" name="brand1-mobile"> 
+                                <label for="brand1-mobile" class="ms-2">AIKO</label>
+                            </li>
+                            <!-- Añade más marcas aquí -->
+                        </ul>
+
+                        <h6 class="fw-bold">Potencia (W)</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <input type="checkbox" id="power1-mobile" name="power1-mobile"> 
+                                <label for="power1-mobile" class="ms-2">350 - 395</label>
+                            </li>
+                            <!-- Añade más opciones de potencia aquí -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <!-- Grid de productos -->
             <div class="container mt-4">
                 <div class="row text-center">
                     {% for product in products %}
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100" >
-                                <!-- Contenedor de imagen con aspecto 1:1 y ajuste de altura -->
-                                <div class="space-images d-flex justify-content-center align-items-center" style="padding: 1rem; overflow: hidden; aspect-ratio: 1/1;">
-                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" 
-                                        class="card-img-top img-fluid" 
-                                        alt="{{ product.name }}" 
-                                        style="object-fit: contain; max-height: 100%; width: auto;">
+                        <div class="col-6 col-lg-4 col-md-6 mb-4">
+                            <a href="{% url 'product_detail' product.slug %}" class="text-decoration-none text-dark">
+                                <div class="card h-100">
+                                    <!-- Contenedor de imagen -->
+                                    <div class="space-images d-flex justify-content-center align-items-center" style="padding: 1rem; overflow: hidden; aspect-ratio: 1/1;">
+                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" 
+                                            class="card-img-top img-fluid" 
+                                            alt="{{ product.name }}" 
+                                            style="object-fit: contain; max-height: 100%; width: auto;">
+                                    </div>
+                                    <!-- Descripción del producto -->
+                                    <div class="card-body d-flex align-items-start flex-column" style="padding:0 1.2rem;">
+                                        <h6 class="card-title text-start product-title">{{ product.name }}</h6>
+                                        <p class="m-0 text-primary fw-bold p-0">${{ product.price|floatformat:2 }}</p>
+                                    </div>
+                                    <!-- Botones -->
+                                    <div class="pb-3 card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+                                        <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-success1 btn-sm flex-grow-1 text-center me-2">
+                                            Detalles
+                                        </a>
+                                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 30px;">
+                                            <img src="{% static '/images/carritoB.svg' %}" alt="Carrito de compras" style="width: 18px; height: 18px;">
+                                        </a>
+                                    </div>
                                 </div>
-                                
-                                <!-- Descripción del producto -->
-                                <div class="card-body d-flex align-items-start flex-column" style="padding:0 1.2rem;">
-                                    <h6 class="card-title text-start product-title">{{ product.name }}</h6>
-                                    <p class="m-0 text-primary fw-bold p-0">${{ product.price|floatformat:2 }}</p>
-                                </div>
-                                
-                                <!-- Botones de "Detalles" y "Agregar al carrito" -->
-                                <div class="pb-3 card-footer bg-white border-0 d-flex justify-content-between align-items-center">
-                                    <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-primary btn-sm flex-grow-1 text-center me-2">
-                                        Detalles
-                                    </a>
-                                    <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 30px;">
-                                        <img src="{% static '/images/carritoB.svg' %}" alt="Carrito de compras" style="width: 18px; height: 18px;">
-                                    </a>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     {% empty %}
                         <p class="text-center">No hay productos disponibles en esta subcategoría.</p>
@@ -73,11 +107,27 @@
     </div>
 </div>
 
+
+
 <style>
     body {
         background-color: #f6f6f6;
+    
     }
 
+    .cat1 {
+        color: #05478a;
+    }
+
+    .btn-outline-success1 {
+        border-color: #96c952;
+        color: #96c952;
+    }
+    
+    .btn-outline-success1:hover {
+        background-color: #96c952;
+        color: white;
+    }
     .list-group-item {
         border: none;
     }
@@ -109,6 +159,25 @@
         font-size: 1.1rem;
         height: 2.8em;
         line-height: 1.4em;
+    }
+
+    @media (max-width: 768px) {
+        .product-title {
+            font-size: 1rem;
+        }
+        .cat1 {
+            justify-content: center !important;
+            margin: 0;
+        }
+        .btn-filtro {
+            background-color: #d4d5d6;
+            color: white;
+            border: none;
+        }
+        .btn-filtro:hover {
+            background-color: #d4d5d6;
+            color: white;
+        }
     }
 
 </style>
