@@ -6,6 +6,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
+
+
 import random
 
 def store(request):
@@ -283,3 +285,28 @@ def edit_profile(request):
         form = UserProfileForm(instance=request.user)
 
     return render(request, 'store/edit-profile.html', {'form': form})
+
+@login_required
+def my_orders(request):
+    # Obtener todas las órdenes que no estén en estado "pending"
+    orders = Order.objects.filter(customer=request.user).exclude(status='pending').order_by('-created_at')
+    
+    # Pasar las órdenes al contexto
+    return render(request, 'store/my_orders.html', {'orders': orders})
+
+@login_required
+def distributor_orders(request):
+    if not request.user.user_type == 2:  # Verificar que es un distribuidor
+        return redirect('store')
+
+    distributor_products = request.user.products.all()
+
+    if not distributor_products.exists():
+        messages.info(request, "No tienes productos asignados.")
+        return redirect('store')
+
+    orders = Order.objects.filter(items__product__in=distributor_products).distinct()
+
+    return render(request, 'store/distributor_orders.html', {'orders': orders})
+
+

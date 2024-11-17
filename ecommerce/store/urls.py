@@ -24,4 +24,6 @@ urlpatterns = [
     path('product/<slug:slug>/', views.product_detail, name='product_detail'),
     path('services/', views.services, name='services'),
     path('contact/', views.contact, name='contact'),
+    path('mis-compras/', views.my_orders, name='my_orders'),
+    path('ordenes-distribuidor/', views.distributor_orders, name='distributor_orders'),
 ]

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
-from .models import CustomUser, Distributor, Product, Category, ProductAttribute, AttributeName 
-from .forms import CustomUserCreationForm, CustomUserChangeForm, ProductAttributeForm, ProductAttributeFormSet
+from .models import * 
+from .forms import CustomUserCreationForm, CustomUserChangeForm, ProductAttributeForm, ProductAttributeFormSet, OrderItemForm, OrderForm
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify  # Importación para generar slugs automáticamente
@@ -274,3 +274,40 @@ class CategoryAdmin(admin.ModelAdmin):
         return []
 
 admin.site.register(Category, CategoryAdmin)
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    form = OrderItemForm
+    extra = 1  # Mostrar un formulario vacío adicional para agregar nuevos artículos
+    can_delete = True  # Permitir eliminar artículos
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.user_type == 2:  # Distribuidor
+            return qs.filter(product__distributor=request.user.distributor_profile)
+        return qs
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    form = OrderForm
+    list_display = ('id', 'customer', 'status', 'total_price', 'created_at', 'updated_at', 'get_order_items')
+    list_filter = ('status', 'created_at')
+    search_fields = ('customer__username', 'id')
+    readonly_fields = ('total_price',)
+    inlines = [OrderItemInline]
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        elif request.user.user_type == 2:  # Distribuidor
+            return qs.filter(items__product__distributor=request.user.distributor_profile).distinct()
+        return qs.none()
+
+    def get_order_items(self, obj):
+        """Devuelve un resumen de los productos en la orden."""
+        return ", ".join([f"{item.product.name} ({item.quantity})" for item in obj.items.all()])
+    get_order_items.short_description = "Items"
+
+  
+    

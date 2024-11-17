@@ -4,13 +4,13 @@
 {% block content %}
 <div class="contact-page">
     <!-- Contenedor del contenido de la página de contacto -->
-    <div class="col-md-10 contact-content text-center text-white">
+    <div class="col-md-10 contact-content text-center text-white d-none d-md-block">
         <div class="col-md-12">
             <img src="{% static 'images/letters-contact.png' %}" class="img-fluid rounded" alt="Contactanos">
         </div>
 
-        <!-- Iconos de contacto -->
-        <div class="container redes mt-4 mb-5">
+        <!-- Iconos de contacto ESCRITORIO-->
+        <div class="container redes1 mt-4 mb-5">
             <div class="d-flex justify-content-center gap-5">
                 <!-- Facebook -->
                 <a href="https://facebook.com" target="_blank" class="d-flex align-items-center text-white text-decoration-none">
@@ -32,14 +32,41 @@
             </div>
         </div>
     </div>
+    <div class="col-md-10 contact-content text-center text-white p-0 d-md-none">
+        <div class="col-md-12">
+            <img src="{% static 'images/letters-contact.png' %}" class="img-fluid contactanos rounded" alt="Contactanos">
+        </div>
+        <!-- Iconos de contacto MOVIL -->
+        <div class="container redes1 mb-5">
+            <div class="d-flex flex-column gap-4 align-items-center">
+                <!-- Facebook -->
+                <a href="https://facebook.com" target="_blank" class="d-flex align-items-center text-white text-decoration-none w-100">
+                    <i class="fab fa-facebook-f rounded-circle bg-white text-primary" style="padding:0.5rem;"></i>
+                    <span class="ms-3 text-center">Entelco SAS</span>
+                </a>
+        
+                <!-- Instagram -->
+                <a href="https://instagram.com" target="_blank" class="d-flex align-items-center text-white text-decoration-none w-100">
+                    <i class="fab fa-instagram rounded-circle bg-white text-primary" style="padding:0.5rem;"></i>
+                    <span class="ms-3 text-center">@entelcoyo_sas1</span>
+                </a>
+        
+                <!-- WhatsApp -->
+                <a href="https://wa.me/3165259154" target="_blank" class="d-flex align-items-center text-white text-decoration-none w-100">
+                    <i class="fab fa-whatsapp rounded-circle bg-white text-primary" style="padding:0.5rem;"></i>
+                    <span class="ms-3 text-center">316 5259154</span>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
     /* Estilos de la página de contacto */
     .contact-page {
-        background: url("{% static 'images/fondo-contacto.png' %}") no-repeat fixed;
+        background: url("{% static 'images/fondo-contacto.png' %}") no-repeat;
         background-size: cover;
-        min-height: 90vh;
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -48,12 +75,11 @@
 
     .contact-content {
         background: rgba(0, 0, 0, 0.6);
-        padding: 2rem;
-        border-radius: 15px;
-        
+        padding: 3rem 0 1rem 0 !important;
+        margin-top: -50px;  
     }
-
-    .redes a {
+    
+    .redes1 a {
         font-size: 1.5rem;
     }
 
@@ -63,16 +89,53 @@
         transition: transform 0.3s;
     }
 
-    .contact-icon img:hover {
-        transform: scale(1.2);
-    }
-
     h1, h2 {
         text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
     }
 
-    .text-success {
-        color: #7FFF00; /* Color verde claro */
+
+    @media (max-width: 768px) {
+        .redes1 a {
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .redes1 a i {
+            font-size: 1.5rem;
+        }
+
+        .redes1 span {
+            font-size: 1.2rem;
+        }
+
+        /* Estilo para íconos */
+        .redes1 i {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+        .redes1{
+            width: 280px;
+            padding-left: 50px;
+        }
+        .contactanos{
+            width: 550px;
+            padding-bottom: 20px;
+        }
+        .contact-page{
+            background: url("{% static 'images/fondo-contacto-2.png' %}") no-repeat;
+            background-size: cover;
+                        
+        }
+        .contact-content{
+            margin-top: -120px;
+        }
     }
 </style>
 {% endblock %}

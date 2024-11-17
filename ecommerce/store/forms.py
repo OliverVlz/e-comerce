@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from .models import CustomUser, Product, Distributor, ProductAttribute, AttributeName
+from .models import CustomUser, Product, Distributor, ProductAttribute, AttributeName, Order, OrderItem
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, Field, Div, HTML, ButtonHolder
@@ -176,3 +176,62 @@ class UserProfileForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo Electrónico'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono'}),
         }
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['customer', 'status', 'total_price']  # Campos que se pueden editar
+        widgets = {
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'total_price': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(OrderForm, self).__init__(*args, **kwargs)
+
+        # Configuración de Crispy Forms (opcional)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Field('status', css_class='mb-3'),
+            Field('total_price', css_class='mb-3', readonly=True),
+            Submit('submit', 'Guardar Cambios', css_class='btn btn-primary w-100'),
+        )
+
+    def clean_total_price(self):
+        # Validación: asegurarse de que el total_price es consistente con los OrderItems
+        if self.instance:
+            total = sum(item.get_total_item_price() for item in self.instance.items.all())
+            if self.cleaned_data.get('total_price') != total:
+                raise ValidationError("El total no coincide con la suma de los artículos.")
+        return self.cleaned_data.get('total_price')
+    
+
+class OrderItemForm(forms.ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'quantity', 'price']
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(OrderItemForm, self).__init__(*args, **kwargs)
+        
+        # Configuración de Crispy Forms (opcional)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('product', css_class='mb-3'),
+            Field('quantity', css_class='mb-3'),
+            Field('price', css_class='mb-3', readonly=True),
+        )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        quantity = cleaned_data.get('quantity')
+        if quantity <= 0:
+            raise ValidationError("La cantidad debe ser mayor que cero.")
+        return cleaned_data
+

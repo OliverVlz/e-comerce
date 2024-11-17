@@ -48,6 +48,7 @@
         .footer {
             background-color:rgb(7, 52, 96);
             color: white;
+            margin-top: auto; /* El footer se mantiene abajo si el contenido es pequeño */
         }
         ul.list-unstyled li i {
             margin-left: 8px; /* Espacio entre el texto y el ícono */
@@ -104,11 +105,19 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                 <li><a class="dropdown-item" href="{% url 'user_profile' %}">Ver Perfil</a></li>
-                                {% if user.user_type != 1 %}
+                                {% if user.user_type == 1 %}
+                                    <li><a class="dropdown-item" href="{% url 'my_orders'%}">Mis Compras</a></li>
+                                {% elif user.user_type == 2 %}
                                     <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
-                                    <li><a class="dropdown-item" href="/admin/store/product/add/">Agregar Producto</a></li>
                                     <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/admin/store/order/">Pedidos</a></li>
+                                    <li><a class="dropdown-item" href="/admin/store/">Administrador</a></li>
+                                    <li><a class="dropdown-item" href="/admin/store/product/add/">Agregar Producto</a></li>
+                                
+                                {% elif user.user_type == 3 %}
+                                    <li><a class="dropdown-item" href="/admin/store/">Administrador</a></li>
                                 {% endif %}
+                                <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
                             </ul>
                         </div>
@@ -132,7 +141,7 @@
     </nav>
 
 <!-- Navbar MÓVIL -->
-    <nav class="navbar navbar-expand-lg navbar-dark d-md-none">
+<nav class="navbar navbar-expand-lg navbar-dark d-md-none">
     <div class="container d-flex justify-content-between align-items-center">
         <!-- Botón de menú -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,7 +156,7 @@
         <!-- Íconos (Usuario y carrito) -->
         <div class="d-flex align-items-center">
             {% if user.is_authenticated %}
-                <a href="{% url 'cart' %}" class="d-flex align-items-center text-light position-relative" style="margin-left: 100px;">
+                <a href="{% url 'cart' %}" class="d-flex position-relative">
                     <img id="cart-icon" src="{% static 'images/carritoA.svg' %}" alt="Cart" style="width: 30px; margin-bottom: 3px;">
                     <span id="cart-total" class="cart-count position-absolute" style="top: 0; margin: 0 0 16px 17px; color: rgb(7, 52, 96); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">{{ cart_items_count }}</span>
                 </a>
@@ -157,11 +166,20 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="{% url 'user_profile' %}">Ver Perfil</a></li>
-                        {% if user.user_type != 1 %}
+                        {% if user.user_type == 1 %}
+                            <li><a class="dropdown-item" href="{% url 'my_orders'%}">Mis Compras</a></li>
+                        
+                        {% elif user.user_type == 2 %}
                             <li><a class="dropdown-item" href="{% url 'distributor-products' %}">Mis Productos</a></li>
-                            <li><a class="dropdown-item" href="/admin/store/product/add/">Agregar Producto</a></li>
                             <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/admin/store/order/">Pedidos</a></li>
+                            <li><a class="dropdown-item" href="/admin/store/">Administrador</a></li>
+                            <li><a class="dropdown-item" href="/admin/store/product/add/">Agregar Producto</a></li>
+                        
+                        {% elif user.user_type == 3 %}
+                            <li><a class="dropdown-item" href="/admin/store/">Administrador</a></li>
                         {% endif %}
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
                     </ul>
                 </div>
