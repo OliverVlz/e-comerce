@@ -53,14 +53,23 @@
             margin-left: 8px; /* Espacio entre el texto y el ícono */
             vertical-align: middle; /* Alinea el ícono con el texto */
         }
+        @media (max-width: 992px) {
+            .contacto {
+                text-align: right; /* Asegura que el texto dentro de los <li> también esté alineado a la derecha */
+            }
+
+        }
 
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark mt-0">
+
+<!-- Navbar ESCRITORIO -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark mt-0 d-none d-md-block">
         <div class="container">
             <a class="navbar-brand" href="{% url 'store' %}">
-              <img src="{% static 'images/LogoPng.png' %}" alt="Logo" style="width: 150px; height: auto;">
+            <img src="{% static 'images/LogoPng.png' %}" alt="Logo" style="width: 150px; height: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -121,6 +130,68 @@
             </div>
         </div>
     </nav>
+
+<!-- Navbar MÓVIL -->
+    <nav class="navbar navbar-expand-lg navbar-dark d-md-none">
+    <div class="container d-flex justify-content-between align-items-center">
+        <!-- Botón de menú -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Logo -->
+        <a class="navbar-brand mx-auto" href="{% url 'store' %}">
+            <img src="{% static 'images/LogoPng.png' %}" alt="Logo" style="width: 120px; height: auto;">
+        </a>
+
+        <!-- Íconos (Usuario y carrito) -->
+        <div class="d-flex align-items-center">
+            {% if user.is_authenticated %}
+                <!-- Ícono de carrito -->
+                <a href="{% url 'cart' %}" class="d-flex align-items-center text-light position-relative me-3">
+                    <img id="cart-icon" src="{% static 'images/carritoA.svg' %}" alt="Cart" style="width: 30px;">
+                    <span id="cart-total" class="cart-count position-absolute" style="top: -1.2px; right: -1px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border-radius: 50%; width: 20px; height: 20px; font-size: 13px; display: flex; justify-content: center; align-items: center;">{{ cart_items_count }}</span>
+                </a>
+                <!-- Ícono de usuario -->
+                <div class="dropdown">
+                    <a class="dropdown-toggle text-light" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img id="user-icon" src="/static/images/usuario.svg" alt="user" style="width: 25px;">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="{% url 'user_profile' %}">Ver Perfil</a></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Salir</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{% url 'cart' %}" class="text-light me-3">
+                    <img id="cart-icon" src="{% static 'images/carritoB.svg' %}" alt="Cart" style="width: 25px;">
+                </a>
+                <a href="{% url 'login' %}" class="text-light">
+                    <img src="/static/images/usuario.svg" alt="Iniciar Sesión" style="width: 25px;">
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Menú desplegable (contenido central) -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'store' %}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'products' %}">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contacto</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
     
 
     <div class="container-global mt-0">
@@ -131,8 +202,8 @@
     <!-- Footer -->
     <footer class="footer text-white pt-5 pb-2">
         <div class="container">
-            <div class="row justify-content-between">
-                
+            <!-- Versión Desktop -->
+            <div class="row justify-content-between d-none d-lg-flex">
                 <!-- Logo y Descripción -->
                 <div class="col-lg-4 col-md-6 mb-4">
                     <a class="navbar-brand" href="{% url 'store' %}">
@@ -142,14 +213,13 @@
                 </div>
                 <!-- Redes Sociales -->
                 <div class="col-lg-4 col-md-6 mb-4 text-center">
-                    <h5 class="mb-3"> Síguenos</h5>
-                    <ul class="list-unstyled d-flex justify-content-lg-center justify-content-center">
+                    <h5 class="mb-3">Síguenos</h5>
+                    <ul class="list-unstyled d-flex justify-content-center">
                         <li><a href="https://www.facebook.com/EntelcoSAS" target="_blank" class="text-white me-3"><i class="fab fa-facebook-f"></i></a></li>
                         <li><a href="https://www.instagram.com/entelcosoluciones_net/" target="_blank" class="text-white me-3"><i class="fab fa-instagram"></i></a></li>
                         <li><a href="https://wa.me/573165259154" target="_blank" class="text-white"><i class="fab fa-whatsapp"></i></a></li>
                     </ul>
                 </div>
-
                 <!-- Información de Contacto -->
                 <div class="col-lg-4 col-md-6 text-lg-end">
                     <h5 class="mb-3">Contacto</h5>
@@ -160,11 +230,39 @@
                     </ul>
                 </div>
             </div>
-
+    
+            <!-- Versión Mobile -->
+            <div class="row d-lg-none text-center">
+                <!-- Logo -->
+                <div class="col-12 mb-3">
+                    <a class="navbar-brand" href="{% url 'store' %}">
+                        <img src="{% static 'images/LogoPng.png' %}" alt="Logo" style="width: 150px; height: auto;">
+                    </a>
+                    <p class="text-white mt-3">Energía Solar y Telecomunicaciones</p>
+                </div>
+                <!-- Redes Sociales y Contacto -->
+                <div class="col-4 redes">
+                    <h5 class="mb-3">Síguenos</h5>
+                    <ul class="list-unstyled d-flex justify-content-center">
+                        <li><a href="https://www.facebook.com/EntelcoSAS" target="_blank" class="text-white me-3"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="https://www.instagram.com/entelcosoluciones_net/" target="_blank" class="text-white me-3"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="https://wa.me/573165259154" target="_blank" class="text-white"><i class="fab fa-whatsapp"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-8 contacto">
+                    <h5 class="mb-3">Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li>Villavicencio-Meta <i class="fas fa-map-marker-alt"></i></li>
+                        <li>+57 316 5259154 <i class="fas fa-phone-alt"></i></li>
+                        <li><a href="mailto:entelcosoluciones@gmail.com" class="text-white">entelcosoluciones@gmail.com</a> <i class="fas fa-envelope"></i></li>
+                    </ul>
+                </div>
+            </div>
+    
             <!-- Términos y condiciones -->
-            <div class="row mt-2">
+            <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p class="terms">&copy;  {% now 'Y' %} Entelco. Todos los derechos reservados. | 
+                    <p class="terms">&copy; {% now 'Y' %} Entelco. Todos los derechos reservados. | 
                         <a href="#" class="text-white-50">Política de privacidad</a> | 
                         <a href="#" class="text-white-50">Términos y condiciones</a>
                     </p>
@@ -172,6 +270,7 @@
             </div>
         </div>
     </footer>
+    
 
     {% load django_browser_reload %}
     {% django_browser_reload_script %}

@@ -56,7 +56,7 @@
 
 
 <div class="container mt-5">
-    <div class="row gy-4">
+    <div class="row mb-4 rowBig">
         <!-- Producto grande ("A") -->
         <div class="col-lg-8 col-md-12 colA" style="padding-right: 4px;">
             <div class="card cardA shadow-sm h-100" style="padding: 5% 0 0 6%;">
@@ -109,7 +109,7 @@
                 </div>
         
                 <!-- Producto pequeño "C" -->
-                <div class="col-6 col-lg-12">
+                <div class="col-6 col-lg-12 colC">
                     <div class="card cardC shadow-sm h-100" style="padding: 6% 6% 6% 3%">
                         <div class="d-flex flex-wrap align-items-center flex-md-row flex-column">
                             <!-- Imagen -->
@@ -134,54 +134,80 @@
 
 
 
-
- 
-
-<!-- Beneficios adicionales --> 
-<div class="container mt-3">
-    <div class="row m-0 bg-white" style="padding: 15px 0 15px 12px; border-radius: 8px;">
+<!-- ******************** Beneficios adicionales *********************--> 
+<!-- Versión para escritorio -->
+<div class="container mt-3 d-none d-md-block">
+    <div class="row m-0 bg-white" style="padding: 15px 0; border-radius: 8px;">
         <!-- Beneficio 1 -->
-        <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+        <div class="col-3 col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
             <img src="./static/images/entrega.png" alt="Envío Rápido" class="img-fluid me-3" style="width: 43px;">
             <div>
-                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">
-                    ENTREGAS RÁPIDAS
-                </h3>
+                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">ENTREGAS RÁPIDAS</h3>
                 <p class="text-muted m-0" style="font-size: 0.9rem;">Envíos 24/7</p>
             </div>
         </div>
         <!-- Beneficio 2 -->
-        <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-            <img src="./static/images/colombia.png" alt="Envío Rápido" class="img-fluid me-3" style="width: 42px;">
+        <div class="col-3 col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+            <img src="./static/images/colombia.png" alt="Envío Nacional" class="img-fluid me-3" style="width: 42px;">
             <div>
-                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">
-                    ENVÍOS NACIONALES
-                </h3>
+                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">ENVÍOS NACIONALES</h3>
                 <p class="text-muted m-0" style="font-size: 0.9rem;">Cualquier parte del país</p>
             </div>
         </div>
         <!-- Beneficio 3 -->
-        <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-            <img src="./static/images/tarjeta.png" alt="Envío Rápido" class="img-fluid me-3" style="width: 55px;">
+        <div class="col-3 col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+            <img src="./static/images/tarjeta.png" alt="Pagos Seguros" class="img-fluid me-3" style="width: 55px;">
             <div>
-                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">
-                    PAGOS SEGUROS
-                </h3>
+                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">PAGOS SEGUROS</h3>
                 <p class="text-muted m-0" style="font-size: 0.9rem;">Tu pago está seguro</p>
             </div>
         </div>
         <!-- Beneficio 4 -->
-        <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-            <img src="./static/images/cliente.png" alt="Envío Rápido" class="img-fluid me-3" style="width: 55px;">
+        <div class="col-3 col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+            <img src="./static/images/cliente.png" alt="Soporte 24/7" class="img-fluid me-3" style="width: 55px;">
             <div>
-                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">
-                    SOPORTE 24/7
-                </h3>
+                <h3 class="text-beneficios m-0" style="font-size: 1rem; font-weight: bold;">SOPORTE 24/7</h3>
                 <p class="text-muted m-0" style="font-size: 0.9rem;">Llamadas / mensajes</p>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Versión para móvil -->
+<div class="container mt-3 d-md-none">
+    <div class="row m-0 bg-white" style="padding: 15px 0; border-radius: 8px;">
+        <!-- Beneficio 1 -->
+        <div class="col-3 d-flex flex-column align-items-center justify-content-center">
+            <div class="container-icons">
+                <img src="./static/images/entrega.png" alt="Envío Rápido" class="benefit-img">
+            </div>
+            <h3 class="benefit-title">ENTREGAS RÁPIDAS</h3>
+        </div>
+        <!-- Beneficio 2 -->
+        <div class="col-3 d-flex flex-column align-items-center justify-content-center">
+            <div class="container-icons">
+                <img src="./static/images/colombia.png" alt="Envío Nacional" class="benefit-img">
+            </div>
+            <h3 class="benefit-title">ENVÍOS NACIONALES</h3>
+        </div>
+        <!-- Beneficio 3 -->
+        <div class="col-3 d-flex flex-column align-items-center justify-content-center">
+            <div class="container-icons">
+                <img src="./static/images/tarjeta.png" alt="Pagos Seguros" class="benefit-img">
+            </div>
+            <h3 class="benefit-title">PAGOS SEGUROS</h3>
+        </div>
+        <!-- Beneficio 4 -->
+        <div class="col-3 d-flex flex-column align-items-center justify-content-center">
+            <div class="container-icons">
+                <img src="./static/images/cliente.png" alt="Soporte 24/7" class="benefit-img">
+            </div>
+            <h3 class="benefit-title">SOPORTE 24/7</h3>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- ********************* OFERTAS ESPECIALES *******************-->
 
@@ -195,9 +221,9 @@
     <!-- Sección de ofertas -->
     <div class="row mt-4">
         <!-- Oferta Principal (Columna grande) -->
-        <div class="col-lg-6 mb-4" style="padding-right: 3px;">
-            <div class="card shadow-lg h-100" style="padding: 2rem 1.8rem 0 1.8rem;">
-                <div class="d-flex justify-content-center align-items-center">
+        <div class="col-lg-6 col-md-12 mb-4 colA-OE" style="padding-right: 3px;">
+            <div class="card shadow-lg h-100 cardA-OE" style="padding: 2rem 1.8rem 0 1.8rem;">
+                <div class="d-flex justify-content-center align-items-center position-relative">
                     <img src="./static/images/prom-paneles.png" class="card-img-top" alt="Oferta principal" style="max-width: 70%; height: auto;">
                     <span class="badge bg-danger position-absolute top-0 end-0 m-2">20% OFF</span>
                 </div>
@@ -208,16 +234,16 @@
                         <strong class="text-primary"> $1'600.000</strong>
                     </p>
                     <p>Incluye paneles solares de distintas capacidades para cubrir el consumo familiar. Ahorra 20% y obtén soporte técnico gratis el primer año.</p>
-                    <a href="#" class="btn btn-success">CONOCE EL PACK FAMILIAR ></a>
+                    <a href="#" class="btn btn-success boton-oferton">CONOCE EL PACK FAMILIAR ></a>
                 </div>
             </div>
         </div>
 
         <!-- Ofertas Secundarias (Tarjetas pequeñas) -->
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-12">
             <div class="row">
                 <!-- Oferta 1 (Cámaras) -->
-                <div class="col-md-6" style="padding: 0 3px; margin-bottom: 6px;">
+                <div class="col-6 col-md-6 colB-OE" style="padding: 0 3px; margin-bottom: 6px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
                         <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
                             <img src="./static/images/prom-camaras.png" class="card-img-top img-fluid" alt="Cámaras de vigilancia" style="padding-top: 1.8rem; max-width: 62%; height: auto;">
@@ -228,8 +254,8 @@
                                 <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
                             </div>
                         </div>
-                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title"><strong>Cámaras de vigilancia WIFI con Visión Nocturna X2</strong></h6>
+                        <div class="card-body d-flex flex-column justify-content-center cardB-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title title-limited"><strong>Cámaras de vigilancia WIFI con Visión Nocturna X2</strong></h6>
                             <div class="card-text">
                                 <del>$2'000.000</del>
                                 <strong class="text-primary"> $120.000</strong>
@@ -239,7 +265,7 @@
                 </div>
         
                 <!-- Oferta 2 (Lámpara) -->
-                <div class="col-md-6" style="padding-left: 3px; margin-bottom: 6px;">
+                <div class="col-6 col-md-6 colC-OE" style="padding-left: 3px; margin-bottom: 6px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
                         <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
                             <img src="./static/images/prom-lampara.png" class="card-img-top img-fluid" alt="Lámpara Solar" style="padding-top: 1.5rem; max-width: 70%; height: auto;">
@@ -250,8 +276,8 @@
                                 <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
                             </div>
                         </div>
-                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title"><strong>Lámpara Solar Todo en Uno 50W-500W</strong></h6>
+                        <div class="card-body d-flex flex-column justify-content-center cardC-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title title-limited"><strong>Lámpara Solar Todo en Uno 50W-500W</strong></h6>
                             <div class="card-text">
                                 <del>$2'000.000</del>
                                 <strong class="text-primary"> $120.000</strong>
@@ -261,7 +287,7 @@
                 </div>
         
                 <!-- Oferta 3 (Batería) -->
-                <div class="col-md-6 mb-4" style="padding: 0 3px;">
+                <div class="col-6 col-md-6 mb-4 colD-OE" style="padding: 0 3px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
                         <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
                             <img src="./static/images/prom-bateria.png" class="card-img-top img-fluid" alt="Batería GEL" style="padding-top: 1.8rem; max-width: 60%; height: auto;">
@@ -272,8 +298,8 @@
                                 <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
                             </div>
                         </div>
-                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title"><strong>Batería GEL de ciclo profundo Aokly 12V 40AH</strong></h6>
+                        <div class="card-body d-flex flex-column justify-content-center cardD-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title title-limited"><strong>Batería GEL de ciclo profundo Aokly 12V 40AH</strong></h6>
                             <div class="card-text">
                                 <del>$2'000.000</del>
                                 <strong class="text-primary"> $120.000</strong>
@@ -283,7 +309,7 @@
                 </div>
         
                 <!-- Oferta 4 (Congelador) -->
-                <div class="col-md-6 mb-4" style="padding-left: 3px;">
+                <div class="col-6 col-md-6 mb-4 colE-OE" style="padding-left: 3px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
                         <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
                             <img src="./static/images/prom-congelador.png" class="card-img-top img-fluid" alt="Congelador Solar" style="padding-top: 2rem; max-width: 50%; height: auto;">
@@ -294,8 +320,8 @@
                                 <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
                             </div>
                         </div>
-                        <div class="card-body d-flex flex-column justify-content-center" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title"><strong>Congelador Solar Doble Tapa 430LT - 710LT</strong></h6>
+                        <div class="card-body d-flex flex-column justify-content-center cardE-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                            <h6 class="card-title title-limited"><strong>Congelador Solar Doble Tapa 430LT - 710LT</strong></h6>
                             <div class="card-text">
                                 <del>$2'000.000</del>
                                 <strong class="text-primary"> $120.000</strong>
@@ -308,11 +334,11 @@
     </div>
 </div>
 
-<!-- CATEGORIAS DESTACADAS -->
-<div class="container mt-4 mb-5">
+<!-- CATEGORIAS DESTACADAS VERSION ESCRITORIO-->
+<div class="container mt-4 mb-5 d-none d-md-block">
     <!-- Título de la sección -->
-    <div class="col-12 text-center">
-        <h1 class="text-white py-3 rounded mb-4" style="font-weight: bold; font-size: 1.6rem; background-color: rgba(0, 0, 0, 0.282);">CATEGORÍAS DESTACADAS</h1>
+    <div class="col-12 text-center mb-4">
+        <h1 class="text-white py-3 rounded" style="font-weight: bold; font-size: 1.6rem; background-color: rgba(0, 0, 0, 0.282);">CATEGORÍAS DESTACADAS</h1>
     </div>
 
     <!-- Categorías -->
@@ -367,8 +393,179 @@
     </div>
 </div>
 
+<!-- CATEGORIAS DESTACADAS VERSION MOVIL-->
+
+<div class="container mt-4 d-md-none">
+    <!-- Título de la sección -->
+    <div class="col-12 text-center">
+        <h1 class="text-white py-3 rounded" style="font-weight: bold; font-size: 1.6rem; background-color: rgba(0, 0, 0, 0.282);">CATEGORÍAS DESTACADAS</h1>
+    </div>
+</div>
+
+<div id="customCardCarousel" class="carousel slide carousel-custom d-md-none mb-4" data-bs-ride="carousel" data-bs-interval="50000">
+    <!-- Contenedor de las cards -->
+    <div class="carousel-inner carousel-custom-inner">
+        <!-- Item 1 -->
+        <div class="carousel-item active carousel-custom-item">
+            <div class="card-custom">
+                <img src="./static/images/sist-fotovoltaicos.png" class="card-custom-img" alt="Sistemas Fotovoltaicos">
+                <div class="card-custom-body">
+                    <h4 class="card-custom-title">Sistemas Fotovoltaicos</h4>
+                    <p class="card-custom-text">
+                        Soluciones solares para hogares y empresas. Sistemas conectados a la red o aislados con almacenamiento. La opción ideal para cada necesidad.
+                    </p>
+                    <a href="{% url 'products' %}#sistemas-fotovoltaicos" class="card-custom-btn">Ver Sistemas Fotovoltaicos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="carousel-item carousel-custom-item">
+            <div class="card-custom">
+                <img src="./static/images/electrodomesticos.png" class="card-custom-img" alt="Electrodomésticos Solares">
+                <div class="card-custom-body">
+                    <h4 class="card-custom-title">Electrodomésticos Solares</h4>
+                    <p class="card-custom-text">
+                        Electrodomésticos diseñados para funcionar con energía solar. Desde refrigeradores hasta aires acondicionados, descubre opciones eficientes y sostenibles.
+                    </p>
+                    <a href="{% url 'products' %}#electrodomesticos-solares" class="card-custom-btn">Ver Electrodomésticos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="carousel-item carousel-custom-item">
+            <div class="card-custom">
+                <img src="./static/images/conectividad.png" class="card-custom-img" alt="Conectividad y Seguridad">
+                <div class="card-custom-body">
+                    <h4 class="card-custom-title">Conectividad y Seguridad</h4>
+                    <p class="card-custom-text">
+                        Soluciones de conectividad y seguridad para hogar o negocio. Desde routers y cámaras hasta sistemas de domótica, mejora tu red y privacidad.
+                    </p>
+                    <a href="{% url 'products' %}#conectividad-y-seguridad" class="card-custom-btn">Explorar Productos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controles -->
+    <button class="carousel-control-prev carousel-custom-control-prev" type="button" data-bs-target="#customCardCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon carousel-custom-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next carousel-custom-control-next" type="button" data-bs-target="#customCardCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon carousel-custom-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+
+
 
 <style>
+
+.carousel-custom {
+    width: 100%;
+    height: 5% !important;
+    margin: auto;
+}
+
+.carousel-custom-inner {
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    justify-content: start;
+    height: 480px !important;
+    
+}
+
+.carousel-custom-item.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.4s ease-in-out;
+    height: 100% !important;
+}
+.carousel-item:not(.active) {
+    height: 100% !important;
+    
+}
+
+/* Estilo para los elementos en espera (próximo y anterior) */
+.carousel-item-next,
+.carousel-item-prev {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.9); /* Escala más pequeña */
+    opacity: 0.8; /* Reduce la visibilidad para los elementos en espera */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.carousel-custom-control-prev-icon, .carousel-custom-control-next-icon {
+    background-color: #0000004d;
+    border-radius: 50%; /* Redondea el ícono */
+
+}
+
+.card-custom {
+    width: 95%;
+    background: #ffffff;
+    border-radius: 10px;
+    
+}
+
+.card-custom-img {
+    max-height: 200px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border-radius: 10px 10px 0 0;
+}
+
+.card-custom-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 30px 20px 30px;
+}
+
+.card-custom-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-custom-text {
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.card-custom-btn {
+    width: 100%;
+    text-align: center;
+    padding: 8px 15px;
+    font-size: 1rem;
+    color: #fff;
+    font-weight: bold;
+    background-color: #96c952;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+/***************************************************************************/
+
     /* Estilo para hacer que el banner del carrusel ocupe toda la pantalla */
 
     .carousel, .carousel-inner, .carousel-item {
@@ -487,8 +684,18 @@
         font-weight: bold;
     }
 
-    
+
     /* -----------------Estilos para la sección de ofertas especiales --------------------*/
+
+    .title-limited {
+        display: -webkit-box; /* Habilita el modo de contenedor flexible */
+        -webkit-line-clamp: 2; /* Limita el texto a dos líneas */
+        line-clamp: 2; /* Limita el texto a dos líneas */
+        -webkit-box-orient: vertical; /* Configura la orientación del contenedor */
+        overflow: hidden; /* Oculta el texto excedente */
+        text-overflow: ellipsis; /* Añade "..." al final si el texto es demasiado largo */
+        height: calc(1.2em * 2); /* Altura calculada para exactamente dos líneas */
+    }
 
     .icon-container {
         display: flex;
@@ -574,7 +781,18 @@
         color: #0d6efd;
         font-weight: bold !important; 
     }
+
+    
 @media (max-width: 768px) {
+
+    .navbar-collapse {
+        background-color: rgba(17, 17, 17, 0.671); /* Cambia el color de fondo del menú desplegable */
+        padding: 20px;
+    }
+
+    .navbar-collapse .nav-link {
+        color: white; /* Asegura que los enlaces sean legibles */
+    }
 
     /* Estilos carousel para dispositivos móviles */
     .carousel-title{
@@ -630,6 +848,12 @@
     .imgA-desktop {
         display: none;
     }
+    .rowBig{
+        margin-bottom:0 !important; 
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 6px; 
+    }
     .colA{
         padding: 0 12px !important;
     }
@@ -671,15 +895,15 @@
     .imgA {
         max-height: 250px !important;
     }
-    .col-lg-8 {
-        width: 100%;
+
+
+    .colC{
+        padding-left: 3px !important;
     }
-
-
-
     /* Productos pequeños lado a lado */
     .colB{
         margin:0 !important;
+        padding-right: 3px !important;
     }
     .cardB{
         padding: 6% !important;
@@ -732,12 +956,56 @@
         font-size: 1rem !important;
         width: 100% !important;
     }
-    /* Productos pequeños lado a lado */
-    .col-lg-4 .col-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
+
+
+/******************* Beneficios adicionales *********************** */
+
+    /* Estilo para las imágenes */
+    .benefit-img {
+        max-width: 40px;
+        height: auto;
+        object-fit: contain;
     }
-    
+
+    /* Títulos */
+    .benefit-title {
+        color:#333;
+        font-size: 0.8rem;
+        text-align: center;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    .container-icons {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: #ebecec6c; 
+    }
+
+/********************** Ofertas especiales *********************/
+
+    .colA-OE {
+        padding-right: 12px !important;
+        margin-bottom: 6px !important;
+    }
+    .boton-oferton {
+        width: 100% !important;
+        font-size: 1rem;
+    }
+    .colB-OE, .colD-OE{
+        padding-left: 12px !important; 
+    }
+
+    .cardA-OE {
+        padding: 1.5rem 1.2rem 1.5rem 1.2rem !important;
+    }
+
+    .cardB-OE, .cardC-OE, .cardD-OE, .cardE-OE {
+        padding: 0.5rem 1rem !important;
+    }
 }
 </style>
 {% endblock content %}
