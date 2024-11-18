@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.env
+
+# Django
+db.sqlite3  # Si usas SQLite (en este caso no aplica, pero por si acaso)
+*.log       # Archivos de logs
+
+# Node.js (si tienes frontend o usas npm)
+node_modules/
+*.lock
+
+# Virtualenv
+.env/
+.venv/
+
+# Docker
+*.pid
+*.seed
+postgres_data/  # Si defines un volumen local para datos de PostgreSQL
+
+# IDEs y editores
+.vscode/
+.idea/
