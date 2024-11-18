@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16.3
+    container_name: ecommerce_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecommerce1.0
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce_web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  pgadmin:
+    image: dpage/pgadmin4  # Usa la imagen oficial de pgAdmin
+    container_name: pgadmin  # Nombre del contenedor
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com  # Usuario por defecto para acceder a pgAdmin
+      - PGADMIN_DEFAULT_PASSWORD=admin        # Contraseña por defecto para acceder
+    ports:
+      - "80:80"  # Mapea el puerto 80 del contenedor al puerto 80 del host
+    depends_on:
+      - db  # Esto asegura que el servicio 'db' (PostgreSQL) esté disponible antes de iniciar pgAdmin
+
+
+volumes:
+  postgres_data:

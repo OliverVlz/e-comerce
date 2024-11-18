@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-g)rzfco^v@ksk=5hhhmbb)pu$$lb&s!mspk+fs27)azn4e($&t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
 
 
 # Application definition
@@ -86,7 +87,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommerce3.0',
+        'NAME': 'ecommerce1.0',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'db',
