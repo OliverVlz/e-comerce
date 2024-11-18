@@ -1,6 +1,6 @@
 # **Ecommerce Application**
 
-¡Bienvenido al repositorio de **Ecommerce Application**! Este proyecto es una aplicación de comercio electrónico construida con Django y PostgreSQL. Está diseñado para ser ejecutado fácilmente en cualquier entorno utilizando Docker.
+¡Bienvenido al repositorio de **Ecommerce Application**! Este proyecto es una aplicación de comercio electrónico construida con Django, Bootstrap y PostgreSQL. Está diseñado para ser ejecutado fácilmente en cualquier entorno utilizando Docker.
 
 ## **Características**
 - Gestión de usuarios (Clientes, Distribuidores y Administradores).
@@ -28,24 +28,7 @@ cd ecommerce
 
 ---
 
-## **Configuración inicial**
 
-### **Variables de entorno**
-Edita el archivo `settings.py` o utiliza un archivo `.env` (si lo implementas) para definir las variables de configuración:
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommerce1.0',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432',
-    }
-}
-```
-
----
 
 ## **Ejecución del proyecto con Docker**
 
@@ -61,27 +44,37 @@ DATABASES = {
    http://localhost:8000
    ```
 
-3. **Acceder a pgAdmin**
-   Si necesitas acceder a la base de datos, puedes usar pgAdmin:
-   ```
-   http://localhost
-   ```
-   **Credenciales de acceso:**
-   - Usuario: `admin@admin.com`
-   - Contraseña: `admin`
+3. ### Miniguía para ingresar a **pgAdmin** con las configuraciones actuales:
 
-4. **Cargar un backup de la base de datos (opcional)**
-   Si tienes un backup existente, colócalo en el directorio raíz del proyecto y asegúrate de que esté referenciado en el `docker-compose.yml`:
-   ```yml
-   volumes:
-     - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql
-   ```
+    #### **Paso 1: Acceder a pgAdmin**
+    1. Abre tu navegador y dirígete a `http://localhost`.
+    2. Inicia sesión utilizando las credenciales configuradas en tu archivo `docker-compose.yml`:
+       - **Correo**: `admin@admin.com`
+       - **Contraseña**: `admin`
+    
+    ---
+    
+    #### **Paso 2: Configurar un nuevo servidor en pgAdmin**
+    1. Haz clic en **"Agregar un Nuevo Servidor"**.
+    2. En la pestaña **General**:
+       - Asigna un nombre al servidor, como: `PostgreSQL Local`.
+    
+    3. Cambia a la pestaña **Conexión** y completa los campos:
+       - **Nombre/Dirección del servidor**: `db` (es el nombre del servicio configurado en Docker).
+       - **Puerto**: `5432` (puerto estándar para PostgreSQL).
+       - **Base de datos de mantenimiento**: `postgres` (base de datos inicial).
+       - **Nombre de usuario**: `postgres`.
+       - **Contraseña**: `postgres`.
+    
+    4. Haz clic en **Salvar**.
 
-   Luego, reconstruye los contenedores:
-   ```bash
-   docker-compose down
-   docker-compose up --build
-   ```
+---
+
+#### **Paso 3: Ver la base de datos y tablas**
+1. En el panel izquierdo, selecciona el servidor recién configurado (`PostgreSQL Local`).
+2. Navega a:
+   - **Bases de Datos → ecommerce1.0 → Schemas → public → Tables**.
+3. Aquí puedes explorar y administrar las tablas, datos y relaciones.
 
 ---
 
