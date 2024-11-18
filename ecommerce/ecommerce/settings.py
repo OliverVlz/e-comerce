@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,11 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g)rzfco^v@ksk=5hhhmbb)pu$$lb&s!mspk+fs27)azn4e($&t'
+SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -85,15 +85,24 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommerce1.0',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default='postgresql://postgres:postgres@db:5432/ecommerce1.0'),
+        conn_max_age=600,
+    )
 }
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Seguridad en producción
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000  # Un año
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
 
 
 # Password validation
