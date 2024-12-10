@@ -174,12 +174,17 @@ class ProductAttributeInline(admin.TabularInline):
             return qs.filter(product__distributor=request.user.distributor_profile)
         return qs
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'price', 'ref','is_active', 'stock', 'category', 'created_at')
+    list_display = ('name', 'slug', 'price', 'is_discounted', 'discounted_price', 'discount_percentage', 'ref','is_active', 'stock', 'category', 'created_at')
     search_fields = ('name', 'slug', 'ref', 'is_active')
-    list_filter = ('category', 'distributor', 'stock', 'created_at')
-    list_editable = ('is_active',)
+    list_filter = ('category', 'distributor', 'is_discounted', 'stock', 'created_at')
+    list_editable = ('is_active','is_discounted', 'discounted_price')
     inlines = [ProductAttributeInline]
 
+    def get_readonly_fields(self, request, obj=None):
+        # Hacer que el porcentaje de descuento sea solo lectura
+        readonly_fields = ['discount_percentage']
+        return readonly_fields
+    
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return _get_user_queryset(request, qs)

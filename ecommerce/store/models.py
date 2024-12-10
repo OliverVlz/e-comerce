@@ -16,6 +16,10 @@ class CustomUser(AbstractUser):
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES, null=True, default=1)
     phone_number = models.CharField(max_length=15, blank=True)
 
+    class Meta:
+        verbose_name = 'Usuario'
+        verbose_name_plural = 'Usuarios'
+
     def __str__(self):
         return self.username
 
@@ -27,6 +31,9 @@ class Distributor(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
+    class Meta:
+        verbose_name = 'Distribuidor'
+        verbose_name_plural = 'Distribuidores'
 
     def __str__(self):
         return self.company_name
@@ -39,6 +46,10 @@ class Category(models.Model):
     image = models.ImageField(upload_to='category_images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     
+    class Meta:
+        verbose_name = 'Categoría'
+        verbose_name_plural = 'Categorías'
+
     def __str__(self):
         return self.name
 
@@ -67,11 +78,34 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     is_active = models.BooleanField(default=True)
 
+    is_discounted = models.BooleanField(default=False, verbose_name="¿Está en descuento?")
+    discounted_price = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,  
+        blank=True, 
+        null=True, 
+        verbose_name="Precio con descuento"
+    )
+    discount_percentage = models.DecimalField(
+        max_digits=5, 
+        decimal_places=2, 
+        blank=True, 
+        null=True, 
+        verbose_name="Porcentaje de descuento (%)"
+    )   
+        
+    class Meta:
+        verbose_name = 'Producto'
+        verbose_name_plural = 'Productos'
+
     def clean(self):
         if self.price < 0:
             raise ValidationError('The price cannot be negative.')
         if self.stock < 0:
             raise ValidationError('The stock cannot be negative.')
+        if self.is_discounted and self.discounted_price is not None:
+            if self.discounted_price >= self.price:
+                raise ValidationError("El precio con descuento debe ser menor al precio original.")
 
     def save(self, *args, **kwargs):
         self.clean()
@@ -79,11 +113,25 @@ class Product(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+        # Si hay un precio con descuento, calcula el porcentaje
+        if self.is_discounted and self.discounted_price:
+            self.discount_percentage = (
+                ((self.price - self.discounted_price) / self.price) * 100
+            )
+        else:
+            self.discounted_price = None
+            self.discount_percentage = None
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 class AttributeName(models.Model):
     name = models.CharField(max_length=255)
+
+    class Meta: 
+        verbose_name = 'Nombre de Atributo'
+        verbose_name_plural = 'Nombres de Atributos'
 
     def __str__(self):
         return self.name
@@ -110,6 +158,10 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Orden'
+        verbose_name_plural = 'Órdenes'
 
     def __str__(self):
         return f"Order {self.id} - {self.customer.username} - {self.get_status_display()}"
