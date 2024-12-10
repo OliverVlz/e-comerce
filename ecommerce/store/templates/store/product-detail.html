@@ -1,4 +1,5 @@
 {% extends 'store/main.html' %}
+{% load custom_filters %}  
 {% load static %}
 {% block content %}
 
@@ -18,8 +19,8 @@
         <div class="col-lg-5 col-md-12 d-flex">
             <div class="product-details-wrapper p-5 bg-white shadow-sm rounded w-100 d-flex flex-column" style="border: 1px solid #dee2e6;">
                 <h2 class="mb-3">{{ product.name }}</h2>
-                <h4 class="text-success mb-3"><strong>${{ product.price|floatformat:2 }}</strong></h4>
-                <p class="text-muted mb-0"><strong>Referencia: </strong> {{ product.sku }}</p>
+                <h4 class="text-success mb-3"><strong>${{ product.price|format_cop }}</strong></h4>
+                <p class="text-muted mb-0"><strong>Referencia: </strong> {{ product.ref }}</p>
                 
                 <!-- Envío a toda Colombia -->
                 <p class="text-muted mt-3 mb-3"><strong>Envíos a todo Colombia</strong></p>
@@ -96,7 +97,7 @@
                                 <h3 class="card-title text-center" style="font-size: 1.1rem; padding-left: 4%;">{{ similar_product.name|truncatechars:30 }}</h3>
                             </div>
                             <div class="card-footer bg-white text-center">
-                                <p class="text-success fw-bold mb-0">${{ similar_product.price|floatformat:2 }}</p>
+                                <p class="text-success fw-bold mb-0">${{ similar_product.price|format_cop }}</p>
                             </div>
                         </div>
                     </a>

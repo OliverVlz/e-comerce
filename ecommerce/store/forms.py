@@ -75,7 +75,7 @@ class UserLoginForm(AuthenticationForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'sku', 'category', 'brand', 'stock', 'image']
+        fields = ['name', 'description', 'price', 'ref', 'category', 'brand', 'stock', 'image']
         
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),

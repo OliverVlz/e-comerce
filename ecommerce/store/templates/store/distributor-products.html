@@ -1,4 +1,5 @@
 {% extends 'store/main.html' %}
+{% load custom_filters %}
 {% load static %}
 {% block content %}
 <div class="container mt-5 mb-5">
@@ -27,8 +28,8 @@
                     <!-- Detalles del producto -->
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title product-title text-truncate" title="{{ product.name }}">{{ product.name }}</h5>
-                        <p class="card-text text-muted mb-2">Código: <span class="fw-semibold">{{ product.sku }}</span></p>
-                        <p class="card-text mt-auto"><strong>${{ product.price|floatformat:2 }}</strong></p>
+                        <p class="card-text text-muted mb-2">Código: <span class="fw-semibold">{{ product.ref }}</span></p>
+                        <p class="card-text mt-auto"><strong>${{ product.price|format_cop }}</strong></p>
                     </div>
                     
                     <!-- Botón de acción -->

@@ -1,4 +1,5 @@
 {% extends 'store/main.html' %}
+{% load custom_filters %}
 {% load static %}
 {% block content %}
 
@@ -70,7 +71,7 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
-                            <p class="mb-0"><strong>${{ item.get_total_item_price }}</strong></p>
+                            <p class="mb-0"><strong>${{ item.get_total_item_price|format_cop }}</strong></p>
                         </div>
                     </div>
                     <hr>
@@ -80,7 +81,7 @@
                 <!-- Resumen Total -->
                 <div class="d-flex justify-content-between mt-3">
                     <h5 class="mb-0">Items: <strong>{{ order.items.count }}</strong></h5>
-                    <h5 class="mb-0">Total: <strong>${{ order.get_total_price }}</strong></h5>
+                    <h5 class="mb-0">Total: <strong>${{ order.get_total_price|format_cop }}</strong></h5>
                 </div>
             </div>
         </div>

@@ -174,8 +174,8 @@ class ProductAttributeInline(admin.TabularInline):
             return qs.filter(product__distributor=request.user.distributor_profile)
         return qs
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'price', 'sku','is_active', 'stock', 'category', 'created_at')
-    search_fields = ('name', 'slug', 'sku', 'is_active')
+    list_display = ('name', 'slug', 'price', 'ref','is_active', 'stock', 'category', 'created_at')
+    search_fields = ('name', 'slug', 'ref', 'is_active')
     list_filter = ('category', 'distributor', 'stock', 'created_at')
     list_editable = ('is_active',)
     inlines = [ProductAttributeInline]

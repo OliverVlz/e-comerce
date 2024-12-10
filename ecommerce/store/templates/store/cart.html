@@ -1,4 +1,5 @@
 {% extends 'store/main.html' %}
+{% load custom_filters %}
 {% load static %}
 {% block content %}
 <div class="container my-4 mb-5">
@@ -10,7 +11,7 @@
             <div class="card p-3 shadow-sm w-100">
                 <div class="d-flex justify-content-between align-items-center">
                     <a class="btn btn-outline-dark d-none d-md-block" href="{% url 'products' %}">&#x2190; Volver</a>
-                    <h5 class="total">Total: <strong>${{ order.get_total_price }}</strong></h5>
+                    <h5 class="total">Total: <strong>${{ order.get_total_price|format_cop }}</strong></h5>
                     <a class="btn btn-primary fw-bold" href="{% url 'checkout' %}">Continuar</a>
                 </div>
             </div>
@@ -30,7 +31,7 @@
                     <!-- Detalles del producto -->
                     <div class="flex-grow-1">
                         <h5 class="fw-bold mb-1">{{ item.product.name }}</h5>
-                        <p class="text-muted mb-2">Precio: ${{ item.price }}</p>
+                        <p class="text-muted mb-2">Precio: ${{ item.price|format_cop }}</p>
 
                         <!-- Controles de cantidad -->
                         <div class="d-flex align-items-center">
@@ -53,7 +54,7 @@
                 
                 <!-- Precio total del producto -->
                 <div class="text-end mt-2">
-                    <strong>Total: ${{ item.get_total_item_price }}</strong>
+                    <strong>Total: ${{ item.get_total_item_price|format_cop }}</strong>
                 </div>
             </div>
         </div>

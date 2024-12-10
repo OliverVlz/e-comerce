@@ -1,4 +1,5 @@
 {% extends 'store/main.html' %}
+{% load custom_filters %}
 {% load static %}
 {% block content %}
 <div class="container mt-4">
@@ -38,13 +39,13 @@
                         <p class="mb-0 fw-bold">{{ item.product.name }}</p>
                         <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
                     </div>
-                    <p class="mb-0 fw-bold text-end">${{ item.get_total_item_price }}</p>
+                    <p class="mb-0 fw-bold text-end">${{ item.get_total_item_price|format_cop }}</p>
                 </div>
                 {% endfor %}
 
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-0 fw-bold">Total: ${{ order.get_total_price }}</p>
+                    <p class="mb-0 fw-bold">Total: ${{ order.get_total_price|format_cop }}</p>
                     
                 </div>
             </div>
