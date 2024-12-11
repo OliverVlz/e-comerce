@@ -16,6 +16,15 @@
         {% for product in products %}
         <div class="col-6 col-lg-3 col-md-6 mb-4">
             <div class="card h-100 shadow-sm border-0 rounded">
+                {% if not product.is_active %}
+                    <span class="badge bg-secondary position-absolute top-0 end-0 m-2">
+                        Agotado
+                    </span>
+                {% elif product.discount_percentage %}
+                <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                    OFERTA
+                </span>
+                {% endif %}
                 <a href="{% url 'product_detail' product.slug %}" class="stretched-link text-decoration-none text-reset">
                     <div class="space-images d-flex justify-content-center align-items-center bg-light" 
                         style="padding: 1rem; overflow: hidden; aspect-ratio: 1;">

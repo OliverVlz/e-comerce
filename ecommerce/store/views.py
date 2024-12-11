@@ -6,7 +6,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
-
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 import random
 
@@ -87,20 +88,63 @@ def cart(request):
     return render(request, 'store/cart.html', context)
 
 @login_required
+def cart_view(request):
+    order, created = Order.objects.get_or_create(customer=request.user, status='pending')
+    unavailable_items = [item for item in order.items.all() if not item.product.is_active]
+
+    if unavailable_items:
+        messages.info(
+            request, 
+            "Algunos productos de tu carrito no están disponibles. Por favor, elimínalos para continuar con la compra."
+        )
+
+    context = {
+        'order': order,
+        'unavailable_items': unavailable_items,
+        'total_price': order.get_total_price()  # Usar el cálculo actualizado
+    }
+    return render(request, 'store/cart.html', context)
+
+@login_required
+def remove_unavailable_items(request):
+    # Obtener el pedido "pendiente" del usuario
+    order = Order.objects.filter(customer=request.user, status='pending').first()
+
+    if order:
+        # Eliminar productos no disponibles
+        order.items.filter(product__is_active=False).delete()
+
+    # Redirigir al checkout
+    return redirect('checkout')
+
+@login_required
 def checkout(request):
-    # Obtener el pedido "pendiente" (carrito) del usuario
     order = get_object_or_404(Order, customer=request.user, status='pending')
 
+    # Verificar si hay productos no disponibles
+    unavailable_items = [item for item in order.items.all() if not item.product.is_active]
+
+    if unavailable_items:
+        # Construir la URL para eliminar elementos no disponibles
+        remove_items_url = reverse('remove_unavailable_items')
+        
+        # Mostrar mensaje de advertencia con un botón
+        messages.warning(
+            request, 
+            mark_safe(  # Permitir HTML en el mensaje
+                f"No puedes proceder al checkout porque hay productos no disponibles en tu carrito. "
+                f"Por favor, <a href='{remove_items_url}' class='btn btn-sm btn-danger'>elimina y continúa</a>."
+            )
+        )
+        return redirect('cart')
+
     if request.method == 'POST':
-        # Cambiar el estado a "processed" para confirmar el pedido
+        # Confirmar pedido
         order.status = 'processed'
         order.get_total_price()
         order.save()
-
-        # Mostrar una página de éxito o redirigir
         return render(request, 'store/checkout_success.html', {'order': order})
 
-    # Mostrar la página de checkout
     context = {'order': order}
     return render(request, 'store/checkout.html', context)
 

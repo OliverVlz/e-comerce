@@ -25,4 +25,5 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('contact/', views.contact, name='contact'),
     path('mis-compras/', views.my_orders, name='my_orders'),
+    path('remove-unavailable-items/', views.remove_unavailable_items, name='remove_unavailable_items'),
 ]

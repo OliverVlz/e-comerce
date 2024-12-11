@@ -187,9 +187,11 @@ class Order(models.Model):
         return f"Order {self.id} - {self.customer.username} - {self.get_status_display()}"
 
     def get_total_price(self):
-        total = sum(item.get_total_item_price() for item in self.items.all())
-        self.total_price = total
-        self.save()
+        total = sum(
+            item.get_total_item_price() 
+            for item in self.items.all() 
+            if item.product.is_active  # Excluir productos no activos
+        )
         return total
 
 class OrderItem(models.Model):

@@ -113,7 +113,11 @@
                                             alt="{{ product.name }}" 
                                             style="object-fit: contain; max-height: 100%; width: auto;">
                                     </div>
-                                    {% if product.discount_percentage %}
+                                    {% if not product.is_active %}
+                                        <span class="badge bg-secondary position-absolute top-0 end-0 m-2">
+                                            Agotado
+                                        </span>
+                                    {% elif product.discount_percentage %}
                                     <span class="badge bg-danger position-absolute top-0 end-0 m-2">
                                         OFERTA
                                     </span>
@@ -128,9 +132,15 @@
                                         <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-success1 btn-sm flex-grow-1 text-center me-2">
                                             Detalles
                                         </a>
-                                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 30px;">
-                                            <img src="{% static '/images/carritoB.svg' %}" alt="Carrito de compras" style="width: 18px; height: 18px;">
-                                        </a>
+                                        {% if product.is_active %}
+                                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 30px;">
+                                                <img src="{% static '/images/carritoB.svg' %}" alt="Carrito de compras" style="width: 18px; height: 18px;">
+                                            </a>
+                                        {% else %}
+                                            <a href="#" class="btn btn-secondary btn-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 30px;">
+                                                <img src="{% static '/images/carritoB.svg' %}" alt="Carrito de compras" style="width: 18px; height: 18px;">
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </a>

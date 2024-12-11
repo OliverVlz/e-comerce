@@ -7,13 +7,15 @@
     <div class="row align-items-stretch m-0">
         <!-- Imagen del producto -->
         <div class="col-lg-7 col-md-12 parte-izquierda bg-white shadow-md rounded d-flex justify-content-center align-items-center">
-            <div class="">
-                {% if product.discount_percentage %}
+            {% if not product.is_active %}
+                <span class="badge bg-secondary position-absolute top-0 end-0 m-3">
+                    Agotado
+                </span>
+            {% elif product.discount_percentage %}
                 <span class="badge bg-danger position-absolute top-0 end-0 m-3">
-                        -{{ product.discount_percentage|floatformat:2 }}%
-                    </span>
-                {% endif %}
-            </div>
+                    -{{ product.discount_percentage|floatformat:2 }}%
+                </span>
+            {% endif %}
             <div class="product-image-wrapper w-100 shadow-md">
                 <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
                      alt="{{ product.name }}">
@@ -46,11 +48,15 @@
                     </div>
                 </div>
 
-                <!-- Botones de acción -->
                 <div class="mt-auto d-flex gap-2">
-                    <a href="#" onclick="buyNow()" class="btn btn-primary w-50">Comprar Ahora</a>
-                    <a href="#" onclick="addToCart()" class="btn btn-outline-success w-50">Añadir al Carrito</a>
-                </div>
+                    {% if product.is_active %}
+                        <a href="#" onclick="buyNow()" class="btn btn-primary w-50">Comprar Ahora</a>
+                        <a href="#" onclick="addToCart()" class="btn btn-outline-success w-50">Añadir al Carrito</a>
+                    {% else %}
+                        <button class="btn btn-secondary w-50" disabled>Comprar Ahora</button>
+                        <button class="btn btn-outline-secondary w-50" disabled>Añadir al Carrito</button>
+                    {% endif %}
+                </div>                
             </div>
         </div>
     </div>
@@ -102,7 +108,12 @@
             {% for similar_product in similar_products %}
                 <div class="col-6 col-lg-2 col-md-6 mb-4">
                     <a href="{% url 'product_detail' similar_product.slug %}" class="text-decoration-none">
-                        <div class="card" style="height: 95%;">
+                        <div class="card" style="height: 95%; position: relative;">
+                            {% if not similar_product.is_active %}
+                                <span class="badge bg-secondary position-absolute top-0 end-0 m-2">
+                                    Agotado
+                                </span>
+                            {% endif %}
                             <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 180px; overflow: hidden; aspect-ratio: 3/4;">
                                 <img src="{% if similar_product.image %}{{ similar_product.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ similar_product.name }}" style="width: auto; height: 100%; object-fit: contain;">
                             </div>
