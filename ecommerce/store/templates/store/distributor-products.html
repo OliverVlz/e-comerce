@@ -28,7 +28,7 @@
                     <!-- Detalles del producto -->
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title product-title text-truncate" title="{{ product.name }}">{{ product.name }}</h5>
-                        <p class="card-text text-muted mb-2">Código: <span class="fw-semibold">{{ product.ref }}</span></p>
+                        <p class="card-text text-muted product-ref text-truncate mb-2">Ref: <span class="fw-semibold">{{ product.ref }}</span></p>
                         <p class="card-text mt-auto"><strong>${{ product.price|format_cop }}</strong></p>
                     </div>
                     
@@ -129,6 +129,19 @@
             font-size: 1.1rem;
             height: 2.8em;
             line-height: 1.4em;
+        }
+        .product-ref{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1; /* Limita a 2 líneas */
+            line-clamp: 1; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4em;
+            width: 100%; /* Ajusta el ancho para evitar desbordamientos */
+            white-space: normal; /* Asegura que el texto haga salto de línea */
+            font-size: 1.1rem;
+            height: auto;
         }
     }
 </style>

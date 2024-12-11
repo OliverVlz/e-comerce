@@ -129,10 +129,6 @@ class CustomUserCreationForm(UserCreationForm):
         return email
 
 class CustomUserChangeForm(UserChangeForm):
-    company_name = forms.CharField(max_length=255, required=False)
-    phone_number = forms.CharField(max_length=15, required=False)
-    address = forms.CharField(widget=forms.Textarea, required=False)
-
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'first_name', 'last_name', 'phone_number', 'is_active', 'is_staff', 'user_type', 'groups', 'user_permissions')
@@ -144,23 +140,6 @@ class CustomUserChangeForm(UserChangeForm):
         # Verifica si 'user_type' está en los campos antes de deshabilitarlo
         if 'user_type' in self.fields:
             self.fields['user_type'].disabled = True  
-
-        # Configura los campos iniciales relacionados con el perfil de distribuidor
-        if self.instance and hasattr(self.instance, 'distributor_profile'):
-            distributor = self.instance.distributor_profile
-            self.fields['company_name'].initial = distributor.company_name
-            self.fields['address'].initial = distributor.address
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        if commit:
-            user.save()
-            if hasattr(user, 'distributor_profile'):
-                distributor = user.distributor_profile
-                distributor.company_name = self.cleaned_data.get('company_name', distributor.company_name)
-                distributor.address = self.cleaned_data.get('address', distributor.address)
-                distributor.save()
-        return user
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')

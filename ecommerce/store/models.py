@@ -78,6 +78,14 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     is_active = models.BooleanField(default=True)
 
+    is_featured = models.BooleanField(default=False, verbose_name="¿Es destacado?")
+    featured_order = models.PositiveIntegerField(
+        blank=True, 
+        null=True, 
+        verbose_name="Orden destacado (1-8)",
+        help_text="Define la posición del producto destacado (1-8)"
+    )
+
     is_discounted = models.BooleanField(default=False, verbose_name="¿Está en descuento?")
     discounted_price = models.DecimalField(
         max_digits=10, 
@@ -91,7 +99,8 @@ class Product(models.Model):
         decimal_places=2, 
         blank=True, 
         null=True, 
-        verbose_name="Porcentaje de descuento (%)"
+        verbose_name="Porcentaje de descuento (%)",
+        help_text="Porcentaje de descuento aplicado al producto (calculado automáticamente, no es necesario ingresar este valor)"
     )   
         
     class Meta:
@@ -99,10 +108,21 @@ class Product(models.Model):
         verbose_name_plural = 'Productos'
 
     def clean(self):
+        if self.is_featured and self.featured_order is None:
+            raise ValidationError("Si el producto es destacado, debe tener un número de orden (1-8).")
+        # Validación: El número de orden debe estar entre 1 y 8 si es destacado.
+        if self.featured_order and (self.featured_order < 1 or self.featured_order > 9):
+            raise ValidationError("El número de orden debe estar entre 1 y 8.")
+        # Validar que `featured_order` sea único entre los productos destacados
+        if self.is_featured and self.featured_order:
+            if Product.objects.filter(is_featured=True, featured_order=self.featured_order).exclude(id=self.id).exists():
+                raise ValidationError({
+                    'featured_order': f'El valor "{self.featured_order}" ya está asignado a otro producto destacado. Elija un valor único entre 1 y 8.'
+                })
         if self.price < 0:
-            raise ValidationError('The price cannot be negative.')
+            raise ValidationError('El precio no puede ser negativo.')
         if self.stock < 0:
-            raise ValidationError('The stock cannot be negative.')
+            raise ValidationError('El stock no puede ser negativo.')
         if self.is_discounted and self.discounted_price is not None:
             if self.discounted_price >= self.price:
                 raise ValidationError("El precio con descuento debe ser menor al precio original.")

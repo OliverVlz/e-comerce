@@ -3,30 +3,44 @@
 {% load static %}
 {% block content %}
 
-<div class="container-fluid mt-4">
+<div class="container vh-100 mt-4" >
     <div class="row">
         
-        <!-- Barra lateral de filtros para escritorio -->
-        <div class="col-lg-3 mt-5 d-none d-lg-block">
-            <h5 class="fw-bold mb-3">Filtrar por</h5>
-            
-            <h6 class="fw-bold">Marca</h6>
-            <ul class="list-group mb-4">
-                <li class="list-group-item">
-                    <input type="checkbox" id="brand1" name="brand1"> 
-                    <label for="brand1" class="ms-2">AIKO</label>
-                </li>
-                <!-- Añade más marcas aquí -->
-            </ul>
-            
-            <h6 class="fw-bold">Potencia (W)</h6>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <input type="checkbox" id="power1" name="power1"> 
-                    <label for="power1" class="ms-2">350 - 395</label>
-                </li>
-                <!-- Añade más opciones de potencia aquí -->
-            </ul>
+        <!-- Barra lateral de filtros por precio -->
+        <div class="col-lg-3 d-none d-lg-block" style="margin-top: 3rem; padding-right: 2rem;">
+            <h5 class="fw-bold mb-4">Filtrar por Precio</h5>
+            <form method="GET" action="">
+                <div class="range-slider mb-3">
+                    <!-- Input para el precio mínimo -->
+                    <label for="priceMin" class="form-label">Precio Mínimo</label>
+                    <input 
+                        type="range" 
+                        class="form-range" 
+                        id="priceMin" 
+                        name="price_min" 
+                        min="0" 
+                        max="10000000" 
+                        step="50000" 
+                        value="{{ request.GET.price_min|default:'0' }}">
+                    <span id="minPriceLabel" class="d-block text-primary fw-bold">$0</span>
+                    
+                    <!-- Input para el precio máximo -->
+                    <label for="priceMax" class="form-label mt-3">Precio Máximo</label>
+                    <input 
+                        type="range" 
+                        class="form-range" 
+                        id="priceMax" 
+                        name="price_max" 
+                        min="0" 
+                        max="10000000" 
+                        step="50000" 
+                        value="{{ request.GET.price_max|default:'10000000' }}">
+                    <span id="maxPriceLabel" class="d-block text-primary fw-bold">$10'000.000</span>
+                </div>
+                
+                <!-- Botón de aplicar filtros -->
+                <button type="submit" class="btn btn-primary mt-3 w-100">Aplicar Filtros</button>
+            </form>
         </div>
 
 
@@ -39,7 +53,7 @@
                     <h1 class="fw-bold mb-2">{{ subcategory.name }}</h1>
                 </div>
             </div>
-            <hr style="margin:0 0 1.2rem 0; border: 1px solid black; width: 100%;">
+            <hr style="margin:0 0 1.2rem 0; border: 1px solid rgb(56, 56, 56); width: 100%;">
 
             <!-- Filtro para Mobile (Colapsable) -->
             <div class="col-12 d-lg-none mb-3">
@@ -48,26 +62,43 @@
                 </button>
                 <div class="collapse mt-3" id="mobileFilter">
                     <div class="card card-body">
-                        <h6 class="fw-bold">Marca</h6>
-                        <ul class="list-group mb-3">
-                            <li class="list-group-item">
-                                <input type="checkbox" id="brand1-mobile" name="brand1-mobile"> 
-                                <label for="brand1-mobile" class="ms-2">AIKO</label>
-                            </li>
-                            <!-- Añade más marcas aquí -->
-                        </ul>
-
-                        <h6 class="fw-bold">Potencia (W)</h6>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <input type="checkbox" id="power1-mobile" name="power1-mobile"> 
-                                <label for="power1-mobile" class="ms-2">350 - 395</label>
-                            </li>
-                            <!-- Añade más opciones de potencia aquí -->
-                        </ul>
+                        <!-- Filtros de Precio -->
+                        <form method="GET" action="">
+                            <div class="range-slider mb-3">
+                                <!-- Precio Mínimo -->
+                                <label for="priceMinMobile" class="form-label">Precio Mínimo</label>
+                                <input 
+                                    type="range" 
+                                    class="form-range" 
+                                    id="priceMinMobile" 
+                                    name="price_min" 
+                                    min="0" 
+                                    max="10000000" 
+                                    step="50000" 
+                                    value="{{ request.GET.price_min|default:'0' }}">
+                                <span id="minPriceLabelMobile" class="d-block text-primary fw-bold">$0</span>
+            
+                                <!-- Precio Máximo -->
+                                <label for="priceMaxMobile" class="form-label mt-3">Precio Máximo</label>
+                                <input 
+                                    type="range" 
+                                    class="form-range" 
+                                    id="priceMaxMobile" 
+                                    name="price_max" 
+                                    min="0" 
+                                    max="10000000" 
+                                    step="50000" 
+                                    value="{{ request.GET.price_max|default:'10000000' }}">
+                                <span id="maxPriceLabelMobile" class="d-block text-primary fw-bold">$10'000.000</span>
+                            </div>
+            
+                            <!-- Botón para aplicar filtros -->
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Aplicar Filtros</button>
+                        </form>
                     </div>
                 </div>
             </div>
+            
             <!-- Grid de productos -->
             <div class="container mt-4">
                 <div class="row text-center">
@@ -82,6 +113,11 @@
                                             alt="{{ product.name }}" 
                                             style="object-fit: contain; max-height: 100%; width: auto;">
                                     </div>
+                                    {% if product.discount_percentage %}
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                                        OFERTA
+                                    </span>
+                                    {% endif %}
                                     <!-- Descripción del producto -->
                                     <div class="card-body d-flex align-items-start flex-column" style="padding:0 1.2rem;">
                                         <h6 class="card-title text-start product-title">{{ product.name }}</h6>
@@ -108,7 +144,57 @@
     </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Referencias para Escritorio
+    const priceMinDesktop = document.getElementById('priceMin');
+    const priceMaxDesktop = document.getElementById('priceMax');
+    const minPriceLabelDesktop = document.getElementById('minPriceLabel');
+    const maxPriceLabelDesktop = document.getElementById('maxPriceLabel');
 
+    // Referencias para Móvil
+    const priceMinMobile = document.getElementById('priceMinMobile');
+    const priceMaxMobile = document.getElementById('priceMaxMobile');
+    const minPriceLabelMobile = document.getElementById('minPriceLabelMobile');
+    const maxPriceLabelMobile = document.getElementById('maxPriceLabelMobile');
+
+    // Formatear número como moneda
+    const formatCurrency = (value) => `$${value.toLocaleString('es-CO')}`;
+
+    // Función para actualizar etiquetas (genérica)
+    const updateLabels = (priceMin, priceMax, minLabel, maxLabel) => {
+        const minValue = parseInt(priceMin.value, 10);
+        const maxValue = parseInt(priceMax.value, 10);
+
+        // Ajustar valores si se cruzan
+        if (minValue > maxValue) {
+            priceMin.value = maxValue - 50000; // Ajustar dinámicamente
+        }
+
+        // Actualizar etiquetas
+        minLabel.textContent = formatCurrency(priceMin.value);
+        maxLabel.textContent = formatCurrency(priceMax.value);
+    };
+
+    // Listeners para Escritorio
+    if (priceMinDesktop && priceMaxDesktop) {
+        const updateLabelsDesktop = () => updateLabels(priceMinDesktop, priceMaxDesktop, minPriceLabelDesktop, maxPriceLabelDesktop);
+        priceMinDesktop.addEventListener('input', updateLabelsDesktop);
+        priceMaxDesktop.addEventListener('input', updateLabelsDesktop);
+        updateLabelsDesktop(); // Inicializar
+    }
+
+    // Listeners para Móvil
+    if (priceMinMobile && priceMaxMobile) {
+        const updateLabelsMobile = () => updateLabels(priceMinMobile, priceMaxMobile, minPriceLabelMobile, maxPriceLabelMobile);
+        priceMinMobile.addEventListener('input', updateLabelsMobile);
+        priceMaxMobile.addEventListener('input', updateLabelsMobile);
+        updateLabelsMobile(); // Inicializar
+    }
+});
+
+
+</script>
 
 <style>
     body {

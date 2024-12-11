@@ -1,4 +1,5 @@
 {% extends 'store/main.html' %}
+{% load custom_filters %}
 {% load static %}
 {% block content %}
 
@@ -57,78 +58,143 @@
 
 <div class="container mt-5">
     <div class="row mb-4 rowBig">
-        <!-- Producto grande ("A") -->
+        <!-- Producto destacado con featured_order=1 -->
         <div class="col-lg-8 col-md-12 colA" style="padding-right: 4px;">
             <div class="card cardA shadow-sm h-100" style="padding: 5% 0 0 6%;">
                 <div class="row rowA g-3 align-items-center">
-                    <!-- Columna de texto -->
-                    <div class="col-md-6 col-12 m-0 ordenA">
-                        <h1 class="tituloA textoAzul" style="font-size: 2rem;">
-                            Sistema Fotovoltaico Residencial Completo
-                        </h1>
-                        <!-- Imagen movil-->
-                        <div class="imgA-mobile text-center">
-                            <img src="./static/images/combo-energia.png" class="img-fluid imgA" alt="Producto Principal">
+                    {% if featured_product_1 %}
+                    
+                        <!-- Columna de texto -->
+                        <div class="col-md-6 col-12 m-0 ordenA">
+                            <h1 class="tituloA textoAzul" style="font-size: 1.8rem;">
+                                {{ featured_product_1.name }}
+                            </h1>
+                            <!-- Imagen móvil -->
+                            <div class="imgA-mobile text-center">
+                                <a href="{% url 'product_detail' featured_product_1.slug %}" style="color: inherit; text-decoration: none; margin: 0;">
+                                    <img src="{{ featured_product_1.image.url }}" class="img-fluid imgA" alt="{{ featured_product_1.name }}">
+                                </a>
+                            </div>
+                            <p class="card-text mt-3" style="color: #333;">
+                                {{ featured_product_1.description }}
+                            </p>
+                            <h3 class="text-primary fw-bold">${{ featured_product_1.price|format_cop }}</h3>
+                            <a href="{% url 'product_detail' featured_product_1.slug %}" class="btn btn-success btn-block mt-3">COMPRAR ></a>
                         </div>
-                        <p class="card-text mt-3" style="color: #333;">
-                            Ahorra hasta un 80% en tu factura de luz. Incluye paneles solares, inversor y baterías. Instalación incluida.
-                        </p>
-                        <h3 class="text-primary fw-bold">$7'000.000</h3>
-                        <a href="#" class="btn btn-success btn-block mt-3">COMPRAR ></a>
-                    </div>
-                    <!-- Columna de imagen -->
-                    <div class="col-md-6 col-12 text-center imgA-desktop">
-                        <img src="./static/images/combo-energia.png" class="img-fluid imgA" alt="Producto Principal"
-                        style="width: auto; max-height: 300px;">
-                    </div>
+                        <!-- Columna de imagen -->
+                         
+                        <div class="col-md-6 col-12 text-center imgA-desktop">
+                            <a href="{% url 'product_detail' featured_product_1.slug %}" style="color: inherit; text-decoration: none; margin: 0;">
+                            <img src="{{ featured_product_1.image.url }}" class="img-fluid imgA" alt="{{ featured_product_1.name }}"
+                                style="width: auto; max-height: 300px;">
+                            </a>
+                        </div>
+                   
+                    {% else %}
+                        <!-- Producto DEFAULT ("1") -->
+                        <!-- Columna de texto -->
+                        <div class="col-md-6 col-12 m-0 ordenA">
+                            <h1 class="tituloA textoAzul" style="font-size: 2rem;">
+                                Sistema Fotovoltaico Residencial Completo
+                            </h1>
+                            <!-- Imagen movil-->
+                            <div class="imgA-mobile text-center">
+                                <img src="./static/images/combo-energia.png" class="img-fluid imgA" alt="Producto Principal">
+                            </div>
+                            <p class="card-text mt-3" style="color: #333;">
+                                Ahorra hasta un 80% en tu factura de luz. Incluye paneles solares, inversor y baterías. Instalación incluida.
+                            </p>
+                            <h3 class="text-primary fw-bold">$7'000.000</h3>
+                            <a href="#" class="btn btn-success btn-block mt-3">COMPRAR ></a>
+                        </div>
+                        <!-- Columna de imagen -->
+                        <div class="col-md-6 col-12 text-center imgA-desktop">
+                            <img src="./static/images/combo-energia.png" class="img-fluid imgA" alt="Producto Principal"
+                            style="width: auto; max-height: 300px;">
+                        </div>               
+                    {% endif %}                    
                 </div>
             </div>
         </div>
 
-        <!-- Productos pequeños ("B" y "C") -->
+
+
+        <!-- Productos pequeños ("2" y "3") -->
         <div class="col-lg-4 col-md-12">
             <div class="row">
-                <!-- Producto pequeño "B" -->
+                <!-- Producto pequeño "2" -->
                 <div class="col-6 col-lg-12 mb-3 colB">
                     <div class="card cardB shadow-sm h-100" style="padding: 6% 8%">
                         <div class="d-flex flex-wrap align-items-center flex-md-row flex-column">
-                            <!-- Imagen -->
-                            <div class="col-md-5 col-12 text-center order-md-2 order-1 mb-3 mb-md-0 contenedorBC">
-                                <img src="./static/images/starlink.png" class="img-fluid p-0 imgB" alt="Producto Secundario 1" style="aspect-ratio:1/1; max-width: 130px; height: auto;">
-                            </div>
-                            <!-- Contenido -->
-                            <div class="col-md-7 col-12 text-md-start text-center order-md-1 order-2 contenidoB">
-                                <h3 class="card-title-small textoAzul" style="font-size: 1.2rem; font-weight: bold;">
-                                    Internet Satelital <span style="color: rgb(78, 75, 75);">Antena Starlink</span>
-                                </h3>
-                                <h4 class="text-primary fw-bold">$3'000.000</h4>
-                                <a href="#" class="btn btn-success btn-sm mt-2">COMPRAR ></a>
-                            </div>
+                            {% if featured_product_2 %}
+                                <!-- Imagen -->
+                                <div class="col-md-5 col-12 text-center order-md-2 order-1 mb-3 mb-md-0 contenedorBC">
+                                    <a href="{% url 'product_detail' featured_product_2.slug %}" style="color: inherit; text-decoration: none; margin: 0;">
+                                        <img src="{{ featured_product_2.image.url }}" class="img-fluid p-0 imgB" alt="{{ featured_product_2.name }}" style="aspect-ratio:1/1; max-width: 130px; height: auto;">
+                                    <a>
+                                </div>
+                                <!-- Contenido -->
+                                <div class="col-md-7 col-12 text-md-start text-center order-md-1 order-2 contenidoB">
+                                    <h3 class="card-title-small product-title" style="font-size: 1.2rem; font-weight: bold; color: rgb(78, 75, 75);">
+                                        {{ featured_product_2.name }}
+                                    </h3>
+                                    <h4 class="text-primary fw-bold" style="font-size: 1.4rem;">${{ featured_product_2.price|format_cop }}</h4>
+                                    <a href="{% url 'product_detail' featured_product_2.slug %}" class="btn btn-success btn-sm mt-2">COMPRAR ></a>
+                                </div>
+                            {% else %}
+                                <!-- Contenido por defecto "2" -->
+                                <div class="col-md-5 col-12 text-center order-md-2 order-1 mb-3 mb-md-0 contenedorBC">
+                                    <img src="./static/images/starlink.png" class="img-fluid p-0 imgB" alt="Producto Secundario 1" style="aspect-ratio:1/1; max-width: 130px; height: auto;">
+                                </div>
+                                <div class="col-md-7 col-12 text-md-start text-center order-md-1 order-2 contenidoB">
+                                    <h3 class="card-title-small textoAzul" style="font-size: 1.2rem; font-weight: bold;">
+                                        Internet Satelital <span style="color: rgb(78, 75, 75);">Antena Starlink</span>
+                                    </h3>
+                                    <h4 class="text-primary fw-bold">$3'000.000</h4>
+                                    <a href="#" class="btn btn-success btn-sm mt-2">COMPRAR ></a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-        
-                <!-- Producto pequeño "C" -->
+
+                <!-- Producto pequeño "3" -->
                 <div class="col-6 col-lg-12 colC">
                     <div class="card cardC shadow-sm h-100" style="padding: 6% 6% 6% 3%">
                         <div class="d-flex flex-wrap align-items-center flex-md-row flex-column">
-                            <!-- Imagen -->
-                            <div class="col-md-3 col-12 text-center order-md-1 order-1 mb-3 mb-md-0 contenedorBC">
-                                <img src="./static/images/solar-air.png" class="img-fluid pt-3 imgC" alt="Producto Secundario 2" style="max-width: 188%; height: auto;">
-                            </div>
-                            <!-- Contenido -->
-                            <div class="col-md-9 col-12 text-md-end text-center order-md-2 order-2 contenidoC">
-                                <h3 class="card-title-small text-primary" style="font-size: 1.2rem; font-weight: bold;">
-                                    Electrodoméstico Solar<br><span style="color: rgb(78, 75, 75);">Aire Acondicionado</span>
-                                </h3>
-                                <h4 class="text-primary fw-bold">$5'000.000</h4>
-                                <a href="#" class="btn btn-success btn-sm mt-2">COMPRAR ></a>
-                            </div>
+                            {% if featured_product_3 %}
+                                <!-- Imagen -->
+                                <div class="col-md-3 col-12 text-center order-md-1 order-1 mb-3 mb-md-0 contenedorBC">
+                                    <a href="{% url 'product_detail' featured_product_3.slug %}" style="color: inherit; text-decoration: none; margin: 0;">
+                                        <img src="{{ featured_product_3.image.url }}" class="img-fluid pt-3 imgC" alt="{{ featured_product_3.name }}" style="max-width: 188%; height: auto;">
+                                    <a>
+                                </div>
+                                <!-- Contenido -->
+                                <div class="col-md-9 col-12 text-md-end text-center order-md-2 order-2 contenidoC">
+                                    <h3 class="card-title-small product-title" style="font-size: 1.2rem; font-weight: bold; color: rgb(78, 75, 75);">
+                                        {{ featured_product_3.name }}
+                                    </h3>
+                                    <h4 class="text-primary fw-bold" style="font-size: 1.4rem;">${{ featured_product_3.price|format_cop }}</h4>
+                                    <a href="{% url 'product_detail' featured_product_3.slug %}" class="btn btn-success btn-sm mt-2">COMPRAR ></a>
+                                </div>
+                            {% else %}
+                                <!-- Contenido por defecto "3" -->
+                                <div class="col-md-3 col-12 text-center order-md-1 order-1 mb-3 mb-md-0 contenedorBC">
+                                    <img src="./static/images/solar-air.png" class="img-fluid pt-3 imgC" alt="Producto Secundario 2" style="max-width: 188%; height: auto;">
+                                </div>
+                                <div class="col-md-9 col-12 text-md-end text-center order-md-2 order-2 contenidoC">
+                                    <h3 class="card-title-small text-primary" style="font-size: 1.2rem; font-weight: bold;">
+                                        Electrodoméstico Solar<br><span style="color: rgb(78, 75, 75);">Aire Acondicionado</span>
+                                    </h3>
+                                    <h4 class="text-primary fw-bold">$5'000.000</h4>
+                                    <a href="#" class="btn btn-success btn-sm mt-2">COMPRAR ></a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 
@@ -220,115 +286,299 @@
 
     <!-- Sección de ofertas -->
     <div class="row mt-4">
-        <!-- Oferta Principal (Columna grande) -->
+        <!-- Oferta Principal 4 (Columna grande) -->
         <div class="col-lg-6 col-md-12 mb-4 colA-OE" style="padding-right: 3px;">
             <div class="card shadow-lg h-100 cardA-OE" style="padding: 2rem 1.8rem 0 1.8rem;">
-                <div class="d-flex justify-content-center align-items-center position-relative">
-                    <img src="./static/images/prom-paneles.png" class="card-img-top" alt="Oferta principal" style="max-width: 70%; height: auto;">
-                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">20% OFF</span>
-                </div>
-                <div class="card-body" style="padding: 1rem 0 0 1rem">
-                    <h5 class="card-title" style="font-size: 1.4rem; font-weight: bold;">¡Pack Familiar Solar con Descuento!</h5>
-                    <p class="card-text">
-                        <del>$2'000.000</del>
-                        <strong class="text-primary"> $1'600.000</strong>
-                    </p>
-                    <p>Incluye paneles solares de distintas capacidades para cubrir el consumo familiar. Ahorra 20% y obtén soporte técnico gratis el primer año.</p>
-                    <a href="#" class="btn btn-success boton-oferton">CONOCE EL PACK FAMILIAR ></a>
-                </div>
+                {% if featured_product_4 %}
+                <a href="{% url 'product_detail' featured_product_4.slug %}" style="color: inherit; text-decoration: none;">
+                    <div class="d-flex justify-content-center align-items-center position-relative">
+                        <img src="{{ featured_product_4.image.url }}" class="card-img-top" alt="{{ featured_product_4.name }}" style="max-width: 70%; height: auto;">
+                        {% if featured_product_4.discounted_price %}
+                            <span class="badge bg-danger position-absolute" style="top: -5%; right: -1.5%;">
+                                {{ featured_product_4.discount_percentage|floatformat:0 }}% OFF
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body" style="padding: 1rem 0 0 1rem">
+                        <h5 class="card-title" style="font-size: 1.4rem; font-weight: bold;">{{ featured_product_4.name }}</h5>
+                        <p class="card-text">
+                            {% if featured_product_4.discounted_price %}
+                                <del>${{ featured_product_4.price|format_cop }}</del>
+                                <strong class="text-primary"> ${{ featured_product_4.discounted_price|format_cop }}</strong>
+                            {% else %}
+                                <strong class="text-primary">${{ featured_product_4.price|format_cop }}</strong>
+                            {% endif %}
+                        </p>
+                        <p>{{ featured_product_4.description }}</p>
+                        <a href="{% url 'product_detail' featured_product_4.slug %}" class="btn btn-success boton-oferton">CONOCE MÁS ></a>
+                    </div>
+                </a>
+                {% else %}
+                    <!-- Contenido por defecto -->
+                    <div class="d-flex justify-content-center align-items-center position-relative">
+                        <img src="./static/images/prom-paneles.png" class="card-img-top" alt="Oferta principal" style="max-width: 70%; height: auto;">
+                        <span class="badge bg-danger position-absolute top-0 end-0">20% OFF</span>
+                    </div>
+                    <div class="card-body" style="padding: 1rem 0 0 1rem">
+                        <h5 class="card-title" style="font-size: 1.4rem; font-weight: bold;">¡Pack Familiar Solar con Descuento!</h5>
+                        <p class="card-text">
+                            <del>$2'000.000</del>
+                            <strong class="text-primary"> $1'600.000</strong>
+                        </p>
+                        <p>Incluye paneles solares de distintas capacidades para cubrir el consumo familiar. Ahorra 20% y obtén soporte técnico gratis el primer año.</p>
+                        <a href="#" class="btn btn-success boton-oferton">CONOCE EL PACK FAMILIAR ></a>
+                    </div>
+                {% endif %}
             </div>
         </div>
+
 
         <!-- Ofertas Secundarias (Tarjetas pequeñas) -->
         <div class="col-lg-6 col-md-12">
             <div class="row">
-                <!-- Oferta 1 (Cámaras) -->
+                <!-- Oferta 5 -->
                 <div class="col-6 col-md-6 colB-OE" style="padding: 0 3px; margin-bottom: 6px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
-                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
-                            <img src="./static/images/prom-camaras.png" class="card-img-top img-fluid" alt="Cámaras de vigilancia" style="padding-top: 1.8rem; max-width: 62%; height: auto;">
-                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">X2</span>
-                            <!-- Contenedor de los íconos -->
-                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
-                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
-                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                        {% if featured_product_5 %}
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="{{ featured_product_5.image.url }}" class="card-img-top img-fluid" alt="{{ featured_product_5.name }}" style="padding-top: 1.8rem; max-width: 62%; height: auto;">
+                                
+                                {% if featured_product_5.discount_percentage %}
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                                        OFERTA
+                                    </span>
+                                {% endif %}
+                                
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <!-- Icono para ver detalles del producto -->
+                                    <a href="{% url 'product_detail' featured_product_5.slug %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                    </a>
+                                    <!-- Icono para añadir al carrito -->
+                                    <a href="{% url 'add_to_cart' featured_product_5.id %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    </a>
+                                </div>                                
                             </div>
-                        </div>
-                        <div class="card-body d-flex flex-column justify-content-center cardB-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title title-limited"><strong>Cámaras de vigilancia WIFI con Visión Nocturna X2</strong></h6>
-                            <div class="card-text">
-                                <del>$2'000.000</del>
-                                <strong class="text-primary"> $120.000</strong>
+                            <div class="card-body d-flex flex-column justify-content-center cardB-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <a href="{% url 'product_detail' featured_product_5.slug %}" style="color: inherit; text-decoration: none;">
+                                    <h6 class="card-title title-limited"><strong>{{ featured_product_5.name }}</strong></h6>
+                                    <div class="card-text title-price-mobile">
+                                        {% if featured_product_5.discounted_price %}
+                                            <del>${{ featured_product_5.price|format_cop }}</del>
+                                            <strong class="text-primary"> ${{ featured_product_5.discounted_price|format_cop }}</strong>
+                                        {% else %}
+                                            <strong class="text-primary">${{ featured_product_5.price|format_cop }}</strong>
+                                        {% endif %}
+                                    </div>
+                                </a>
                             </div>
-                        </div>
+                        {% else %}
+                            <!-- Producto por defecto -->
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="./static/images/prom-camaras.png" class="card-img-top img-fluid" alt="Cámaras de vigilancia" style="padding-top: 1.8rem; max-width: 62%; height: auto;">
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-2">X2</span>
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-center cardB-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <h6 class="card-title title-limited"><strong>Cámaras de vigilancia WIFI con Visión Nocturna X2</strong></h6>
+                                <div class="card-text">
+                                    <del>$2'000.000</del>
+                                    <strong class="text-primary"> $120.000</strong>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
+
         
-                <!-- Oferta 2 (Lámpara) -->
+                <!-- Oferta 6 -->
                 <div class="col-6 col-md-6 colC-OE" style="padding-left: 3px; margin-bottom: 6px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
-                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
-                            <img src="./static/images/prom-lampara.png" class="card-img-top img-fluid" alt="Lámpara Solar" style="padding-top: 1.5rem; max-width: 70%; height: auto;">
-                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
-                            <!-- Contenedor de los íconos -->
-                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
-                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
-                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                        {% if featured_product_6 %}
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="{{ featured_product_6.image.url }}" class="card-img-top img-fluid" alt="{{ featured_product_6.name }}" style="padding-top: 1.5rem; max-width: 70%; height: auto;">
+                                
+                                {% if featured_product_6.discount_percentage %}
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                                        OFERTA
+                                    </span>
+                                {% endif %}
+                                
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <!-- Icono para ver detalles del producto -->
+                                    <a href="{% url 'product_detail' featured_product_6.slug %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                    </a>
+                                    <!-- Icono para añadir al carrito -->
+                                    <a href="{% url 'add_to_cart' featured_product_6.id %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    </a>
+                                </div>    
                             </div>
-                        </div>
-                        <div class="card-body d-flex flex-column justify-content-center cardC-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title title-limited"><strong>Lámpara Solar Todo en Uno 50W-500W</strong></h6>
-                            <div class="card-text">
-                                <del>$2'000.000</del>
-                                <strong class="text-primary"> $120.000</strong>
+                            <div class="card-body d-flex flex-column justify-content-center cardC-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <a href="{% url 'product_detail' featured_product_6.slug %}" style="color: inherit; text-decoration: none;">
+                                    <h6 class="card-title title-limited"><strong>{{ featured_product_6.name }}</strong></h6>
+                                    <div class="card-text title-price-mobile">
+                                        {% if featured_product_6.discounted_price %}
+                                            <del>${{ featured_product_6.price|format_cop }}</del>
+                                            <strong class="text-primary"> ${{ featured_product_6.discounted_price|format_cop }}</strong>
+                                        {% else %}
+                                            <strong class="text-primary">${{ featured_product_6.price|format_cop }}</strong>
+                                        {% endif %}
+                                    </div>
+                                </a>
                             </div>
-                        </div>
+                        {% else %}
+                            <!-- Producto por defecto -->
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="./static/images/prom-lampara.png" class="card-img-top img-fluid" alt="Lámpara Solar" style="padding-top: 1.5rem; max-width: 70%; height: auto;">
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-center cardC-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <h6 class="card-title title-limited"><strong>Lámpara Solar Todo en Uno 50W-500W</strong></h6>
+                                <div class="card-text">
+                                    <del>$2'000.000</del>
+                                    <strong class="text-primary"> $120.000</strong>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
+
         
-                <!-- Oferta 3 (Batería) -->
+                <!-- Oferta 7 -->
                 <div class="col-6 col-md-6 mb-4 colD-OE" style="padding: 0 3px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
-                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
-                            <img src="./static/images/prom-bateria.png" class="card-img-top img-fluid" alt="Batería GEL" style="padding-top: 1.8rem; max-width: 60%; height: auto;">
-                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
-                            <!-- Contenedor de los íconos -->
-                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
-                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
-                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                        {% if featured_product_7 %}
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="{{ featured_product_7.image.url }}" class="card-img-top img-fluid" alt="{{ featured_product_7.name }}" style="padding-top: 1.8rem; max-width: 60%; height: auto;">
+                                
+                                {% if featured_product_7.discount_percentage %}
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                                        OFERTA
+                                    </span>
+                                {% endif %}
+                                
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <!-- Icono para ver detalles del producto -->
+                                    <a href="{% url 'product_detail' featured_product_7.slug %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                    </a>
+                                    <!-- Icono para añadir al carrito -->
+                                    <a href="{% url 'add_to_cart' featured_product_7.id %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body d-flex flex-column justify-content-center cardD-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title title-limited"><strong>Batería GEL de ciclo profundo Aokly 12V 40AH</strong></h6>
-                            <div class="card-text">
-                                <del>$2'000.000</del>
-                                <strong class="text-primary"> $120.000</strong>
+                            <div class="card-body d-flex flex-column justify-content-center cardD-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <a href="{% url 'product_detail' featured_product_7.slug %}" style="color: inherit; text-decoration: none;">
+                                    <h6 class="card-title title-limited"><strong>{{ featured_product_7.name }}</strong></h6>
+                                    <div class="card-text title-price-mobile">
+                                        {% if featured_product_7.discounted_price %}
+                                            <del>${{ featured_product_7.price|format_cop }}</del>
+                                            <strong class="text-primary"> ${{ featured_product_7.discounted_price|format_cop }}</strong>
+                                        {% else %}
+                                            <strong class="text-primary">${{ featured_product_7.price|format_cop }}</strong>
+                                        {% endif %}
+                                    </div>
+                                </a>
                             </div>
-                        </div>
+                        {% else %}
+                            <!-- Producto por defecto -->
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="./static/images/prom-bateria.png" class="card-img-top img-fluid" alt="Batería GEL" style="padding-top: 1.8rem; max-width: 60%; height: auto;">
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-center cardD-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <h6 class="card-title title-limited"><strong>Batería GEL de ciclo profundo Aokly 12V 40AH</strong></h6>
+                                <div class="card-text">
+                                    <del>$2'000.000</del>
+                                    <strong class="text-primary"> $120.000</strong>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
+
         
-                <!-- Oferta 4 (Congelador) -->
+                <!-- Oferta 8 -->
                 <div class="col-6 col-md-6 mb-4 colE-OE" style="padding-left: 3px;">
                     <div class="card h-100 shadow-sm p-0" style="min-height: 233px;">
-                        <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
-                            <img src="./static/images/prom-congelador.png" class="card-img-top img-fluid" alt="Congelador Solar" style="padding-top: 2rem; max-width: 50%; height: auto;">
-                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
-                            <!-- Contenedor de los íconos -->
-                            <div class="icon-container position-absolute top-50 start-50 translate-middle">
-                                <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
-                                <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                        {% if featured_product_8 %}
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="{{ featured_product_8.image.url }}" class="card-img-top img-fluid" alt="{{ featured_product_8.name }}" style="padding-top: 2rem; max-width: 50%; height: auto;">
+                                
+                                {% if featured_product_8.discount_percentage %}
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                                        OFERTA
+                                    </span>
+                                {% endif %}
+                                
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <!-- Icono para ver detalles del producto -->
+                                    <a href="{% url 'product_detail' featured_product_8.slug %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                    </a>
+                                    <!-- Icono para añadir al carrito -->
+                                    <a href="{% url 'add_to_cart' featured_product_8.id %}" style="color: inherit; text-decoration: none;">
+                                        <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body d-flex flex-column justify-content-center cardE-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
-                            <h6 class="card-title title-limited"><strong>Congelador Solar Doble Tapa 430LT - 710LT</strong></h6>
-                            <div class="card-text">
-                                <del>$2'000.000</del>
-                                <strong class="text-primary"> $120.000</strong>
+                            <div class="card-body d-flex flex-column justify-content-center cardE-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <a href="{% url 'product_detail' featured_product_8.slug %}" style="color: inherit; text-decoration: none;">
+                                    <h6 class="card-title title-limited"><strong>{{ featured_product_8.name }}</strong></h6>
+                                    <div class="card-text title-price-mobile">
+                                        {% if featured_product_8.discounted_price %}
+                                            <del>${{ featured_product_8.price|format_cop }}</del>
+                                            <strong class="text-primary"> ${{ featured_product_8.discounted_price|format_cop }}</strong>
+                                        {% else %}
+                                            <strong class="text-primary">${{ featured_product_8.price|format_cop }}</strong>
+                                        {% endif %}
+                                    </div>
+                                </a>
                             </div>
-                        </div>
+                        {% else %}
+                            <!-- Producto por defecto -->
+                            <div class="d-flex justify-content-center align-items-center position-relative" style="height: 50%;">
+                                <img src="./static/images/prom-congelador.png" class="card-img-top img-fluid" alt="Congelador Solar" style="padding-top: 2rem; max-width: 50%; height: auto;">
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-2">OFF</span>
+                                <!-- Contenedor de los íconos -->
+                                <div class="icon-container position-absolute top-50 start-50 translate-middle">
+                                    <img src="./static/images/cart-light.png" alt="Carrito de compras" class="cart-icon me-2">
+                                    <img src="./static/images/eye-light.png" alt="Ver producto" class="eye-icon">
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-center cardE-OE" style="height: 45%; padding: 0.5rem 1.6rem;">
+                                <h6 class="card-title title-limited"><strong>Congelador Solar Doble Tapa 430LT - 710LT</strong></h6>
+                                <div class="card-text">
+                                    <del>$2'000.000</del>
+                                    <strong class="text-primary"> $120.000</strong>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
+
             </div>
         </div>               
     </div>
@@ -777,11 +1027,24 @@
         display: none;
     }
 
-    .textoAzul{
-        color: #0d6efd;
-        font-weight: bold !important; 
-    }
+.textoAzul{
+    color: #0d6efd;
+    font-weight: bold !important; 
+}
 
+.product-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Limita a 2 líneas */
+    line-clamp: 2; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2em;
+    width: 100%; /* Ajusta el ancho para evitar desbordamientos */
+    white-space: normal; /* Asegura que el texto haga salto de línea */
+    font-size: 1.1rem;
+    height: 2.6em;
+}
     
 @media (max-width: 768px) {
 
@@ -957,6 +1220,9 @@
         width: 100% !important;
     }
 
+    .title-price-mobile {
+        font-size: 0.9rem;
+    }
 
 /******************* Beneficios adicionales *********************** */
 
@@ -1004,7 +1270,7 @@
     }
 
     .cardB-OE, .cardC-OE, .cardD-OE, .cardE-OE {
-        padding: 0.5rem 1rem !important;
+        padding: 0.5rem 0.7rem !important;
     }
 }
 </style>

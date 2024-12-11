@@ -11,7 +11,17 @@ from django.contrib import messages
 import random
 
 def store(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True)
+
+    # Generar un diccionario de productos destacados con featured_order como clave
+    featured_products_dict = {
+        f"featured_product_{i}": products.filter(is_featured=True, featured_order=i).first()
+        for i in range(1, 9)
+    }
+
+    # Obtener todos los productos destacados y productos normales
+    featured_products = products.filter(is_featured=True).order_by('featured_order')[:8]
+    normal_products = products.exclude(id__in=featured_products)
 
     # Obtener el carrito del usuario actual
     if request.user.is_authenticated:
@@ -20,11 +30,16 @@ def store(request):
     else:
         cart_items_count = 0
 
+    # Agregar los productos destacados al contexto
     context = {
-        'products': products,
+        **featured_products_dict,  # Unpack del diccionario de productos destacados
+        'featured_products': featured_products,  # Otros productos destacados
+        'products': normal_products,  # Productos no destacados
         'cart_items_count': cart_items_count,  # Contador de productos únicos en el carrito
     }
+
     return render(request, 'store/store.html', context)
+
 
 def signup(request):
     if request.method == 'POST':
@@ -223,13 +238,23 @@ def products_list(request, subcategory_slug):
     
     # Obtener todos los productos de esa subcategoría
     products = Product.objects.filter(category=subcategory)
-    
+
+    # Obtener valores de precio mínimo y máximo desde la solicitud GET
+    price_min = request.GET.get('price_min', 0)  # Valor predeterminado 0
+    price_max = request.GET.get('price_max', 10000000)  # Valor predeterminado 10 millones
+
+    # Aplicar filtro de precios si se proporcionan
+    products = products.filter(price__gte=price_min, price__lte=price_max)
+
     context = {
         'subcategory': subcategory,
-        'products': products
+        'products': products,
+        'price_min': price_min,  # Enviar el valor actual al template
+        'price_max': price_max,  # Enviar el valor actual al template
     }
     
     return render(request, 'store/products-list.html', context)
+
 
 def product_detail(request, slug):
     # Obtener el producto actual
@@ -308,5 +333,6 @@ def distributor_orders(request):
     orders = Order.objects.filter(items__product__in=distributor_products).distinct()
 
     return render(request, 'store/distributor_orders.html', {'orders': orders})
+
 
 

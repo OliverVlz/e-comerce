@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django import forms
 from .models import * 
-from .forms import CustomUserCreationForm, CustomUserChangeForm, ProductAttributeForm, ProductAttributeFormSet, OrderItemForm, OrderForm
+from .forms import *
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
-from django.utils.text import slugify  # Importación para generar slugs automáticamente
+from django.utils.text import slugify 
 
 User = get_user_model()
 
@@ -29,12 +29,9 @@ def _get_user_queryset(request, qs):
     # Otros usuarios no ven nada
     return qs.none()
 
-
-from django.contrib.auth.admin import UserAdmin
-
 class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
+    add_form = CustomUserCreationForm  # Formulario al agregar
+    form = CustomUserChangeForm       # Formulario al editar
     model = CustomUser
 
     list_display = ('username', 'email', 'user_type', 'is_active', 'is_staff', 'last_login')
@@ -42,18 +39,9 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('username', 'email')
     ordering = ('-date_joined',)
 
-    def get_fieldsets(self, request, obj=None):
-        fieldsets = super().get_fieldsets(request, obj)
-        if request.user.user_type == 2:  # Distribuidor
-            # Remueve los permisos para los distribuidores
-            fieldsets = [fs for fs in fieldsets if fs[0] not in ('Permissions', 'Groups & Permissions')]
-        return fieldsets
-
-    # Define los fieldsets con y sin los campos de permisos
     base_fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'phone_number')}),
-        ('Distributor Info', {'fields': ('company_name', 'address')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
@@ -63,18 +51,30 @@ class CustomUserAdmin(UserAdmin):
     )
 
     add_fieldsets = (
-        (None, {
+        ("Información de inicio de sesión", {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'phone_number', 'is_active', 'is_staff', 'user_type'),
+            'fields': ('username', 'email', 'password1', 'password2'),
+        }),
+        ("Información personal", {
+            'classes': ('wide',),
+            'fields': ('first_name', 'last_name', 'phone_number'),
+        }),
+        ("Permisos", {
+            'classes': ('wide',),  
+            'fields': ('is_active', 'is_staff', 'user_type'),
         }),
     )
 
     def get_fieldsets(self, request, obj=None):
+        # Si se está agregando un usuario, usa add_fieldsets
+        if obj is None:
+            return self.add_fieldsets
         # Si el usuario es un superusuario, muestra todos los campos de permisos
         if request.user.is_superuser:
             return self.superuser_fieldsets
         # Si el usuario no es superusuario, oculta los campos de permisos
         return self.base_fieldsets
+
 
     def get_readonly_fields(self, request, obj=None):
         # Para distribuidores, hacer los campos de permisos de solo lectura
@@ -113,7 +113,7 @@ admin.site.register(CustomUser, CustomUserAdmin)
 
 
 class DistributorAdminForm(forms.ModelForm):
-    user = forms.ModelChoiceField(queryset=User.objects.filter(user_type=2), required=True)
+    user = forms.ModelChoiceField(queryset=CustomUser.objects.filter(user_type=2), required=True)
 
     class Meta:
         model = Distributor
@@ -125,12 +125,6 @@ class DistributorAdminForm(forms.ModelForm):
         if user.user_type != 2:
             raise forms.ValidationError("El usuario seleccionado no es un distribuidor.")
         return user
-
-class AttributeNameAdmin(admin.ModelAdmin):
-    list_display = ['name']  
-    search_fields = ['name'] 
-
-admin.site.register(AttributeName, AttributeNameAdmin)
 
 class DistributorAdmin(admin.ModelAdmin):
     form = DistributorAdminForm
@@ -160,7 +154,11 @@ class DistributorAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Distributor, DistributorAdmin)
+class AttributeNameAdmin(admin.ModelAdmin):
+    list_display = ['name']  
+    search_fields = ['name'] 
 
+admin.site.register(AttributeName, AttributeNameAdmin)
 class ProductAttributeInline(admin.TabularInline):
     model = ProductAttribute
     form = ProductAttributeForm
@@ -174,9 +172,9 @@ class ProductAttributeInline(admin.TabularInline):
             return qs.filter(product__distributor=request.user.distributor_profile)
         return qs
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'price', 'is_discounted', 'discounted_price', 'discount_percentage', 'ref','is_active', 'stock', 'category', 'created_at')
+    list_display = ('name', 'ref', 'price', 'is_discounted', 'discounted_price', 'discount_percentage', 'is_featured', 'featured_order','slug','is_active', 'stock', 'category', 'created_at')
     search_fields = ('name', 'slug', 'ref', 'is_active')
-    list_filter = ('category', 'distributor', 'is_discounted', 'stock', 'created_at')
+    list_filter = ('category', 'distributor', 'is_discounted', 'is_featured', 'stock', 'created_at')
     list_editable = ('is_active','is_discounted', 'discounted_price')
     inlines = [ProductAttributeInline]
 
@@ -235,7 +233,14 @@ class ProductAdmin(admin.ModelAdmin):
                 raise forms.ValidationError("No puedes cambiar el distribuidor de un producto.")
         if not obj.slug:
             obj.slug = slugify(obj.name)
+
+        if obj.is_featured:
+            featured_count = Product.objects.filter(is_featured=True).exclude(pk=obj.pk).count()
+            if featured_count > 9:
+                raise ValueError("No puedes tener más de 8 productos destacados.")
         super().save_model(request, obj, form, change)
+
+        
 
 admin.site.register(Product, ProductAdmin)
 

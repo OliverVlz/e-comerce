@@ -4,22 +4,35 @@
 {% block content %}
 
 <div class="container mt-5">
-    <div class="row g-4 align-items-stretch">
+    <div class="row align-items-stretch m-0">
         <!-- Imagen del producto -->
-        <div class="col-lg-7 col-md-12 d-flex  justify-content-center align-items-center">
-            <div class="product-image-wrapper w-100">
+        <div class="col-lg-7 col-md-12 parte-izquierda bg-white shadow-md rounded d-flex justify-content-center align-items-center">
+            <div class="">
+                {% if product.discount_percentage %}
+                <span class="badge bg-danger position-absolute top-0 end-0 m-3">
+                        -{{ product.discount_percentage|floatformat:2 }}%
+                    </span>
+                {% endif %}
+            </div>
+            <div class="product-image-wrapper w-100 shadow-md">
                 <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
-                     class="img-fluid imagen-detalle bg-white shadow-sm rounded" 
-                     alt="{{ product.name }}" 
-                     style="object-fit: contain; width: 100%; max-height: 400px; border: 1px solid #dee2e6;">
+                     alt="{{ product.name }}">
             </div>
         </div>
 
+
         <!-- Detalles del producto -->
-        <div class="col-lg-5 col-md-12 d-flex">
-            <div class="product-details-wrapper p-5 bg-white shadow-sm rounded w-100 d-flex flex-column" style="border: 1px solid #dee2e6;">
-                <h2 class="mb-3">{{ product.name }}</h2>
-                <h4 class="text-success mb-3"><strong>${{ product.price|format_cop }}</strong></h4>
+        <div class="col-lg-5 col-md-12 d-flex lado-derecho">
+            <div class="product-details-wrapper p-5 m-0 bg-white shadow-sm rounded w-100 d-flex flex-column" style="border: 1px solid #dee2e6;">
+                <h3 class="mb-3">{{ product.name }}</h3>
+                <div class="mb-3 card-text title-price-mobile" style="font-size: 1.3rem;">
+                    {% if product.discounted_price %}
+                        <del>${{ product.price|format_cop }}</del>
+                        <strong class="text-primary"> ${{ product.discounted_price|format_cop }}</strong>
+                    {% else %}
+                        <strong class="text-primary">${{ product.price|format_cop }}</strong>
+                    {% endif %}
+                </div>
                 <p class="text-muted mb-0"><strong>Referencia: </strong> {{ product.ref }}</p>
                 
                 <!-- Envío a toda Colombia -->
@@ -89,12 +102,12 @@
             {% for similar_product in similar_products %}
                 <div class="col-6 col-lg-2 col-md-6 mb-4">
                     <a href="{% url 'product_detail' similar_product.slug %}" class="text-decoration-none">
-                        <div class="card h-100" style="height: 95%;">
-                            <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 70%; overflow: hidden; aspect-ratio: 3/4;">
+                        <div class="card" style="height: 95%;">
+                            <div class="space-images d-flex justify-content-center align-items-center" style="padding:1rem 0.5rem 0 0.5rem; height: 180px; overflow: hidden; aspect-ratio: 3/4;">
                                 <img src="{% if similar_product.image %}{{ similar_product.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" class="card-img-top img-fluid" alt="{{ similar_product.name }}" style="width: auto; height: 100%; object-fit: contain;">
                             </div>
                             <div class="card-body p-2 d-flex justify-content-center align-items-center">
-                                <h3 class="card-title text-center" style="font-size: 1.1rem; padding-left: 4%;">{{ similar_product.name|truncatechars:30 }}</h3>
+                                <h3 class="card-title text-center" style="font-size: 1rem; padding-left: 4%;">{{ similar_product.name|truncatechars:30 }}</h3>
                             </div>
                             <div class="card-footer bg-white text-center">
                                 <p class="text-success fw-bold mb-0">${{ similar_product.price|format_cop }}</p>
@@ -121,11 +134,35 @@
         flex: 1; /* El contenido principal se expande para ocupar el espacio disponible */
     }
 
-    /* Asegura que ambos bloques de imagen y detalles ocupen la misma altura */
-    .product-image-wrapper, .product-details-wrapper {
-        height: 100%;
+    .product-image-wrapper {
+        position: relative; /* Necesario para posicionar el badge */
+        overflow: hidden;
+        background-color: #fdfdfd; /* Fondo neutro para la imagen */
+        border: 1px solid #e6e7e7;
+        border-radius: 8px;
+        max-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
+    .product-image-wrapper img {
+        aspect-ratio: 4/3;
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 350px;
+        height: 300px;
+        width: auto;
+    }
+
+    .parte-izquierda {
+        position: relative; /* Contenedor relativo para posicionar el badge */
+        padding: 3rem 2rem;
+    }
+
+    .lado-derecho {
+        padding: 0 0 0 1.2rem;
+    }
     /* Ajuste en imágenes de productos similares */
     .card-img-top {
         width: 100%;
@@ -152,13 +189,24 @@
 
 
     @media (max-width: 768px) {
-        .imagen-detalle {
-            max-height: 300px !important;
+        .product-image-wrapper img {
+            object-fit: contain;
+            max-height: 280px;
+            height: 200px;
+            width: auto;
         }
         .product-details-wrapper {
             padding: 2rem !important;
         }
+        .lado-derecho {
+        padding: 0 ;
+        }
+        .parte-izquierda {
+            margin-bottom: 1rem;
+        }
+
     }
+    
 </style>
 
 <script>
