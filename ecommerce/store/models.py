@@ -186,7 +186,16 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} - {self.customer.username} - {self.get_status_display()}"
 
+    def save(self, *args, **kwargs):
+        
+        if self.pk:
+            self.total_price = self.get_total_price()
+        super().save(*args, **kwargs)
+
     def get_total_price(self):
+        if not self.pk or not self.items.exists():
+            return 0
+        
         total = sum(
             item.get_total_item_price() 
             for item in self.items.all() 
@@ -205,3 +214,8 @@ class OrderItem(models.Model):
 
     def get_total_item_price(self):
         return self.quantity * self.price
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Actualizar el precio total de la orden después de guardar este item
+        self.order.save()

@@ -138,13 +138,6 @@ def checkout(request):
         )
         return redirect('cart')
 
-    if request.method == 'POST':
-        # Confirmar pedido
-        order.status = 'processed'
-        order.get_total_price()
-        order.save()
-        return render(request, 'store/checkout_success.html', {'order': order})
-
     context = {'order': order}
     return render(request, 'store/checkout.html', context)
 
@@ -156,42 +149,65 @@ def buy_now(request, product_id):
     # Obtener la cantidad de la solicitud, con valor predeterminado de 1
     quantity = int(request.GET.get('quantity', 1))
 
-    # Obtener o crear el pedido pendiente (carrito) del usuario
-    order, created = Order.objects.get_or_create(customer=request.user, status='pending')
+    # Buscar el pedido pendiente más reciente
+    try:
+        order = Order.objects.filter(
+            customer=request.user, 
+            status='pending'
+        ).latest('created_at')
+    except Order.DoesNotExist:
+        # Si no hay pedidos pendientes, crear uno nuevo
+        order = Order.objects.create(customer=request.user, status='pending')
 
     # Agregar el producto al carrito o incrementar la cantidad si ya existe
-    order_item, created = OrderItem.objects.get_or_create(order=order, product=product, price=product.price)
-    if not created:
+    try:
+        order_item = OrderItem.objects.get(order=order, product=product)
         order_item.quantity += quantity
-    else:
-        order_item.quantity = quantity
-    order_item.save()
+        order_item.save()
+    except OrderItem.DoesNotExist:
+        OrderItem.objects.create(
+            order=order, 
+            product=product, 
+            price=product.price, 
+            quantity=quantity
+        )
 
     # Redirigir al checkout para completar la compra
     return redirect('checkout')
 
 @login_required
 def add_to_cart(request, product_id):
-    # Obtener el producto que se está agregando al carrito
     product = get_object_or_404(Product, id=product_id)
-
-    # Obtener la cantidad de la solicitud, con valor predeterminado de 1
     quantity = int(request.GET.get('quantity', 1))
 
-    # Obtener el pedido pendiente del usuario, o crear uno nuevo si no existe
-    order, created = Order.objects.get_or_create(customer=request.user, status='pending')
+    # Buscar el pedido pendiente más reciente
+    try:
+        order = Order.objects.filter(
+            customer=request.user, 
+            status='pending'
+        ).latest('created_at')
+    except Order.DoesNotExist:
+        # Si no hay pedidos pendientes, crear uno nuevo
+        order = Order.objects.create(customer=request.user, status='pending')
 
     # Verificar si el producto ya está en el carrito
-    order_item, created = OrderItem.objects.get_or_create(order=order, product=product, price=product.price)
-
-    # Ajustar la cantidad del OrderItem
-    if not created:
+    try:
+        order_item = OrderItem.objects.get(order=order, product=product)
         order_item.quantity += quantity
-    else:
-        order_item.quantity = quantity
-    order_item.save()
+        order_item.save()
+    except OrderItem.DoesNotExist:
+        # Si el producto no está en el carrito, crear un nuevo OrderItem
+        OrderItem.objects.create(
+            order=order, 
+            product=product, 
+            price=product.price, 
+            quantity=quantity
+        )
 
-    # Redirigir al carrito
+    # Actualizar el precio total de la orden
+    order.total_price = order.get_total_price()
+    order.save()
+
     return redirect('cart')
 
 @login_required

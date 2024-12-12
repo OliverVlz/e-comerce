@@ -2,58 +2,61 @@
 {% load custom_filters %}
 {% load static %}
 {% block content %}
-<div class="container mt-4">
-    <h2 class="fw-bold mb-4">Mis Compras</h2>
+<div class="container d-flex flex-column min-vh-100">
+    <div class="row">
+        
+        <h2 class="fw-bold mt-5 mb-3">Mis Compras</h2>
 
-    {% if orders %}
-        {% for order in orders %}
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <!-- Encabezado de la orden -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="fw-bold">Orden #{{ order.id }}</h5>
-                        <p class="mb-0 text-muted">
-                            {{ order.created_at|date:"j F Y" }}
-                            {% if order.status == 'delivered' %}
-                                <span class="badge bg-success">Entregado</span>
-                            {% elif order.status == 'shipped' %}
-                                <span class="badge bg-primary">Enviado</span>
-                            {% elif order.status == 'pending' %}
-                                <span class="badge bg-warning text-dark">Pendiente</span>
-                            {% elif order.status == 'cancelled' %}
-                                <span class="badge bg-danger">Cancelado</span>
-                            {% endif %}
-                        </p>
+        {% if orders %}
+            {% for order in orders %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <!-- Encabezado de la orden -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="fw-bold">Orden #{{ order.id }}</h5>
+                            <p class="mb-0 text-muted">
+                                {{ order.created_at|date:"j F Y" }}
+                                {% if order.status == 'delivered' %}
+                                    <span class="badge bg-success">Entregado</span>
+                                {% elif order.status == 'shipped' %}
+                                    <span class="badge bg-primary">Enviado</span>
+                                {% elif order.status == 'pending' %}
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                {% elif order.status == 'cancelled' %}
+                                    <span class="badge bg-danger">Cancelado</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        
                     </div>
-                    
-                </div>
-                <hr>
+                    <hr>
 
-                <!-- Lista de productos -->
-                {% for item in order.items.all %}
-                <div class="d-flex align-items-center mb-3">
-                    <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
-                         alt="{{ item.product.name }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: contain;">
-                    <div class="flex-grow-1">
-                        <p class="mb-0 fw-bold">{{ item.product.name }}</p>
-                        <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
+                    <!-- Lista de productos -->
+                    {% for item in order.items.all %}
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" 
+                            alt="{{ item.product.name }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: contain;">
+                        <div class="flex-grow-1">
+                            <p class="mb-0 fw-bold">{{ item.product.name }}</p>
+                            <small class="text-muted">Cantidad: x{{ item.quantity }}</small>
+                        </div>
+                        <p class="mb-0 fw-bold text-end">${{ item.get_total_item_price|format_cop }}</p>
                     </div>
-                    <p class="mb-0 fw-bold text-end">${{ item.get_total_item_price|format_cop }}</p>
-                </div>
-                {% endfor %}
+                    {% endfor %}
 
-                <hr>
-                <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-0 fw-bold">Total: ${{ order.get_total_price|format_cop }}</p>
-                    
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-0 fw-bold">Total: ${{ order.get_total_price|format_cop }}</p>
+                        
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    {% else %}
-        <p class="text-center text-muted">No tienes compras registradas.</p>
-    {% endif %}
+            {% endfor %}
+        {% else %}
+            <p class="text-center mb-5 text-muted">No tienes compras registradas.</p>
+        {% endif %}
+    </div>
 </div>
 
 <style>

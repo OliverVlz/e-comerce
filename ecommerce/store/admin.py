@@ -320,4 +320,8 @@ class OrderAdmin(admin.ModelAdmin):
     get_order_items.short_description = "Items"
 
   
+    def save_model(self, request, obj, form, change):
+        # Calcular y establecer el precio total antes de guardar
+        obj.total_price = obj.get_total_price()
+        super().save_model(request, obj, form, change)
     
