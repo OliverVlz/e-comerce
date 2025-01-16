@@ -749,8 +749,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: scale(0.9); /* Escala más pequeña */
-    opacity: 0.8; /* Reduce la visibilidad para los elementos en espera */
+    transform: scale(0.9); 
+    opacity: 0.8; 
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
@@ -805,27 +805,18 @@
 }
 
 
-
-
-
-
-
-
-
-
-
 /***************************************************************************/
 
     /* Estilo para hacer que el banner del carrusel ocupe toda la pantalla */
 
     .carousel, .carousel-inner, .carousel-item {
-        height: 100vh; /* Hacer que el carrusel ocupe toda la altura de la ventana */
-        width: 100vw;  /* Hacer que el carrusel ocupe todo el ancho de la ventana */
+        height: 100vh; 
+        width: 100vw;  
     }
 
     .carousel-item img {
-        object-fit: cover; /* Ajusta la imagen para que cubra toda el área */
-        height: 100vh; /* Asegura que la imagen ocupe toda la pantalla */
+        object-fit: cover; 
+        height: 100vh; 
         width: 100%;
         
     }
@@ -833,16 +824,16 @@
     .carousel-caption {
         z-index: 2;
         display: flex;
-        justify-content: center; /* Centrado horizontal */
-        align-items: center; /* Centrado vertical */
-        height: 100%; /* Asegura que ocupe toda la altura */
-        text-align: center; /* Alineación centrada del texto */
-        color: #fff; /* Color de texto blanco */
+        justify-content: center; 
+        align-items: center; 
+        height: 100%; 
+        text-align: center;
+        color: #fff; 
     }
 
     /* Estilos del título */
     .carousel-title {
-        font-size: 3.5rem; /* Tamaño de fuente grande */
+        font-size: 3.5rem; 
         font-weight: bolder;
         line-height: 1;
         margin-bottom: 1.8rem;
@@ -851,7 +842,7 @@
 
     /* Estilos del subtítulo */
     .carousel-subtitle {
-        font-size: 1.6rem; /* Tamaño de fuente moderado */
+        font-size: 1.6rem; 
         font-weight: lighter;
         padding: 0 10rem;
         line-height: 1;
@@ -859,7 +850,7 @@
     }
 
     .carousel-title2 {
-        font-size: 3.5rem; /* Tamaño de fuente grande */
+        font-size: 3.5rem;
         font-weight: bolder;
         line-height: 1;
         margin-bottom: 1.8rem;
@@ -868,27 +859,27 @@
 
     /* Estilos del subtítulo */
     .carousel-subtitle2 {
-        font-size: 1.6rem; /* Tamaño de fuente moderado */
+        font-size: 1.6rem; 
         font-weight: lighter;
         line-height: 1;
         margin: 0 20rem 2.2rem 0;
     }
 
     .carousel-indicators [data-bs-target] {
-        border-radius: 50%; /* Asegura que el punto sea perfectamente circular */
-        background-color: rgba(255, 255, 255, 0.253); /* Color del punto inactivo */
-        border: none; /* Elimina cualquier borde */
-        margin: 5px; /* Reduce el espaciado entre los puntos */
+        border-radius: 50%; 
+        background-color: rgba(255, 255, 255, 0.253);
+        border: none;
+        margin: 5px; 
         padding: 5px;
-        width: 8px;  /* Mantén el tamaño igual para el punto activo */
+        width: 8px; 
         height: 8px;
     }
 
     .carousel-indicators .active {
-        background-color: rgba(255, 255, 255, 0.49); /* Color del punto activo */
-        width: 8px;  /* Mantén el tamaño igual para el punto activo */
-        height: 8px; /* Mantén el tamaño igual para el punto activo */
-        border: none; /* Asegúrate de que el punto activo no tenga borde */
+        background-color: rgba(255, 255, 255, 0.49); 
+        width: 8px;  
+        height: 8px; 
+        border: none;
     }
 
     .boton-expert {
@@ -938,48 +929,48 @@
     /* -----------------Estilos para la sección de ofertas especiales --------------------*/
 
     .title-limited {
-        display: -webkit-box; /* Habilita el modo de contenedor flexible */
-        -webkit-line-clamp: 2; /* Limita el texto a dos líneas */
-        line-clamp: 2; /* Limita el texto a dos líneas */
-        -webkit-box-orient: vertical; /* Configura la orientación del contenedor */
-        overflow: hidden; /* Oculta el texto excedente */
+        display: -webkit-box; 
+        -webkit-line-clamp: 2; 
+        line-clamp: 2; 
+        -webkit-box-orient: vertical; 
+        overflow: hidden;
         text-overflow: ellipsis; /* Añade "..." al final si el texto es demasiado largo */
-        height: calc(1.2em * 2); /* Altura calculada para exactamente dos líneas */
+        height: calc(1.2em * 2); 
     }
 
     .icon-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 0.5rem; /* Espacio entre los íconos */
-        opacity: 0; /* Ocultar los íconos inicialmente */
+        gap: 0.5rem; 
+        opacity: 0; 
         transition: opacity 0.3s ease;
         padding-top: 1.5rem;
     }
 
     .icon-container img {
-        width: 40px; /* Tamaño de los íconos */
+        width: 40px; 
         height: 40px;
-        background-color: rgba(255, 255, 255, 0.926); /* Fondo blanco semitransparente */
+        background-color: rgba(255, 255, 255, 0.926); 
         padding: 4px;
         border-radius: 50%;
         transition: transform 0.3s ease, content 0.3s ease, background-color 0.4s ease;
     }
 
     .cart-icon:hover{
-        transform: scale(1.2); /* Aumentar tamaño al pasar el ratón */
-        content: url('./static/images/cart-dark.png'); /* Cambiar a ícono oscuro */
+        transform: scale(1.2);
+        content: url('./static/images/cart-dark.png'); 
         background-color: #96c953df;
     }
     
     .eye-icon:hover {
-        transform: scale(1.2); /* Aumentar tamaño al pasar el ratón */
-        content: url('./static/images/eye-dark.png'); /* Cambiar a ícono oscuro */
+        transform: scale(1.2); 
+        content: url('./static/images/eye-dark.png'); 
         background-color: #96c953df;
     }
 
     .card:hover .icon-container {
-        opacity: 1; /* Mostrar los íconos al pasar el ratón sobre la tarjeta */
+        opacity: 1; 
     }
 
     /* -----------------Estilos para las categorías destacadas --------------------*/
@@ -1040,8 +1031,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.2em;
-    width: 100%; /* Ajusta el ancho para evitar desbordamientos */
-    white-space: normal; /* Asegura que el texto haga salto de línea */
+    width: 100%; 
+    white-space: normal; 
     font-size: 1.1rem;
     height: 2.6em;
 }
@@ -1054,7 +1045,7 @@
     }
 
     .navbar-collapse .nav-link {
-        color: white; /* Asegura que los enlaces sean legibles */
+        color: white; 
     }
 
     /* Estilos carousel para dispositivos móviles */
@@ -1095,7 +1086,7 @@
         width: 100%;
         height: 100%;
         background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)); /* Degradado oscuro */
-        pointer-events: none; /* Para permitir clics en elementos debajo */
+        pointer-events: none; 
         z-index: 1;
     }
     
@@ -1129,7 +1120,7 @@
     }
     .ordenA {
         display: flex;
-        flex-direction: column; /* Reorganiza el contenido */
+        flex-direction: column; 
     }
     .ordenA h1 {
         order: 1;

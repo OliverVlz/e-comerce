@@ -32,8 +32,7 @@ class UserSignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(UserSignupForm, self).__init__(*args, **kwargs)
-        
-        # Aplicar solo la clase 'form-control floating-label-input' a todos los campos
+       
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control floating-label-input'
         
@@ -102,10 +101,10 @@ class ProductAttributeForm(forms.ModelForm):
 
         # Agregar el widget RelatedFieldWidgetWrapper para obtener los botones de agregar/editar/ver
         self.fields['attribute'].widget = RelatedFieldWidgetWrapper(
-            self.fields['attribute'].widget,  # El widget del campo
-            ProductAttribute._meta.get_field('attribute').remote_field,  # Relación con el modelo AttributeName
-            admin_site=admin.site,  # Admin site que gestiona este modelo
-            can_add_related=True  # Para que se muestre el botón "+"
+            self.fields['attribute'].widget,  
+            ProductAttribute._meta.get_field('attribute').remote_field, 
+            admin_site=admin.site, 
+            can_add_related=True 
         )
 
 ProductAttributeFormSet = forms.inlineformset_factory(
@@ -113,7 +112,7 @@ ProductAttributeFormSet = forms.inlineformset_factory(
     ProductAttribute,
     form=ProductAttributeForm,
     extra=1,  # Cantidad de formularios adicionales que se mostrarán por defecto
-    can_delete=True  # Permitir eliminar atributos también
+    can_delete=True  
 )
 
 """Formulario para panel de administración de usuarios"""
@@ -137,7 +136,6 @@ class CustomUserChangeForm(UserChangeForm):
         super().__init__(*args, **kwargs)
         self.fields['username'].disabled = True  
 
-        # Verifica si 'user_type' está en los campos antes de deshabilitarlo
         if 'user_type' in self.fields:
             self.fields['user_type'].disabled = True  
 
@@ -159,7 +157,7 @@ class UserProfileForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['customer', 'status', 'total_price']  # Campos que se pueden editar
+        fields = ['customer', 'status', 'total_price']  
         widgets = {
             'status': forms.Select(attrs={'class': 'form-control'}),
             'total_price': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
@@ -178,7 +176,6 @@ class OrderForm(forms.ModelForm):
         )
 
     def clean_total_price(self):
-        # Validación: asegurarse de que el total_price es consistente con los OrderItems
         if self.instance:
             total = sum(item.get_total_item_price() for item in self.instance.items.all())
             if self.cleaned_data.get('total_price') != total:
